@@ -1,0 +1,45 @@
+---
+title: Animated process List v0
+description: Custom process List inspired by @V0
+full: true
+---
+
+
+
+import AnimatedProcessList_V0 from "@/components/LY UI/AI/animatedProcessList_V0";
+
+
+<Preview link="animatedprocessList_V0" >
+    <AnimatedProcessList_V0
+            className="h-72"
+            externalStart={true}
+            initialTabListPage={[
+              {
+                step: 1,
+                namePage: "page1",
+                numberOfTime: 3000,
+                status: "waiting",
+              },
+              {
+                step: 2,
+                namePage: "page2",
+                numberOfTime: 2500,
+                status: "waiting",
+              },
+              {
+                step: 3,
+                namePage: "page3",
+                numberOfTime: 4000,
+                status: "waiting",
+              },
+              {
+                step: 4,
+                namePage: "page4",
+                numberOfTime: 4000,
+                status: "waiting",
+              },
+            ]}
+          />
+
+
+</Preview>

@@ -1,0 +1,20 @@
+{
+    "title": "Components",
+    "description": "The headless library",
+    "icon": "Dna",
+    "root": true,
+    "defaultOpen": true,
+    "pages": [
+        "---Get Started---",
+        "index",
+        "---Latest---",
+        "components/AI/ai-searchbar",
+        "components/AI/animatedprocessList_V0",
+        "components/AI/animatedProcessList",
+        "components/AI/generatedAnswer",
+        "components/AI/generatedImageCard",
+        "components/AI/editableQuestion",
+        "components/AI/audioInteraction"
+        
+    ]
+}

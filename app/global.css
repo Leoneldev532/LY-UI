@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+textarea{
+   scrollbar-width: thin;
+    scrollbar-color: gray transparent;
+}
+
+*  {
+    scrollbar-width: thin;
+    scrollbar-color: gray transparent;
+  }
