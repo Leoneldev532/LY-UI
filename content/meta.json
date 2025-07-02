@@ -14,7 +14,9 @@
         "components/AI/generatedAnswer",
         "components/AI/generatedImageCard",
         "components/AI/editableQuestion",
-        "components/AI/audioInteraction"
+        "components/AI/audioInteraction",
+        "components/AI/audioInteraction",
+        "components/AI/resizableSeparator"
         
     ]
 }

@@ -29,7 +29,7 @@ export function Preview({
     // console.log(prePath + link);
     return (
         <>
-            <div className={cn("w-full overflow-hidden", className)}>
+            <div className={cn("light  w-full overflow-hidden", className)}>
                 <PreviewContent
                     link={link}
                     prePath={prePath}
