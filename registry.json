@@ -225,6 +225,25 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "resizeExample",
+      "type": "registry:component",
+      "title": "resizable Example",
+      "dependencies": ["react"],
+
+      "registryDependencies": ["resizableSeparator"],
+      "description": " Displays an AI-generated image in a styled card",
+      "files": [
+        {
+          "path": "components/LY UI/AI/resizableSeparator.tsx",
+          "type": "registry:component"
+        },
+         {
+          "path": "components/example/resizeExample.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
 
   ]
