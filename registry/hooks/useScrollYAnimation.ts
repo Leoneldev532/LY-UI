@@ -7,53 +7,59 @@ const useScrollYAnimation = (
   callBackAnimationEnd?: () => void
 ) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false); // Track if animation has run
 
   const handleAnimationEnd = () => {
-    callBackAnimationEnd && callBackAnimationEnd();
     if (contentRef.current) {
-      const items = contentRef.current.querySelectorAll('li');
-      items.forEach((item, index) => {
-        if (index < items.length - 1) {
-          item.classList.add('hidden');
-        }
-      });
+      // Clear animation and reset transform to show all content
+      contentRef.current.style.animation = "none";
+      contentRef.current.style.transform = "translateY(0)";
     }
+    callBackAnimationEnd?.();
+    hasAnimated.current = true; // Mark animation as complete
   };
 
-  // Vitesse de défilement en pixels par seconde
+  // Scroll speed in pixels per second
   const speedConfig = {
-    slow: 50, // Plus lent
-    normal: 100, // Vitesse normale
-    fast: 200, // Plus rapide
+    slow: 50, // Slower
+    normal: 100, // Normal speed
+    fast: 200, // Faster
   };
 
-useEffect(() => {
-  const contentElement = contentRef.current;
-  if (contentElement) {
-    const containerHeight = 288;
-    const contentHeight = contentElement.scrollHeight;
-    const scrollDistance = contentHeight - containerHeight;
+  useEffect(() => {
+    const contentElement = contentRef.current;
+    if (contentElement && content.length > 0 && !hasAnimated.current) {
+      const containerHeight = contentElement.parentElement?.offsetHeight || 200; // Use parent container height
+      const contentHeight = contentElement.scrollHeight;
+      const scrollDistance = Math.max(0, contentHeight - containerHeight);
 
-    if (scrollDistance > 0) {
-      const speed = speedConfig[animationSpeed];
-      const duration = scrollDistance / speed;
+      if (scrollDistance > 0) {
+        const speed = speedConfig[animationSpeed];
+        const duration = scrollDistance / speed;
 
-      if (scrollDirection === "up") {
-        contentElement.style.animation = `scrollUp ${duration}s linear forwards`;
+        // Apply animation based on scroll direction
+        if (scrollDirection === "up") {
+          contentElement.style.animation = `scrollUp ${duration}s linear forwards`;
+        } else {
+          contentElement.style.animation = `scrollDown ${duration}s linear forwards`;
+        }
+
+        // Add animationend event listener
+        contentElement.addEventListener("animationend", handleAnimationEnd);
+
+        // Cleanup event listener on unmount
+        return () => {
+          contentElement.removeEventListener("animationend", handleAnimationEnd);
+        };
       } else {
-        contentElement.style.animation = `scrollDown ${duration}s linear forwards`;
+        // If content fits, reset styles and call callback
+        contentElement.style.animation = "none";
+        contentElement.style.transform = "translateY(0)";
+        callBackAnimationEnd?.();
+        hasAnimated.current = true;
       }
-
-      // Add animationend event listener
-      contentElement.addEventListener('animationend', handleAnimationEnd);
-
-      // Cleanup event listener on unmount
-      return () => {
-        contentElement.removeEventListener('animationend', handleAnimationEnd);
-      };
     }
-  }
-}, [content, scrollDirection, animationSpeed]);
+  }, [content, scrollDirection, animationSpeed, callBackAnimationEnd]);
 
   return { contentRef, handleAnimationEnd };
 };

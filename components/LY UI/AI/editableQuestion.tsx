@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Button } from "../../../registry/ui/button";
 import { Textarea } from "../../../registry/ui/textarea";
-import { CheckIcon, Pencil, Copy } from "lucide-react";
+import { CheckIcon, Pencil, Copy, X } from "lucide-react";
 
 type EditableQuestionProps = {
   className?: string;
@@ -20,22 +20,42 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
   const [copied, setCopied] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(initialTitle || "");
+  const [editingTitle, setEditingTitle] = useState("");
 
   const handleCopy = async () => {
     if (title) {
-      await navigator.clipboard.writeText(title);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      try {
+        await navigator.clipboard.writeText(title);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      } catch (error) {
+        console.error('Failed to copy to clipboard:', error);
+      }
     }
   };
 
   const handleEdit = () => {
+    setEditingTitle(title); 
     setIsEditing(true);
   };
 
   const handleUpdate = () => {
     setIsEditing(false);
-    if (onUpdateTitle) onUpdateTitle(title);
+    setTitle(editingTitle); 
+    if (onUpdateTitle) onUpdateTitle(editingTitle);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditingTitle(""); 
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      handleUpdate();
+    } else if (e.key === 'Escape') {
+      handleCancel();
+    }
   };
 
   return (
@@ -47,32 +67,34 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
         )}
       >
         {isEditing ? (
-          <div className="flex gap-2 items-center ">
+          <div className="flex gap-2 items-center">
             <Textarea
               className="flex-1 bg-transparent border-b border-neutral-400 outline-none px-1 resize-none"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={editingTitle}
+              onChange={(e) => setEditingTitle(e.target.value)}
+              onKeyDown={handleKeyDown}
               autoFocus
               rows={2}
+              placeholder="Saisissez votre question..."
             />
             <div className="flex flex-col gap-2">
               <Button
                 variant="ghost"
-                className="rounded-full"
+                size="sm"
+                className="rounded-full w-8 h-8 p-0"
                 onClick={handleUpdate}
-                title="Save"
+                title="Sauvegarder (Ctrl+Entrée)"
               >
-                <CheckIcon />
+                <CheckIcon size={16} />
               </Button>
               <Button
                 variant="ghost"
-                className="rounded-full"
-                onClick={() => {
-                  setIsEditing(false);
-                }}
-                title="Annuler"
+                size="sm"
+                className="rounded-full w-8 h-8 p-0"
+                onClick={handleCancel}
+                title="Annuler (Échap)"
               >
-                ✕
+                <X size={16} />
               </Button>
             </div>
           </div>
@@ -80,30 +102,34 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
           <span>{title}</span>
         )}
       </div>
-      <div className="opacity-0 group-hover:opacity-100 w-full flex gap-4 justify-end items-center">
+      <div className="opacity-0 group-hover:opacity-100 w-full flex gap-4 justify-end items-center transition-opacity duration-200">
         {!isEditing && (
           <Button
             variant="ghost"
-            title="Edit question"
-            className="bg-transparent dark:bg-transparent hover:bg-neutral-200/40 dark:hover:bg-neutral-500 rounded-full"
+            size="sm"
+            title="Modifier la question"
+            className="bg-transparent dark:bg-transparent hover:bg-neutral-200/40 dark:hover:bg-neutral-500 rounded-full w-8 h-8 p-0"
             onClick={handleEdit}
           >
-            <Pencil />
+            <Pencil size={16} />
           </Button>
         )}
 
         <Button
           variant="ghost"
-          className="bg-transparent dark:bg-transparent hover:bg-neutral-200/40 dark:hover:bg-neutral-500 rounded-full"
+          size="sm"
+          className="bg-transparent dark:bg-transparent hover:bg-neutral-200/40 dark:hover:bg-neutral-500 rounded-full w-8 h-8 p-0"
           onClick={handleCopy}
-          title="Copy question"
+          title="Copier la question"
+          disabled={!title}
         >
-          {copied ? <CheckIcon /> : <Copy />}
+          {copied ? <CheckIcon size={16} /> : <Copy size={16} />}
         </Button>
       </div>
     </div>
   );
 };
+
 EditableQuestion.displayName = 'EditableQuestion';
 
 export default EditableQuestion;

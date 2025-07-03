@@ -1,15 +1,11 @@
 "use client"
 
 import React, { useState } from "react";
-import { Button } from "../../../registry/ui/button";
 import { CopyIcon, RefreshCwIcon, CheckIcon, Ellipsis } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../../../registry/ui/dropdown-menu";
+
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type GeneratedAnswer = {
   className?: string;

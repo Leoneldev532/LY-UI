@@ -1,10 +1,9 @@
-
 "use client"
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Circle, Pause, Play } from 'lucide-react';
 import ParticleAnimation, { ParticleAnimationHandle } from './particleAnimation';
-import { Button } from '@/registry/ui/button';
+import { Button } from '@/components/ui/button';
 
 type AudioInteractionProps = {
   onAudioStart?: () => void;
@@ -23,13 +22,13 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
 }) => {
   const RefParticularAnimation = useRef<ParticleAnimationHandle>(null);
   const [status, setStatus] = useState<Status>('idle');
-  const [timeElapsed, setTimeElapsed] = useState<number>(0);
-  const timerRef = useRef<number | null>(null);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Gestion du timer pour le temps d'animation
   useEffect(() => {
     if (status === 'playing') {
-      timerRef.current = window.setInterval(() => {
+      timerRef.current = setInterval(() => {
         setTimeElapsed((prev) => prev + 1);
       }, 1000);
     } else {
@@ -58,7 +57,7 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
     if (RefParticularAnimation.current) {
       RefParticularAnimation.current.startAnimation();
       setStatus('playing');
-      setTimeElapsed(0); // Réinitialiser le temps au démarrage
+      setTimeElapsed(0);
       onAudioStart?.();
     }
   };
@@ -73,7 +72,8 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
 
   const handleResume = () => {
     if (RefParticularAnimation.current) {
-      RefParticularAnimation.current.startAnimation();
+      // Use resumeAnimation to continue particles on their current trajectories
+      RefParticularAnimation.current.resumeAnimation();
       setStatus('playing');
       onAudioResume?.();
     }
@@ -83,15 +83,15 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
     if (RefParticularAnimation.current) {
       RefParticularAnimation.current.stopAnimation();
       setStatus('idle');
-      setTimeElapsed(0); // Réinitialiser le compteur de temps
+      setTimeElapsed(0);
       onAudioStop?.();
     }
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center gap-4 p-4">
       <ParticleAnimation ref={RefParticularAnimation} />
-      <div className="flex items-center space-x-4">
+      <div className="flex gap-2 justify-center items-center gap-x-4">
         {status === 'idle' && (
           <Button onClick={handleStart} variant="default">
             <Play className="mr-2 h-4 w-4" /> Start
@@ -107,7 +107,7 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
             <Play className="mr-2 h-4 w-4" /> Resume
           </Button>
         )}
-        <span className="text-lg font-mono">{formatTime(timeElapsed)}</span>
+        <div className="text-lg font-mono">{formatTime(timeElapsed)}</div>
         <Button onClick={handleStop} variant="default">
           <Circle className="mr-2 h-4 w-4" /> Stop
         </Button>

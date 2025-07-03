@@ -7,7 +7,7 @@ type initialTabListPageProps = {
   step?: number;
   namePage?: string;
   numberOfTime?: number;
-  status: "waiting" | "generating" | "completed";
+  status: "waiting..." | "generating..." | "completed";
 };
 
 type AnimatedProcessList_V0Props = {
@@ -26,25 +26,25 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
       step: 1,
       namePage: "page1",
       numberOfTime: 3000,
-      status: "waiting",
+      status: "waiting...",
     },
     {
       step: 2,
       namePage: "page2",
       numberOfTime: 2500,
-      status: "waiting",
+      status: "waiting...",
     },
     {
       step: 3,
       namePage: "page3",
       numberOfTime: 4000,
-      status: "waiting",
+      status: "waiting...",
     },
     {
       step: 4,
       namePage: "page4",
       numberOfTime: 4000,
-      status: "waiting",
+      status: "waiting...",
     },
   ],
   onGenerationStart,
@@ -109,7 +109,7 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
       // Set status to generating
       setTabListPage((prev) =>
         prev.map((page, index) =>
-          index === currentProcessing ? { ...page, status: "generating" } : page
+          index === currentProcessing ? { ...page, status: "generating..." } : page
         )
       );
 
@@ -162,7 +162,7 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
               <div key={page.step} className="flex flex-col">
                 <div className="flex text-neutral-400 w-full items-center justify-between gap-4">
                   <div className="flex items-center w-full gap-2">
-                    {page.status === "generating" ? (
+                    {page.status === "generating..." ? (
                       <Loader className="animate-spin w-6 h-6" />
                     ) : (
                       <svg
@@ -187,7 +187,7 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
                 {index !== initialTabListPage.length - 1 &&
                   page.status === "completed" && (
                     <div
-                      className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease-out ${
+                      className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease ${
                         connectorHeights[index] ? "h-3" : "h-0"
                       }`}
                     />

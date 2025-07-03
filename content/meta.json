@@ -17,6 +17,5 @@
         "components/AI/audioInteraction",
         "components/AI/audioInteraction",
         "components/AI/resizableSeparator"
-        
     ]
 }

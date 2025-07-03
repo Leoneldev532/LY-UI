@@ -1,43 +1,31 @@
 "use client";
 import { cva } from "class-variance-authority";
 import React from "react";
-import { Textarea } from "../../../registry/ui/textarea";
+
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "../../../registry/ui/dropdown-menu";
-import { Button } from "../../../registry/ui/button";
-import {
-  AArrowUp,
   ArrowUp,
-  Bot,
   Check,
   ChevronDown,
   Lightbulb,
-  LightbulbOffIcon,
   Plus,
   SearchSlashIcon,
   FileText,
   Image,
   Code,
   Mic,
-  Paperclip,
   Camera,
   Upload,
   LayoutGrid,
   Share2,
   UserPlus,
-  Globe,
   GoalIcon,
 } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../../../registry/ui/popover";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { Input } from "../../../registry/ui/input";
-import { Checkbox } from "../../../registry/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const AiSearchBarVariants = cva(
   "relative lg:min-w-xl max-w-3xl relative w-full rounded-xl text-neutral-900 dark:text-gray-200 inline-block text-left",
@@ -414,7 +402,7 @@ const AiSearchBar : React.FC<AI_SearchBarProps> = ({
                                     checked as boolean
                                   )
                                 }
-                                className="ml-1"
+                                className="ml-1 border border-neutral-400 dark:border-neutral-600 h-6 w-6"
                               />
                             )}
                           </div>

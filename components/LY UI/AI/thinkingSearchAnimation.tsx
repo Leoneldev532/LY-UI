@@ -3,13 +3,13 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import useScrollYAnimation from "@/registry/hooks/useScrollYAnimation";
+import useScrollYAnimation from "@/components/hooks/useScrollYAnimation";
 
 const cnFallback = (...classes: (string | undefined | false | null)[]): string =>
   classes.filter(Boolean).join(" ");
 const cnUtil = typeof cn !== "undefined" ? cn : cnFallback;
 
-type thinkingSearchAnimationProps = {
+type ThinkingSearchAnimationProps = {
   variant?: "default" | "ghost" | "outline";
   step?: number;
   content?: string[];
@@ -19,7 +19,7 @@ type thinkingSearchAnimationProps = {
   animationSpeed?: "slow" | "normal" | "fast";
 };
 
-const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
+const ThinkingSearchAnimation: React.FC<ThinkingSearchAnimationProps> = ({
   variant,
   step,
   content,
@@ -69,13 +69,13 @@ const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
     }
   }, [content]);
 
-  // Calculer la hauteur basée sur le contenu
+  // Calculate content height based on actual content
   useEffect(() => {
     if (content && content.length > 0 && measureRef.current) {
-      const itemHeight = 60; // Hauteur approximative par item (texte + espacement)
+      const measureHeight = measureRef.current.scrollHeight;
       const padding = 32; // Padding top/bottom
-      const calculatedHeight = Math.max(200, (content.length * itemHeight) + padding);
-      const maxHeight = 400; // Hauteur maximale
+      const calculatedHeight = measureHeight + padding;
+      const maxHeight = 400; // Maximum height during animation
       setContentHeight(Math.min(calculatedHeight, maxHeight));
     }
   }, [content]);
@@ -88,7 +88,7 @@ const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
   );
 
   const thinkingSearchAnimationVariants = cva(
-    "relative lg:min-w-fit max-w-3xl w-full rounded-xl h-auto text-neutral-900 dark:text-gray-200 inline-block text-left ",
+    "relative rounded-xl h-auto text-neutral-900 dark:text-gray-200 inline-block text-left",
     {
       variants: {
         variant: {
@@ -135,18 +135,31 @@ const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
   };
 
   return (
-    <div className={cnUtil(thinkingSearchAnimationVariants({ variant }), "max-w-xl w-full overflow-hidden", className)}>
+    <div
+      className={cnUtil(
+        thinkingSearchAnimationVariants({ variant }),
+        "w-full max-w-xl min-w-0 overflow-hidden",
+        className
+      )}
+    >
       <div
-        className={cnUtil("text-sm p-4 flex font-semibold w-full justify-between items-center rounded-t-xl", getHeaderClasses())}
+        className={cnUtil(
+          "text-sm p-4 flex font-semibold w-full justify-between items-center rounded-t-xl min-w-0",
+          getHeaderClasses()
+        )}
         id="thinking-search-title"
       >
-        <div className="flex items-center gap-2">
-          <h5>Thinking Search</h5>
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <h5 className="whitespace-nowrap">Thinking Search</h5>
           {!animationEnded && content && content.length > 0 && (
-            <span className="text-neutral-500 dark:text-neutral-400 text-xs font-normal">{timer}s</span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-xs font-normal whitespace-nowrap">
+              {timer}s
+            </span>
           )}
           {animationEnded && finalTime !== null && (
-            <span className="text-green-500 dark:text-green-400 text-xs font-normal">{finalTime}s</span>
+            <span className="text-green-500 dark:text-green-400 text-xs font-normal whitespace-nowrap">
+              {finalTime}s
+            </span>
           )}
         </div>
         <button
@@ -155,68 +168,86 @@ const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
           aria-expanded={!collapsed}
           aria-controls="thinking-search-content"
           aria-label={collapsed ? "Expand content" : "Collapse content"}
-          className={cnUtil("flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer", getButtonClasses())}
+          className={cnUtil(
+            "flex items-center justify-center p-1 rounded-full transition-colors cursor-pointer flex-shrink-0",
+            getButtonClasses()
+          )}
         >
           <ChevronDown
-            className={cnUtil("w-4 h-4 transition-transform duration-300 ease-in-out", collapsed ? "-rotate-180" : "rotate-0")}
+            className={cnUtil(
+              "w-4 h-4 transition-transform duration-300 ease-in-out",
+              collapsed ? "-rotate-180" : "rotate-0"
+            )}
           />
         </button>
       </div>
       <div
         id="thinking-search-content"
         className={cnUtil(
-          "transition-all duration-300 ease-in-out",
-          collapsed ? "max-h-0 opacity-0 overflow-hidden" : "max-h-[500px] opacity-100",
+          "transition-all duration-300 ease-in-out w-full min-w-0",
+          collapsed ? "max-h-0 opacity-0 overflow-hidden" : "opacity-100",
           animationEnded ? "overflow-y-auto" : "overflow-hidden"
         )}
         style={{
-          maxHeight: collapsed ? '0px' : animationEnded ? '500px' : `${contentHeight}px`
+          maxHeight: collapsed ? "0px" : animationEnded ? "500px" : `${contentHeight}px`,
         }}
         role="region"
         aria-labelledby="thinking-search-title"
       >
-        <style>{`
+        <style>
+          {`
           @keyframes scrollUp {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-100%); }
+            100% { transform: translateY(calc(-100% + ${contentHeight}px)); }
           }
           @keyframes scrollDown {
-            0% { transform: translateY(-100%); }
+            0% { transform: translateY(calc(-100% + ${contentHeight}px)); }
             100% { transform: translateY(0); }
           }
-        `}</style>
-        <div 
-          className={cnUtil("relative w-full h-full", animationEnded ? "min-h-[200px] max-h-[400px]" : "min-h-[200px]")}
+        `}
+        </style>
+        <div
+          className={cnUtil(
+            "relative w-full h-full min-w-0",
+            animationEnded ? "min-h-[200px] max-h-[500px]" : "min-h-[200px]"
+          )}
           style={{
-            height: animationEnded ? 'auto' : `${contentHeight}px`
+            height: animationEnded ? "auto" : `${contentHeight}px`,
           }}
         >
-          {/* Élément invisible pour mesurer le contenu */}
+          {/* Invisible element to measure content height */}
           <div
             ref={measureRef}
-            className="invisible absolute top-0 left-0 w-full p-4"
+            className="invisible absolute top-0 left-0 w-full p-4 min-w-0"
             aria-hidden="true"
           >
-            <ul className="space-y-4">
+            <ul className="space-y-4 w-full min-w-0">
               {content?.map((item, index) => (
-                <li key={index} className="mb-4 text-sm leading-relaxed">
+                <li
+                  key={index}
+                  className="mb-4 text-sm leading-relaxed w-full min-w-0 break-words"
+                >
                   {item}
                 </li>
               ))}
             </ul>
           </div>
-         
+
           <div
             ref={contentRef}
-            className={cnUtil("w-full p-4", animationEnded ? "relative z-10" : "absolute top-0 left-0 z-0")}
+            className={cnUtil(
+              "w-full p-4 min-w-0",
+              animationEnded ? "relative z-10 transform-none" : "absolute top-0 left-0 z-0"
+            )}
+            style={animationEnded ? { transform: "translateY(0)" } : {}}
             aria-labelledby="thinking-search-title"
           >
-            <ul className={cnUtil("space-y-4", animationEnded ? "max-h-full" : "")}>
+            <ul className={cnUtil("space-y-4 w-full min-w-0", animationEnded ? "max-h-full" : "")}>
               {content?.map((item, index) => (
                 <li
                   key={index}
                   className={cnUtil(
-                    "mb-4 transition-opacity duration-500 text-sm leading-relaxed text-neutral-700 dark:text-gray-200",
+                    "mb-4 transition-opacity duration-500 text-sm leading-relaxed text-neutral-700 dark:text-gray-200 w-full min-w-0 break-words",
                     animationEnded ? "opacity-100" : "opacity-80"
                   )}
                 >
@@ -226,9 +257,13 @@ const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
             </ul>
           </div>
           {!animationEnded && (
-            <div className="pointer-events-none absolute inset-0 z-10 flex flex-col">
-              <div className={cnUtil("flex-grow bg-gradient-to-b to-transparent", getGradientClasses())}></div>
-              <div className={cnUtil("flex-grow bg-gradient-to-t to-transparent", getGradientClasses())}></div>
+            <div className="pointer-events-none absolute inset-0 z-10 flex flex-col w-full min-w-0">
+              <div
+                className={cnUtil("flex-grow bg-gradient-to-b to-transparent", getGradientClasses())}
+              ></div>
+              <div
+                className={cnUtil("flex-grow bg-gradient-to-t to-transparent", getGradientClasses())}
+              ></div>
             </div>
           )}
         </div>
@@ -237,5 +272,5 @@ const thinkingSearchAnimation: React.FC<thinkingSearchAnimationProps> = ({
   );
 };
 
-thinkingSearchAnimation.displayName = 'thinkingSearchAnimation';
-export default React.memo(thinkingSearchAnimation);
+ThinkingSearchAnimation.displayName = "ThinkingSearchAnimation";
+export default React.memo(ThinkingSearchAnimation);

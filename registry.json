@@ -1,0 +1,169 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "ly-ui",
+  "homepage": "https://ly-ui.leonelyimga.com",
+  "items": [
+    {
+      "name": "ai-searchbar",
+      "type": "registry:component",
+      "title": "AI Search Bar",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": [
+        "button",
+        "textarea",
+        "popover",
+        "checkbox",
+        "dropdown-menu"
+      ],
+      "description": "Smart search bar",
+      "files": [
+        {
+          "path": "components/LY UI/AI/ai-searchbar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "animatedProcessList_V0",
+      "type": "registry:component",
+      "title": "animated Process List V0",
+      "dependencies": ["lucide-react"],
+      "description": "Custom process List inspired by @V0",
+      "files": [
+        {
+          "path": "components/LY UI/AI/animatedProcessList_V0.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "animatedProcessList",
+      "type": "registry:component",
+      "title": "Custom Animated process List",
+      "dependencies": ["lucide-react", "react"],
+      "description": "Custom process List ",
+      "files": [
+        {
+          "path": "components/LY UI/AI/animatedProcessList.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "particleAnimation",
+      "type": "registry:component",
+      "title": "Particle Animation animation ",
+      "dependencies": ["react"],
+      "description": "Particle Animation animation ",
+      "files": [
+        {
+          "path": "components/LY UI/AI/particleAnimation.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "audioInteraction",
+      "type": "registry:component",
+      "title": "audio Interaction ",
+      "dependencies": ["react", "button"],
+      "description": "audio interaction",
+      "files": [
+        {
+          "path": "components/LY UI/AI/audioInteraction.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/LY UI/AI/particleAnimation.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+         {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "generatedAnswer",
+      "type": "registry:component",
+      "title": "generated Answer ",
+      "dependencies": ["react", "lucide-react"],
+      "registryDependencies": ["button", "dropdown-menu"],
+      "description": "Displays an AI-generated answer with animation",
+      "files": [
+        {
+          "path": "components/LY UI/AI/generatedAnswer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+           {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "generatedAnswer",
+      "type": "registry:component",
+      "title": "generated Answer ",
+      "dependencies": ["react", "lucide-react"],
+      "registryDependencies": ["button", "dropdown-menu"],
+      "description": "Displays an AI-generated answer with animation",
+      "files": [
+        {
+          "path": "components/LY UI/AI/generatedAnswer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+           {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "thinkingSearchAnimation",
+      "type": "registry:component",
+      "title": " Thinking animation for intelligent search",
+      "dependencies": ["react", "lucide-react", "class-variance-authority"],
+      "registryDependencies": ["button", "dropdown-menu"],
+      "description": "Displays an AI-generated answer with animation",
+      "files": [
+        {
+          "path": "components/LY UI/AI/thinkingSearchAnimation.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/hooks/useScrollYAnimation.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+           {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
+}

@@ -218,13 +218,10 @@ export default function PreviewContent({
                                     className={cn(
                                         "relative overflow-hidden",
                                         "h-7 px-3 text-xs font-medium",
-                                        "bg-black dark:bg-white",
-                                        "text-white dark:text-black",
-                                        "hover:bg-black/90 dark:hover:bg-white/90",
-                                        "hover:text-white dark:hover:text-black",
+                                       " text-black border hover:bg-zinc-200 dark:bg-transparent dark:text-white  dark:border-zinc-600 dark:hover:bg-zinc-700",
                                         "transition-all duration-200",
                                         "group flex items-center gap-1",
-                                        "rounded-lg",
+                                        "rounded-xl",
                                         "shadow-none"
                                     )}
                                 >
@@ -311,13 +308,10 @@ export default function PreviewContent({
                                     className={cn(
                                         "relative overflow-hidden",
                                         "h-7 px-3 text-xs font-medium",
-                                        "bg-black dark:bg-white",
-                                        "text-white dark:text-black",
-                                        "hover:bg-black/90 dark:hover:bg-white/90",
-                                        "hover:text-white dark:hover:text-black",
+                                         " text-black border hover:bg-zinc-200 dark:bg-transparent dark:text-white  dark:border-zinc-600 dark:hover:bg-zinc-700",
                                         "transition-all duration-200",
                                         "group flex items-center gap-1",
-                                        "rounded-lg",
+                                        "rounded-xl",
                                         "shadow-none"
                                     )}
                                 >

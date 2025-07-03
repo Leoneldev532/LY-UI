@@ -40,6 +40,7 @@ interface ParticleAnimationProps {
 export interface ParticleAnimationHandle {
   startAnimation: () => void;
   pauseAnimation: () => void;
+  resumeAnimation: () => void;
   stopAnimation: () => void;
 }
 
@@ -99,6 +100,17 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
       setRender({});
     };
 
+    // Fonction pour réinitialiser l'animation de départ sur les particules existantes
+    const resetToInitialAnimation = () => {
+      particlesRef.current.forEach((particle: Particle) => {
+        particle.radius = 0; // Remettre au centre
+        particle.startRadius = 0;
+        particle.transitionProgress = 0;
+        particle.isInitialAnimation = true; // Réactiver l'animation de dispersion
+      });
+      setRender({});
+    };
+
     // Initialiser les particules au montage
     useEffect(() => {
       initializeParticles();
@@ -151,10 +163,7 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
       if (particlesRef.current.length === 0) {
         initializeParticles(); // Créer de nouvelles particules avec dispersion
       } else {
-        // Reprise après pause : ne pas réinitialiser la dispersion
-        particlesRef.current.forEach((particle) => {
-          particle.isInitialAnimation = false; // Assurer que la dispersion est désactivée
-        });
+        resetToInitialAnimation(); // Réinitialiser l'animation de départ sur les particules existantes
       }
       setIsRunning(true);
     };
@@ -165,6 +174,10 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
       }
+    };
+
+    const resumeAnimation = () => {
+      setIsRunning(true);
     };
 
     const stopAnimation = () => {
@@ -181,6 +194,7 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
     useImperativeHandle(ref, () => ({
       startAnimation,
       pauseAnimation,
+      resumeAnimation,
       stopAnimation,
     }));
 
