@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
-import { Button } from "../../../registry/ui/button";
-import { Textarea } from "../../../registry/ui/textarea";
 import { CheckIcon, Pencil, Copy, X } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 type EditableQuestionProps = {
   className?: string;
@@ -29,31 +29,31 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       } catch (error) {
-        console.error('Failed to copy to clipboard:', error);
+        console.error("Failed to copy to clipboard:", error);
       }
     }
   };
 
   const handleEdit = () => {
-    setEditingTitle(title); 
+    setEditingTitle(title);
     setIsEditing(true);
   };
 
   const handleUpdate = () => {
     setIsEditing(false);
-    setTitle(editingTitle); 
+    setTitle(editingTitle);
     if (onUpdateTitle) onUpdateTitle(editingTitle);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    setEditingTitle(""); 
+    setEditingTitle("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
+    if (e.key === "Enter" && e.ctrlKey) {
       handleUpdate();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       handleCancel();
     }
   };
@@ -130,6 +130,6 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
   );
 };
 
-EditableQuestion.displayName = 'EditableQuestion';
+EditableQuestion.displayName = "EditableQuestion";
 
 export default EditableQuestion;

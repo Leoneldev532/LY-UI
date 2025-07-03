@@ -10,15 +10,16 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
-import { Button } from "../../../registry/ui/button";
+
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../../../registry/ui/dropdown-menu";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/dropdown-menu";
 
 interface GeneratedImageCardProps {
   src?: string | Blob | StaticImport;
@@ -44,7 +45,6 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
   onLike,
   onDislike,
   onRegenerate,
-  
 }) => {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -78,23 +78,23 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
   const handleDownload = async () => {
     let url = "";
     let filename = title ?? "image";
-    
+
     if (src instanceof Blob) {
       url = URL.createObjectURL(src);
-      filename = filename + ".png"; 
+      filename = filename + ".png";
     } else if (typeof src === "string") {
       url = src;
       const parts = src.split("/");
       filename = parts[parts.length - 1] || filename;
     }
-    
+
     const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     if (src instanceof Blob) {
       URL.revokeObjectURL(url);
     }
@@ -128,8 +128,8 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
           src={imageSrc}
           alt={title ?? "Generated image"}
           width={width}
-          height={height} 
-         sizes="(min-width: 1351px) 416px, (min-width: 992px) calc(calc(100vw - 88px) / 3), (min-width: 768px) calc(calc(100vw - 64px) / 2), 100vw"
+          height={height}
+          sizes="(min-width: 1351px) 416px, (min-width: 992px) calc(calc(100vw - 88px) / 3), (min-width: 768px) calc(calc(100vw - 64px) / 2), 100vw"
           onLoadingComplete={() => setLoading(false)}
           onLoad={() => setLoading(false)}
           onError={() => setLoading(false)}
@@ -149,7 +149,7 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
           </Button>
         )}
       </div>
-      
+
       <div className="flex gap-3 justify-between w-full items-center">
         <div>
           <span className="text-sm text-neutral-400">{hours}</span>
@@ -166,7 +166,11 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
             disabled={copied || !prompt}
           >
             <span className="flex items-center justify-center transition-all duration-200">
-              {copied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
+              {copied ? (
+                <CheckIcon className="h-4 w-4" />
+              ) : (
+                <CopyIcon className="h-4 w-4" />
+              )}
             </span>
           </Button>
 
@@ -202,13 +206,13 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
                 "bg-neutral-100 dark:bg-neutral-900"
               )}
             >
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 className="rounded-lg h-9 cursor-pointer hover:!bg-neutral-200 dark:hover:!bg-neutral-200/20 gap-2"
                 onClick={handleRegenerate}
               >
                 Ajouter un commentaire
               </DropdownMenuItem>
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 className="rounded-lg h-9 cursor-pointer hover:!bg-neutral-200 dark:hover:!bg-neutral-200/20 gap-2"
                 onClick={handleRegenerate}
               >

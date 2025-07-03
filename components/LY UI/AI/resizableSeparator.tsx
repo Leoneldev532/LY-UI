@@ -18,6 +18,7 @@ interface ResizableSeparatorProps {
   parentRef: RefObject<HTMLElement | null>;
   showIndicator?: boolean;
   animated?: boolean;
+  zIndex?: number;
 }
 
 const cnFallback = (...classes: (string | undefined | false)[]): string =>
@@ -35,6 +36,7 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
   parentRef,
   showIndicator = false,
   animated = true,
+  zIndex = 20,
 }) => {
   const isDragging = useRef(false);
 
@@ -75,7 +77,7 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
 
   const getIndicatorClasses = () => {
     const baseClasses = cnUtil(
-      "absolute inset-0 flex items-center justify-center",
+      "absolute inset-0 flex items-center justify-center pointer-events-none",
       direction === "vertical" ? "flex-row" : "flex-col"
     );
 
@@ -105,6 +107,7 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     isDragging.current = true;
     e.preventDefault();
+    e.stopPropagation();
     document.body.style.userSelect = "none";
     document.body.style.cursor =
       direction === "vertical" ? "ns-resize" : "ew-resize";
@@ -162,8 +165,15 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
         getSizeClasses(),
         getDirectionClasses(),
         animated && "transition-all duration-200",
+        // Ajout des classes pour gérer la superposition
+        "select-none touch-none",
         className
       )}
+      style={{
+        zIndex: zIndex,
+        // S'assurer que le séparateur reste au-dessus
+        position: "relative",
+      }}
       onMouseDown={handleDragStart}
       onTouchStart={handleDragStart}
     >
@@ -175,5 +185,6 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
     </div>
   );
 };
-ResizableSeparator.displayName = 'ResizableSeparator';
+
+ResizableSeparator.displayName = "ResizableSeparator";
 export default React.memo(ResizableSeparator);

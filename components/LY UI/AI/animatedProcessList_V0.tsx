@@ -16,7 +16,7 @@ type AnimatedProcessList_V0Props = {
   onGenerationComplete?: () => void;
   onGenerationStop?: () => void;
   externalStop?: boolean;
-  className?:string,
+  className?: string;
   externalStart?: boolean;
 };
 
@@ -109,7 +109,9 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
       // Set status to generating
       setTabListPage((prev) =>
         prev.map((page, index) =>
-          index === currentProcessing ? { ...page, status: "generating..." } : page
+          index === currentProcessing
+            ? { ...page, status: "generating..." }
+            : page
         )
       );
 
@@ -154,8 +156,10 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
   }, [currentProcessing, isGenerating]);
 
   return (
-    <div className={cn("flex items-center w-full justify-center p-6 ",className)}>
-      <div className="flex flex-col min-w-sm">
+    <div
+      className={cn("flex items-center w-full justify-center p-6 ", className)}
+    >
+      <div className="flex flex-col min-w-fit w-full">
         {tabListPage.map(
           (page, index) =>
             visibleItems.includes(index) && (
