@@ -191,7 +191,7 @@
       "description": "Use it to manage space",
       "files": [
         {
-          "path": "components/LY UI/AI/resizableSeparator.tsx",
+          "path": "components/LY UI/AI/editableQuestion.tsx",
           "type": "registry:component"
         },
              {
