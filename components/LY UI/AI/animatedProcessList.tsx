@@ -158,7 +158,7 @@ const AnimatedProcessList: React.FC<AnimatedProcessListProps> = ({
         )}
       >
         <div className="flex gap-2 justify-start items-center w-full">
-          <Loader className="animate-spin w-5 h-5 text-black dark:text-white" />
+          <Loader className="animate-spin w-4 h-4 min-w-4 text-black dark:text-white" />
           <h2 className="text-xl font-semibold py-2 text-center text-neutral-700 dark:text-gray-200">
             {title}
           </h2>
