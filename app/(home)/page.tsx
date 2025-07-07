@@ -31,11 +31,13 @@ export default function HomePage() {
 
         <div className="flex flex-col mt-32 gap-3  relative justify-center items-center max-w-xl pt-3">
           <div className="flex flex-col justify-center w-full relative  h-36 items-center">
+
             <img
               src="/pattern.png"
               alt="Descriptive text for the image"
               className="w-full inset-0 z-0 object-cover"
             />
+            
           </div>
           <div className="w-full flex flex-col  items-center">
             <div className="flex gap-x-3 justify-center items-center  text-lg">

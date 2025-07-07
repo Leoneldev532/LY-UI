@@ -1,4 +1,4 @@
-import AiSearchBar from '@/components/LY UI/AI/ai-searchbar';
+
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 
 /**
