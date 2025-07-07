@@ -17,6 +17,6 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide",
-  "url": "https://ly-ui.vercel.app/components"
+  "iconLibrary": "lucide"
+
 }
