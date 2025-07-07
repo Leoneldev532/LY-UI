@@ -92,7 +92,7 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
           isBright: Math.random() < 0.12,
           pulsePhase: Math.random() * Math.PI * 2,
           pulseSpeed: 0.02 + Math.random() * 0.03,
-          transitionProgress: 0, // Progression initiale de l'animation de dispersion
+          transitionProgress: 0, // Progression initiale de l'animation de dispersion --------------------
           isInitialAnimation: true, // Activer la dispersion pour les nouvelles particules
         };
       });
