@@ -228,7 +228,7 @@
     },
     {
       "name": "resizeExample",
-      "type": "registry:component",
+      "type": "registry:example",
       "title": "resizable Example",
       "dependencies": ["react"],
 
@@ -237,11 +237,11 @@
       "files": [
          {
           "path": "components/example/resizeExample.tsx",
-          "type": "registry:component"
+          "type": "registry:example"
         },
         {
           "path": "components/LY UI/AI/resizableSeparator.tsx",
-          "type": "registry:component"
+          "type": "registry:example"
         }
       ]
     },
