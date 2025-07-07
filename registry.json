@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "StepProgressTimeline",
+      "name": "stepProgressTimeline",
       "type": "registry:component",
       "title": "Step Progress Timeline V0",
       "dependencies": ["lucide-react"],
@@ -166,7 +166,7 @@
       ]
     },
     {
-      "name": "ResizableSeparator",
+      "name": "resizableSeparator",
       "type": "registry:component",
       "title": "Resizable Separator",
       "dependencies": ["react", "lucide-react", "class-variance-authority"],
@@ -205,7 +205,7 @@
       ]
     },
      {
-      "name": "GeneratedImageCard",
+      "name": "generatedImageCard",
       "type": "registry:component",
       "title": "Generated Image Card",
       "registryDependencies": ["button", "dropdown-menu"],
