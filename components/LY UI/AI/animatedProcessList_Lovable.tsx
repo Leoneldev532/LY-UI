@@ -21,10 +21,15 @@ interface AnimatedProcessList_LovableProps {
   stepIcons?: React.ReactNode[]
 }
 
+// Correction du skeleton pour qu'il remplisse tout le contenant (la liste animée)
 const SkeletonItem: React.FC = () => (
-  <div className="flex items-center justify-start  gap-2 p-4 h-8 w-full rounded-lg">
-    <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-10 animate-pulse"></div>
-    <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-4/6 animate-pulse"></div>
+  <div className="flex items-center justify-start gap-2 h-12 px-2 w-full rounded-lg">
+    <div className="min-w-[2rem] flex items-center justify-center">
+      <div className="h-5 w-5 bg-neutral-300 dark:bg-neutral-600 rounded-full animate-pulse"></div>
+    </div>
+    <div className="flex-1">
+      <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-4/6 animate-pulse"></div>
+    </div>
   </div>
 )
 
@@ -126,6 +131,11 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
 
   const duplicatedLines = [...normalizedLines, ...normalizedLines]
 
+  // On veut que le skeleton remplisse la hauteur du container (h-72)
+  // On calcule combien de lignes il faudrait pour remplir la hauteur
+  // h-72 = 18rem = 288px, chaque ligne fait h-12 = 3rem = 48px, donc 6 lignes
+  const skeletonLineCount = 6
+
   return (
     <>
       <style>{`
@@ -182,33 +192,42 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
         </div>
 
         {/* The animated container is intentionally wider than the title container */}
-        <div className="relative w-full min-w-sm h-72  overflow-hidden rounded-lg   ">
+        <div className="relative w-full min-w-sm h-72 overflow-hidden rounded-lg">
           <div
             ref={contentRef}
             className={cn(
-              "absolute top-0 left-0 w-full",
+              "absolute top-0 left-0 w-full h-full",
               startAnimation &&
                 !isSkeletonPhase &&
                 (scrollDirection === "up" ? "scroll-animation-up" : "scroll-animation-down"),
             )}
           >
-            <ul className="space-y-1 px-4 flex flex-col w-full justify-center items-center ">
-              {(startAnimation ? duplicatedLines : normalizedLines).map((line, idx) => {
-                const originalIndex = idx % normalizedLines.length
-                const isRevealed = startAnimation || revealedLines[originalIndex]
-                return (
-                  <li
-                    key={`line-container-${idx}`}
-                    className={isRevealed && !isSkeletonPhase ? "line-reveal" : ""}
-                  >
-                    <LineListItem
-                      icon={line.icon}
-                      content={line.content}
-                      loading={isSkeletonPhase || !isRevealed}
-                    />
+            <ul className="space-y-1 px-4 flex flex-col w-full justify-center items-center h-full">
+              {isSkeletonPhase ? (
+                // Affiche assez de skeletons pour remplir le container
+                Array.from({ length: skeletonLineCount }).map((_, idx) => (
+                  <li key={`skeleton-line-${idx}`} className="">
+                    <SkeletonItem />
                   </li>
-                )
-              })}
+                ))
+              ) : (
+                (startAnimation ? duplicatedLines : normalizedLines).map((line, idx) => {
+                  const originalIndex = idx % normalizedLines.length
+                  const isRevealed = startAnimation || revealedLines[originalIndex]
+                  return (
+                    <li
+                      key={`line-container-${idx}`}
+                      className={isRevealed && !isSkeletonPhase ? "line-reveal" : ""}
+                    >
+                      <LineListItem
+                        icon={line.icon}
+                        content={line.content}
+                        loading={isSkeletonPhase || !isRevealed}
+                      />
+                    </li>
+                  )
+                })
+              )}
             </ul>
           </div>
         </div>
