@@ -166,7 +166,7 @@
       ]
     },
     {
-      "name": "Resizable Separator",
+      "name": "ResizableSeparator",
       "type": "registry:component",
       "title": "Resizable Separator",
       "dependencies": ["react", "lucide-react", "class-variance-authority"],
@@ -246,7 +246,7 @@
       ]
     },
     {
-      "name": "animated Process List Lovable",
+      "name": "animatedProcessList_Lovable",
       "type": "registry:component",
       "title": "animated Process List Lovable",
       "dependencies": ["react","lucide-react"],
