@@ -11,3 +11,10 @@ textarea{
     scrollbar-width: thin;
     scrollbar-color: gray transparent;
   }
+
+  :root {
+    --color-fd-background: hsl(0, 0%, 100%);
+  }
+  .dark {
+    --color-fd-background: hsl(0, 2%, 10%);
+  }
