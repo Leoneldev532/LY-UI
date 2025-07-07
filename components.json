@@ -18,5 +18,5 @@
     "hooks": "@/hooks"
   },
   "iconLibrary": "lucide",
-  "url": "http://localhost:3000/components"
+  "url": "https://ly-ui.vercel.app/components"
 }
