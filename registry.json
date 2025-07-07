@@ -32,14 +32,14 @@
       ]
     },
     {
-      "name": "animatedProcessList_V0",
+      "name": "StepProgressTimeline",
       "type": "registry:component",
-      "title": "animated Process List V0",
+      "title": "Step Progress Timeline V0",
       "dependencies": ["lucide-react"],
-      "description": "Custom process List inspired by @V0",
+      "description": "Custom Step Progress Timeline inspired by @V0",
       "files": [
         {
-          "path": "components/LY UI/AI/animatedProcessList_V0.tsx",
+          "path": "components/LY UI/AI/StepProgressTimeline.tsx",
           "type": "registry:component"
         }
       ]
@@ -242,6 +242,23 @@
         {
           "path": "components/LY UI/AI/resizableSeparator.tsx",
           "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "animated Process List Lovable",
+      "type": "registry:component",
+      "title": "animated Process List Lovable",
+      "dependencies": ["react","lucide-react"],
+      "description": " Displays an AI-generated image in a styled card",
+      "files": [
+         {
+          "path": "components/LY UI/AI/animatedProcessList_Lovable.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
         }
       ]
     }

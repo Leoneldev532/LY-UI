@@ -158,9 +158,9 @@ export default function HomePage() {
             />
           </div>
           <div className="w-full flex flex-col items-center">
-            <div className="flex gap-x-2 justify-center items-center text-lg">
-              <span className="text-neutral-300/50">Powered by</span>
-              <span className="text-white text-lg">Leonel Yimga</span>
+            <div className="flex gap-x-2 justify-center   items-center text-lg">
+              <span className="text-neutral-300/50">Build by</span>
+              <span className="text-white text-lg  underline underline-offset-3 font-mono">Leonel Yimga</span>
             </div>
           </div>
         </div>

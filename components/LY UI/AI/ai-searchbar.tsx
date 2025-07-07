@@ -64,7 +64,7 @@ const AiSearchBar : React.FC<AI_SearchBarProps> = ({
   const [value, setValue] = React.useState("");
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const isFilled = value.trim().length > 0;
-  // État pour gérer les checkboxes des 5 premiers outils
+  // State to manage checkboxes for the first 5 tools
   const [checkedTools, setCheckedTools] = React.useState<boolean[]>([
     false,
     false,
@@ -215,70 +215,70 @@ const AiSearchBar : React.FC<AI_SearchBarProps> = ({
   const tools = [
     {
       tool: "Web Search",
-      description: "Recherche web avec sources.",
+      description: "Web search with sources.",
       icon: <SearchSlashIcon className="w-5 h-5" />,
-      action: () => console.log("Lancer une recherche en temps réel"),
+      action: () => console.log("Start a real-time search"),
       source:
         "https://www.blogdumoderateur.com/le-chat-mistral-nouveautes-ia-concurrent-chatgpt/",
     },
     {
       tool: "Image Generation",
-      description: "Créer des images par texte.",
+      description: "Create images from text.",
       icon: <Image className="w-5 h-5" />,
-      action: () => console.log("Ouvrir l'outil de génération d'images"),
+      action: () => console.log("Open image generation tool"),
       source:
         "https://www.blogdumoderateur.com/le-chat-mistral-nouveautes-ia-concurrent-chatgpt/",
     },
     {
       tool: "Code Interpreter",
-      description: "Exécuter et analyser du code.",
+      description: "Execute and analyze code.",
       icon: <Code className="w-5 h-5" />,
-      action: () => console.log("Ouvrir l'éditeur de code"),
+      action: () => console.log("Open code editor"),
       source: "https://mistral.ai/news/the-all-new-le-chat/",
     },
     {
       tool: "Document Analysis",
-      description: "Analyser et résumer des fichiers.",
+      description: "Analyze and summarize files.",
       icon: <FileText className="w-5 h-5" />,
-      action: () => console.log("Importer un fichier (PDF, PNG, JPG, CSV)"),
+      action: () => console.log("Import a file (PDF, PNG, JPG, CSV)"),
       source:
         "https://www.blogdumoderateur.com/le-chat-mistral-nouveautes-ia-concurrent-chatgpt/",
     },
     {
       tool: "Canvas Interface",
-      description: "Co-créer sur un espace partagé.",
+      description: "Co-create on a shared space.",
       icon: <LayoutGrid className="w-5 h-5" />,
-      action: () => console.log("Ouvrir l'interface Canvas"),
+      action: () => console.log("Open Canvas interface"),
       source:
         "https://patmcguinness.substack.com/p/mistrals-new-le-chat-and-the-canvas",
     },
     {
       tool: "Share Conversation",
-      description: "Partager la conversation.",
+      description: "Share the conversation.",
       icon: <Share2 className="w-5 h-5" />,
-      action: () => console.log("Copier l'URL de la conversation"),
+      action: () => console.log("Copy conversation URL"),
       source: "https://reglo.ai/comment-utiliser-le-chat-de-mistral-ai/",
     },
     {
       tool: "Agent Creation",
-      description: "Créer un agent IA personnalisé.",
+      description: "Create a custom AI agent.",
       icon: <UserPlus className="w-5 h-5" />,
-      action: () => console.log("Ouvrir l'outil de création d'agent"),
+      action: () => console.log("Open agent creation tool"),
       source:
         "https://medium.com/@abdulrahman.rihan/how-to-create-a-custom-chatbot-using-mistral-80c31cd3526c",
     },
     {
       tool: "File Upload",
-      description: "Importer des fichiers à traiter.",
+      description: "Upload files to process.",
       icon: <Upload className="w-5 h-5" />,
-      action: () => console.log("Ouvrir le sélecteur de fichiers"),
+      action: () => console.log("Open file picker"),
       source: "https://reglo.ai/comment-utiliser-le-chat-de-mistral-ai/",
     },
     {
       tool: "Google Integrations",
-      description: "Connecter Gmail et Agenda.",
+      description: "Connect Gmail and Calendar.",
       icon: <GoalIcon className="w-5 h-5" />,
-      action: () => console.log("Activer les connexions Google"),
+      action: () => console.log("Enable Google connections"),
       source: "https://reglo.ai/comment-utiliser-le-chat-de-mistral-ai/",
     },
   ];

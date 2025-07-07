@@ -9,7 +9,7 @@ type initialTabListPageProps = {
   status: "waiting" | "generating" | "completed";
 };
 
-type AnimatedProcessList_V0Props = {
+type StepProgressTimelineProps = {
   initialTabListPage: initialTabListPageProps[];
   onGenerationStart?: () => void;
   onGenerationComplete?: () => void;
@@ -19,7 +19,7 @@ type AnimatedProcessList_V0Props = {
   externalStart?: boolean;
 };
 
-const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
+const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
   initialTabListPage = [
     {
       step: 1,
@@ -199,4 +199,4 @@ const AnimatedProcessList_V0: React.FC<AnimatedProcessList_V0Props> = ({
   );
 };
 
-export default AnimatedProcessList_V0;
+export default StepProgressTimeline;

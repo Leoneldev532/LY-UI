@@ -9,13 +9,14 @@
         "index",
         "---Latest---",
         "components/AI/ai-searchbar",
-        "components/AI/animatedprocessList_V0",
+        "components/AI/stepProgressTimeline",
         "components/AI/animatedProcessList",
         "components/AI/generatedAnswer",
         "components/AI/generatedImageCard",
         "components/AI/editableQuestion",
         "components/AI/audioInteraction",
         "components/AI/resizableSeparator",
-        "components/AI/editableQuestion"
+        "components/AI/editableQuestion",
+        "components/AI/animatedprocessList_lovable"
     ]
 }

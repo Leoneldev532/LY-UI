@@ -1,0 +1,45 @@
+---
+title: Animated process List lovable
+description: Custom Animated process List lovable
+full: true
+---
+
+import { CheckCircle, Settings, FileText, Paintbrush, Sparkles, Moon, Gauge } from "lucide-react";
+import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessList_Lovable";
+
+<Preview link="animatedProcessList_Lovable" >
+  <AnimatedProcessList_Lovable
+    className="h-72"
+    lines={[
+      {
+        icon: <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />,
+        content: "Nous analysons votre question pour bien comprendre le contexte et l’intention.",
+      },
+      {
+        icon: <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+        content: "Nous recherchons dans des bases de données fiables et des ressources pertinentes.",
+      },
+      {
+        icon: <FileText className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />,
+        content: "Nous compilons les informations collectées pour générer une réponse claire et concise.",
+      },
+      {
+        icon: <Paintbrush className="w-5 h-5 text-pink-600 dark:text-pink-400" />,
+        content: "Nous validons la réponse afin de garantir sa pertinence et sa fiabilité.",
+      },
+      {
+        icon: <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
+        content: "Votre réponse personnalisée est prête à être affichée.",
+      },
+      {
+        icon: <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />,
+        content: "Nous suggérons des pistes ou ressources complémentaires pour approfondir le sujet.",
+      },
+      {
+        icon: <Gauge className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
+        content: "Votre retour nous aide à améliorer la qualité des réponses futures.",
+      },
+    ]}
+  />
+</Preview>
+

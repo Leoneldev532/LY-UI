@@ -37,7 +37,7 @@ export const navigationSections: NavSection[] = [
             {
                 id: 2,
                 title: "Animated Process List V0",
-                href: "/docs/components/animatedProcessList_V0",
+                href: "/docs/components/stepProgressTimeline",
             },
             {
                 id: 3,
