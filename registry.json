@@ -39,7 +39,7 @@
       "description": "Custom Step Progress Timeline inspired by @V0",
       "files": [
         {
-          "path": "components/LY UI/AI/StepProgressTimeline.tsx",
+          "path": "components/LY UI/AI/stepProgressTimeline.tsx",
           "type": "registry:component"
         }
       ]
