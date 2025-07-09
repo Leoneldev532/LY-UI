@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 export interface ProcessLine {
   icon: React.ReactNode
-  content: string // changed from "contenu" to "content"
+  content: string
 }
 
 interface AnimatedProcessList_LovableProps {
@@ -21,17 +21,7 @@ interface AnimatedProcessList_LovableProps {
   stepIcons?: React.ReactNode[]
 }
 
-// Correction du skeleton pour qu'il remplisse tout le contenant (la liste animée)
-const SkeletonItem: React.FC = () => (
-  <div className="flex items-center justify-start gap-2 h-12 px-2 w-full rounded-lg">
-    <div className="min-w-[2rem] flex items-center justify-center">
-      <div className="h-5 w-5 bg-neutral-300 dark:bg-neutral-600 rounded-full animate-pulse"></div>
-    </div>
-    <div className="flex-1">
-      <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-4/6 animate-pulse"></div>
-    </div>
-  </div>
-)
+
 
 const defaultStepIcons = [
   <CheckCircle key="check" className="w-5 h-5 text-green-600 dark:text-green-400" />,
@@ -46,10 +36,7 @@ const defaultStepIcons = [
   <Star key="star" className="w-5 h-5 text-amber-600 dark:text-amber-400" />,
 ]
 
-const LineListItem: React.FC<ProcessLine & { loading?: boolean }> = ({ icon, content, loading = false }) => {
-  if (loading) {
-    return <SkeletonItem />
-  }
+const LineListItem: React.FC<ProcessLine> = ({ icon, content}) => {
   return (
     <li className="flex items-center justify-start gap-2 py-4 h-12 px-2 w-full rounded-lg">
       <span className="min-w-[2rem] flex items-center justify-center">{icon}</span>
@@ -71,7 +58,6 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
   lineRevealDelay = 150,
   stepIcons,
 }) => {
-  // If lines is not provided, generate a default list with icon + English text
   const icons = stepIcons && stepIcons.length > 0 ? stepIcons : defaultStepIcons
   const defaultLines: ProcessLine[] = [
     { icon: icons[0 % icons.length], content: "We analyze your question to understand the context and intent." },
@@ -82,11 +68,10 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
     { icon: icons[5 % icons.length], content: "We suggest additional resources or directions to deepen your understanding." },
     { icon: icons[6 % icons.length], content: "Your feedback helps us improve the quality of future answers." },
   ]
-  // Ensure lines is an array of ProcessLine with icon and English text
   const normalizedLines: ProcessLine[] = (lines && lines.length > 0
     ? lines.map((line, idx) => ({
         icon: line.icon ?? icons[idx % icons.length],
-        content: line.content, 
+        content: line.content,
       }))
     : defaultLines
   )
@@ -130,10 +115,6 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
   }, [normalizedLines.length, skeletonDuration, lineRevealDelay, onAnimationEnd])
 
   const duplicatedLines = [...normalizedLines, ...normalizedLines]
-
-  // On veut que le skeleton remplisse la hauteur du container (h-72)
-  // On calcule combien de lignes il faudrait pour remplir la hauteur
-  // h-72 = 18rem = 288px, chaque ligne fait h-12 = 3rem = 48px, donc 6 lignes
   const skeletonLineCount = 6
 
   return (
@@ -183,34 +164,28 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
 
       <div
         className={cn(
-          "flex flex-col max-w-3xl justify-start items-center rounded-xl p-4",
+          "flex flex-col justify-start items-center rounded-xl p-4",
           className,
         )}
       >
         <div className="flex gap-2 justify-start items-center py-4 w-full max-w-xl mx-auto">
+          <Loader className="animate-spin w-5 h-5 text-black dark:text-white" />
           <h2 className="text-xl font-semibold py-2 text-center text-neutral-700 dark:text-gray-200 w-full">{title}</h2>
         </div>
 
-        {/* The animated container is intentionally wider than the title container */}
-        <div className="relative w-full min-w-sm h-72 overflow-hidden rounded-lg">
+        <div className="relative w-full max-w-xl h-72 overflow-hidden rounded-lg">
+         
           <div
             ref={contentRef}
             className={cn(
-              "absolute top-0 left-0 w-full h-full",
+              "absolute top-0 left-0 w-full",
               startAnimation &&
                 !isSkeletonPhase &&
                 (scrollDirection === "up" ? "scroll-animation-up" : "scroll-animation-down"),
             )}
           >
             <ul className="space-y-1 px-4 flex flex-col w-full justify-center items-center h-full">
-              {isSkeletonPhase ? (
-                // Affiche assez de skeletons pour remplir le container
-                Array.from({ length: skeletonLineCount }).map((_, idx) => (
-                  <li key={`skeleton-line-${idx}`} className="">
-                    <SkeletonItem />
-                  </li>
-                ))
-              ) : (
+              {
                 (startAnimation ? duplicatedLines : normalizedLines).map((line, idx) => {
                   const originalIndex = idx % normalizedLines.length
                   const isRevealed = startAnimation || revealedLines[originalIndex]
@@ -222,12 +197,10 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
                       <LineListItem
                         icon={line.icon}
                         content={line.content}
-                        loading={isSkeletonPhase || !isRevealed}
                       />
                     </li>
                   )
-                })
-              )}
+                })}
             </ul>
           </div>
         </div>

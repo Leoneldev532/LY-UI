@@ -1,5 +1,5 @@
-"use client";
-import { cn } from "@/lib/utils";
+
+"use client"
 import { Loader } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -10,48 +10,48 @@ type initialTabListPageProps = {
   status: "waiting..." | "generating..." | "completed";
 };
 
-type StepProgressTimelineProps = {
+type ProcessList_V0Props = {
   initialTabListPage: initialTabListPageProps[];
   onGenerationStart?: () => void;
   onGenerationComplete?: () => void;
   onGenerationStop?: () => void;
   externalStop?: boolean;
-  className?: string;
+
   externalStart?: boolean;
 };
 
-const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
+const ProcessList_V0: React.FC<ProcessList_V0Props> = ({
   initialTabListPage = [
     {
       step: 1,
-      namePage: "page-1",
+      namePage: "page1",
       numberOfTime: 3000,
-      status: "waiting...",
+      status: "waiting",
     },
     {
       step: 2,
-      namePage: "page-2",
+      namePage: "page2",
       numberOfTime: 2500,
-      status: "waiting...",
+      status: "waiting",
     },
     {
       step: 3,
-      namePage: "page-3",
+      namePage: "page3",
       numberOfTime: 4000,
-      status: "waiting...",
+      status: "waiting",
     },
     {
       step: 4,
-      namePage: "page-4",
+      namePage: "page4",
       numberOfTime: 4000,
-      status: "waiting...",
+      status: "waiting",
     },
   ],
   onGenerationStart,
   onGenerationComplete,
   onGenerationStop,
-  className,
   externalStop = false,
+
   externalStart = false,
 }) => {
   const [tabListPage, setTabListPage] = useState(initialTabListPage);
@@ -107,23 +107,22 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
       });
 
       // Set status to generating
-      setTabListPage((prev) =>
-        prev.map((page, index) =>
-          index === currentProcessing
-            ? { ...page, status: "generating..." }
-            : page
-        )
-      );
+      setTabListPage((prev) => {
+        // Ensure all items are of type initialTabListPageProps
+        return (prev as initialTabListPageProps[]).map((page, index) =>
+          index === currentProcessing ? { ...page, status: "generating..." } : page
+        );
+      });
 
       // Timer for generation completion
       timerRef.current = setTimeout(() => {
-        setTabListPage((prev) =>
-          prev.map((page, index) =>
+        setTabListPage((prev) => {
+          return (prev as initialTabListPageProps[]).map((page, index) =>
             index === currentProcessing
               ? { ...page, status: "completed" }
               : page
-          )
-        );
+          );
+        });
 
         // Animer le connecteur après la complétion
         if (currentProcessing < initialTabListPage.length - 1) {
@@ -156,10 +155,8 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
   }, [currentProcessing, isGenerating]);
 
   return (
-    <div
-      className={cn("flex items-center w-full justify-center p-6 ", className)}
-    >
-      <div className="flex flex-col min-w-fit w-full">
+    <div className="flex items-center w-full justify-center p-6">
+      <div className="flex flex-col min-w-sm">
         {tabListPage.map(
           (page, index) =>
             visibleItems.includes(index) && (
@@ -191,7 +188,7 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
                 {index !== initialTabListPage.length - 1 &&
                   page.status === "completed" && (
                     <div
-                      className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease ${
+                      className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease-out ${
                         connectorHeights[index] ? "h-3" : "h-0"
                       }`}
                     />
@@ -204,4 +201,4 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
   );
 };
 
-export default StepProgressTimeline;
+export default ProcessList_V0;

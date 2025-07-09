@@ -7,35 +7,34 @@ full: true
 import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
 
 <Preview link="stepProgressTimeline" >
-    <StepProgressTimeline
-            className="h-72  max-w-sm md:min-w-sm w-full"
-            externalStart={true}
-            initialTabListPage={[
-              {
-                step: 1,
-                namePage: "page-1",
-                numberOfTime: 3000,
-                status: "waiting",
-              },
-              {
-                step: 2,
-                namePage: "page-2",
-                numberOfTime: 2500,
-                status: "waiting",
-              },
-              {
-                step: 3,
-                namePage: "page-3",
-                numberOfTime: 4000,
-                status: "waiting",
-              },
-              {
-                step: 4,
-                namePage: "page-4",
-                numberOfTime: 4000,
-                status: "waiting",
-              },
-            ]}
-          />
+<StepProgressTimeline
+  externalStart={true}
+  initialTabListPage={[
+    {
+      step: 1,
+      namePage: "Question analysis",
+      numberOfTime: 2000,
+      status: "waiting...",
+    },
+    {
+      step: 2,
+      namePage: "Searching for reliable sources",
+      numberOfTime: 2500,
+      status: "waiting...",
+    },
+    {
+      step: 3,
+      namePage: "Generating the answer",
+      numberOfTime: 3000,
+      status: "waiting...",
+    },
+    {
+      step: 4,
+      namePage: "Validation & display",
+      numberOfTime: 2000,
+      status: "waiting...",
+    },
+  ]}
+/>
 
 </Preview>
