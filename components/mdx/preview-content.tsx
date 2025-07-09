@@ -7,8 +7,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/registry/ui/dropdown-menu";
-import { Button } from "@/registry/ui/button";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { ArrowUpRight, Check, CheckCheck, ChevronDown, Terminal } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { OpenInV0Button } from "../open-in-v0-button";

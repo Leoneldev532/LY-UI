@@ -1,2 +1,2 @@
-KokonutUI
-A collection of modern, interactive, customizable UI components built with Shadcn & Tailwind CSS. Ready to make your next project faster and beautiful.
+LY UI 
+A modern suite of interactive and customizable UI components, designed with Shadcn and Tailwind CSS. Accelerate and enhance your next projects with style.

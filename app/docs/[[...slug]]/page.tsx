@@ -28,7 +28,7 @@ export default async function Page(props: {
           components={getMDXComponents({
             a: createRelativeLink(source, page),
             Preview,
-                        PreviewClient
+            PreviewClient
           })}
         />
       </DocsBody>

@@ -7,6 +7,14 @@ textarea{
     scrollbar-color: gray transparent;
 }
 
+:root{
+  --instrument : var(--font-instrument-serif)
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: var(--instrument );
+}
+
 *  {
     scrollbar-width: thin;
     scrollbar-color: gray transparent;

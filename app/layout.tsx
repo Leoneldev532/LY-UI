@@ -1,13 +1,20 @@
 import { siteConfig } from '@/config/site';
 import './global.css';
 import { RootProvider } from 'fumadocs-ui/provider';
-import { Inter } from 'next/font/google';
+import { Inter,  Lora } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ['latin'],
+  variable: '--font-inter',
+});
+
+const instrument = Lora({
+  weight: "400",
+  subsets: ["latin"],
+  variable: '--font-instrument-serif',
 });
 
 
@@ -45,7 +52,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${instrument.variable} ${inter.className}`} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
         <RootProvider>{children}</RootProvider>
         <Analytics />
