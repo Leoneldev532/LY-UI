@@ -7,9 +7,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/registry/ui/dropdown-menu";
-import { Button } from "@/registry/ui/button";
-import { ArrowUpRight, Check, CheckCheck, ChevronDown, Terminal } from "lucide-react";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowUpRight,
+  Check,
+  CheckCheck,
+  ChevronDown,
+  Terminal,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { OpenInV0Button } from "../open-in-v0-button";
 import ShadcnIcon from "../icons/shadcn";
@@ -24,10 +30,16 @@ interface PreviewContentProps {
   isBlock?: boolean;
 }
 
-export default function PreviewContent({ link, prePath, isBlock = false }: PreviewContentProps) {
+export default function PreviewContent({
+  link,
+  prePath,
+  isBlock = false,
+}: PreviewContentProps) {
   const [isPending, startTransition] = useTransition();
   const [isTerminalCopied, setIsTerminalCopied] = useState(false);
-  const [selectedPackageManager, setSelectedPackageManager] = useState<"bunx" | "npx" | "pnpm">("bunx");
+  const [selectedPackageManager, setSelectedPackageManager] = useState<
+    "bunx" | "npx" | "pnpm"
+  >("bunx");
   const terminalButtonRef = useRef<HTMLButtonElement>(null);
 
   const getFileName = () => {
@@ -61,7 +73,11 @@ export default function PreviewContent({ link, prePath, isBlock = false }: Previ
     return filename ? filename : folder;
   };
 
-  function SuccessParticles({ buttonRef }: { buttonRef: React.RefObject<HTMLButtonElement | null> }) {
+  function SuccessParticles({
+    buttonRef,
+  }: {
+    buttonRef: React.RefObject<HTMLButtonElement | null>;
+  }) {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (!rect) return null;
 
@@ -147,8 +163,8 @@ export default function PreviewContent({ link, prePath, isBlock = false }: Previ
                   )}
                   <span>
                     copy
-                     {/* <span className="font-semibold">{getFileName()}</span> */}
-                     <span className="font-semibold"> command</span>
+                    {/* <span className="font-semibold">{getFileName()}</span> */}
+                    <span className="font-semibold"> command</span>
                   </span>
                   <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-1" />
                 </Button>

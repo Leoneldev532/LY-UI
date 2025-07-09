@@ -4,13 +4,10 @@ description: Custom Step progress timeline inspired by @V0
 full: true
 ---
 
-import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
+import AnimatedProcessList from "@/components/LY UI/AI/animate";
 
 <Preview link="stepProgressTimeline" >
-    <StepProgressTimeline
-            className="h-72  max-w-sm md:min-w-sm w-full"
-            externalStart={true}
-            initialTabListPage={[
+<AnimatedProcessList   initialTabListPage={[
               {
                 step: 1,
                 namePage: "page-1",
@@ -35,7 +32,6 @@ import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
                 numberOfTime: 4000,
                 status: "waiting",
               },
-            ]}
-          />
+            ]} />
 
 </Preview>

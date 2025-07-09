@@ -1,7 +1,10 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { Loader } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
+import { Loader } from "lucide-react";
+
+const cn = (...classes: (string | undefined | boolean)[]) => {
+  return classes.filter(Boolean).join(" ");
+};
 
 type initialTabListPageProps = {
   step?: number;
@@ -18,6 +21,8 @@ type StepProgressTimelineProps = {
   externalStop?: boolean;
   className?: string;
   externalStart?: boolean;
+  autoScroll?: boolean;
+  scrollSpeed?: "slow" | "normal" | "fast";
 };
 
 const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
@@ -53,22 +58,42 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
   className,
   externalStop = false,
   externalStart = false,
+  autoScroll = false,
+  scrollSpeed = "normal",
 }) => {
   const [tabListPage, setTabListPage] = useState(initialTabListPage);
+
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
+
   const [currentProcessing, setCurrentProcessing] = useState(-1);
+
   const [isGenerating, setIsGenerating] = useState(false);
+
   const [connectorHeights, setConnectorHeights] = useState<{
     [key: number]: boolean;
   }>({});
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const scrollSpeedMap = {
+    slow: 800,
+    normal: 500,
+    fast: 300,
+  };
 
   const startGeneration = () => {
     setTabListPage(initialTabListPage);
+
     setVisibleItems([]);
+
     setCurrentProcessing(0);
+
     setIsGenerating(true);
+
     setConnectorHeights({});
+
     onGenerationStart?.();
   };
 
@@ -77,12 +102,39 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
+
     setIsGenerating(false);
+
     setCurrentProcessing(-1);
+
     onGenerationStop?.();
   };
 
-  // Effet pour gérer l'arrêt externe
+  const scrollToCurrentItem = (index: number) => {
+    if (!autoScroll || !containerRef.current) return;
+
+    const container = containerRef.current;
+
+    const item = container.querySelector(
+      `[data-step="${index}"]`
+    ) as HTMLElement;
+
+    if (item) {
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+
+      if (
+        itemRect.bottom > containerRect.bottom ||
+        itemRect.top < containerRect.top
+      ) {
+        item.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     if (externalStop && isGenerating) {
       stopGeneration();
@@ -99,14 +151,15 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
     if (!isGenerating || currentProcessing === -1) return;
 
     if (currentProcessing < initialTabListPage.length) {
-      setVisibleItems((prev: any) => {
+      setVisibleItems((prev) => {
         if (!prev.includes(currentProcessing)) {
-          return [...prev, currentProcessing];
+          const newItems = [...prev, currentProcessing];
+          setTimeout(() => scrollToCurrentItem(currentProcessing), 100);
+          return newItems;
         }
         return prev;
       });
 
-      // Set status to generating
       setTabListPage((prev) =>
         prev.map((page, index) =>
           index === currentProcessing
@@ -115,7 +168,6 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
         )
       );
 
-      // Timer for generation completion
       timerRef.current = setTimeout(() => {
         setTabListPage((prev) =>
           prev.map((page, index) =>
@@ -125,7 +177,6 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
           )
         );
 
-        // Animer le connecteur après la complétion
         if (currentProcessing < initialTabListPage.length - 1) {
           setTimeout(() => {
             setConnectorHeights((prev) => ({
@@ -135,7 +186,6 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
           }, 100);
         }
 
-        // Move to next page after a short delay
         setTimeout(() => {
           if (currentProcessing + 1 >= initialTabListPage.length) {
             setIsGenerating(false);
@@ -143,7 +193,7 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
           } else {
             setCurrentProcessing((prev) => prev + 1);
           }
-        }, 300);
+        }, scrollSpeedMap[scrollSpeed]);
       }, initialTabListPage[currentProcessing].numberOfTime);
 
       return () => {
@@ -153,54 +203,114 @@ const StepProgressTimeline: React.FC<StepProgressTimelineProps> = ({
         }
       };
     }
-  }, [currentProcessing, isGenerating]);
+  }, [currentProcessing, isGenerating, scrollSpeed]);
 
   return (
-    <div
-      className={cn("flex items-center w-full justify-center p-6 ", className)}
-    >
-      <div className="flex flex-col min-w-fit w-full">
-        {tabListPage.map(
-          (page, index) =>
-            visibleItems.includes(index) && (
-              <div key={page.step} className="flex flex-col">
-                <div className="flex text-neutral-400 w-full items-center justify-between gap-4">
-                  <div className="flex items-center w-full gap-2">
-                    {page.status === "generating..." ? (
-                      <Loader className="animate-spin w-6 h-6" />
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                    )}
-                    <span>{page.namePage}</span>
-                  </div>
-                  <span className="text-sm">{page.status}</span>
-                </div>
-                {index !== initialTabListPage.length - 1 &&
-                  page.status === "completed" && (
-                    <div
-                      className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease ${
-                        connectorHeights[index] ? "h-3" : "h-0"
-                      }`}
-                    />
-                  )}
-              </div>
-            )
+    <>
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .step-item-reveal {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .step-connector-grow {
+          animation: slideInLeft 0.3s ease-out forwards;
+        }
+      `}</style>
+
+      <div
+        ref={containerRef}
+        className={cn(
+          "flex items-center w-full justify-center p-6 max-h-96 overflow-y-auto",
+          className
         )}
+      >
+        <div className="flex flex-col min-w-fit w-full">
+          {tabListPage.map(
+            (page, index) =>
+              visibleItems.includes(index) && (
+                <div
+                  key={page.step}
+                  className="flex flex-col step-item-reveal"
+                  data-step={index}
+                >
+                  <div className="flex text-neutral-400 w-full items-center justify-between gap-4 p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200">
+                    <div className="flex items-center w-full gap-3">
+                      {page.status === "generating..." ? (
+                        <Loader className="animate-spin w-6 h-6 text-blue-500" />
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className={cn(
+                            "w-6 h-6 transition-colors duration-200",
+                            page.status === "completed"
+                              ? "text-green-500"
+                              : "text-gray-400"
+                          )}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                      )}
+                      <span className="font-medium">{page.namePage}</span>
+                    </div>
+                    <span
+                      className={cn(
+                        "text-sm px-2 py-1 rounded-full text-xs font-medium",
+                        page.status === "generating..." &&
+                          "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
+                        page.status === "completed" &&
+                          "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
+                        page.status === "waiting..." &&
+                          "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                      )}
+                    >
+                      {page.status}
+                    </span>
+                  </div>
+                  {index !== initialTabListPage.length - 1 &&
+                    page.status === "completed" && (
+                      <div
+                        className={cn(
+                          "w-[2px] ml-3 bg-gradient-to-b from-green-400 to-blue-400 transition-all duration-500 ease-out step-connector-grow",
+                          connectorHeights[index] ? "h-4" : "h-0"
+                        )}
+                      />
+                    )}
+                </div>
+              )
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
