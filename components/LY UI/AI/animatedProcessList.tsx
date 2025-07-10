@@ -158,14 +158,14 @@ const AnimatedProcessList: React.FC<AnimatedProcessListProps> = ({
         )}
       >
         <div className="flex gap-2 justify-start items-center w-full">
-          <Loader className="animate-spin w-4 h-4 min-w-4 text-black dark:text-white" />
+          <Loader className="animate-spin min-h-5 min-w-5  text-black dark:text-white" />
           <h2 className="text-xl font-semibold py-2 text-center text-neutral-700 dark:text-gray-200">
             {title}
           </h2>
         </div>
 
-        <div className="flex flex-col overflow-hidden px-4 w-full max-w-xl relative h-72 justify-center items-center">
-          <div className="absolute z-10 pointer-events-none inset-0 h-full">
+        <div className="flex flex-col overflow-hidden rounded-xl px-4 w-full max-w-xl relative h-72 justify-center items-center">
+          <div className="absolute z-10  pointer-events-none inset-0 h-full">
             <div className="absolute inset-0 bg-gradient-to-b dark:from-black from-white dark:via-white/10 via-white/5 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-t dark:from-black from-white dark:via-black/10 via-white/50 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-l dark:from-black from-white dark:via-black/30 via-white/70 to-transparent"></div>

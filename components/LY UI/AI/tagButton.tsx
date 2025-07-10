@@ -6,7 +6,7 @@ interface TagButtonProps {
     icon?: ReactNode;
     title: string;
     variant: "default" | "outline" | "ghost";
-    onClick?: () => void; // Ajout de la prop onClick
+    onClick?: () => void; 
 }
 
 const TagButton: React.FC<TagButtonProps> = ({ icon, title, variant = "default", onClick }) => {
@@ -16,7 +16,7 @@ const TagButton: React.FC<TagButtonProps> = ({ icon, title, variant = "default",
             type="button"
             role="tab"
             aria-selected="false"
-            onClick={onClick} // Ajout du handler onClick
+            onClick={onClick} 
         >
             <div className="flex items-center gap-x-2">
                 {icon && (
