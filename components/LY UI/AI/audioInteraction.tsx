@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import { Circle, Pause, Play } from 'lucide-react';
 import ParticleAnimation, { ParticleAnimationHandle } from './particleAnimation';
 import { Button } from '@/components/ui/button';
@@ -14,12 +14,13 @@ type AudioInteractionProps = {
 
 type Status = 'idle' | 'playing' | 'paused';
 
-const AudioInteraction: React.FC<AudioInteractionProps> = ({
+const AudioInteraction = forwardRef<HTMLDivElement, AudioInteractionProps>(({
   onAudioStart,
   onAudioStop,
   onAudioPause,
   onAudioResume,
-}) => {
+  ...props
+}, ref) => {
   const RefParticularAnimation = useRef<ParticleAnimationHandle>(null);
   const [status, setStatus] = useState<Status>('idle');
   const [timeElapsed, setTimeElapsed] = useState(0);
@@ -89,7 +90,7 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
+    <div ref={ref} className="flex flex-col items-center gap-4 p-4" {...props}>
       <ParticleAnimation ref={RefParticularAnimation} />
       <div className="flex gap-2 justify-center items-center gap-x-4">
         {status === 'idle' && (
@@ -114,6 +115,7 @@ const AudioInteraction: React.FC<AudioInteractionProps> = ({
       </div>
     </div>
   );
-};
+});
 
+AudioInteraction.displayName = 'AudioInteraction';
 export default AudioInteraction;

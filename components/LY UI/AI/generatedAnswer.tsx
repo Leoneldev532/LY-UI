@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { CopyIcon, RefreshCwIcon, CheckIcon, Ellipsis, ThumbsUp, ThumbsDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -13,11 +13,12 @@ type GeneratedAnswer = {
   hours?: string;
 };
 
-const GeneratedAnswer: React.FC<GeneratedAnswer> = ({
+const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswer>(({
   GeneratedAnswer,
   className,
   hours = "00:00",
-}) => {
+  ...props
+}, ref) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -35,12 +36,12 @@ const GeneratedAnswer: React.FC<GeneratedAnswer> = ({
   const handleRegenerate = () => {};
 
   return (
-    <div className="flex flex-col w-full  gap-2 max-w-lg">
-      <div className={cn(" min-h-72 w-full", className)}>{GeneratedAnswer}</div>
+    <div ref={ref} className="flex flex-col w-full gap-2 max-w-lg" {...props}>
+      <div className={cn("min-h-72 w-full", className)}>{GeneratedAnswer}</div>
 
       <div className="w-full flex justify-between items-center">
         <div>
-          <span className="text-sm  text-neutral-400">{hours}</span>
+          <span className="text-sm text-neutral-400">{hours}</span>
         </div>
 
         <div className="flex gap-2">
@@ -71,7 +72,7 @@ const GeneratedAnswer: React.FC<GeneratedAnswer> = ({
             onClick={handleDisLike}
             title="like GeneratedAnswer"
           >
-           
+
            <ThumbsDown className="h-3 w-3" />
           </Button>
 
@@ -130,7 +131,7 @@ const GeneratedAnswer: React.FC<GeneratedAnswer> = ({
       </div>
     </div>
   );
-};
+});
 
 GeneratedAnswer.displayName = 'GeneratedAnswer';
 export default GeneratedAnswer;

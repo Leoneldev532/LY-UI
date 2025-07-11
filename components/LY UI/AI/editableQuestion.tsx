@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { CheckIcon, Pencil, Copy, X } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -12,11 +12,12 @@ type EditableQuestionProps = {
   onUpdateTitle?: (newTitle: string) => void;
 };
 
-const EditableQuestion: React.FC<EditableQuestionProps> = ({
+const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
   className,
   title: initialTitle,
   onUpdateTitle,
-}) => {
+  ...props
+}, ref) => {
   const [copied, setCopied] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(initialTitle || "");
@@ -59,7 +60,7 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
   };
 
   return (
-    <div className="flex group flex-col justify-end items-end mb-4 gap-y-2">
+    <div ref={ref} className="flex group flex-col justify-end items-end mb-4 gap-y-2" {...props}>
       <div
         className={cn(
           "p-3 bg-neutral-200/40 max-w-lg overflow-hidden whitespace-pre-wrap break-words rounded-xl dark:border-neutral-200/20 border border-neutral-300/50 dark:bg-neutral-900 dark:text-gray-200 text-neutral-700",
@@ -128,7 +129,7 @@ const EditableQuestion: React.FC<EditableQuestionProps> = ({
       </div>
     </div>
   );
-};
+});
 
 EditableQuestion.displayName = "EditableQuestion";
 

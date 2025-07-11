@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import Image from "next/image";
 import {
   CheckIcon,
@@ -34,7 +34,7 @@ interface GeneratedImageCardProps {
   onRegenerate?: () => void;
 }
 
-const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
+const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>(({
   src = "https://via.placeholder.com/150",
   title,
   width = 2225,
@@ -45,7 +45,8 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
   onLike,
   onDislike,
   onRegenerate,
-}) => {
+  ...props
+}, ref) => {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hovered, setHovered] = useState(false);
@@ -113,7 +114,7 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
   };
 
   return (
-    <div className={cn("flex flex-col gap-y-2", className)}>
+    <div ref={ref} className={cn("flex flex-col gap-y-2", className)} {...props}>
       <div
         className="relative group rounded-xl overflow-hidden w-full "
         onMouseEnter={() => setHovered(true)}
@@ -246,6 +247,7 @@ const GeneratedImageCard: React.FC<GeneratedImageCardProps> = ({
       </div>
     </div>
   );
-};
+});
 
+GeneratedImageCard.displayName = 'GeneratedImageCard';
 export default GeneratedImageCard;

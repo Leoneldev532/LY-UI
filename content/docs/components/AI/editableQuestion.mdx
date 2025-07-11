@@ -1,14 +1,72 @@
 ---
 title: Editable Question
-description: This component lets you edit a question interactively for easy real-time customization.
+description: This component lets you edit a question interactively for easy real-time customization
 full: true
 ---
 
-
-
 import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
 
-
-<Preview link="generatedAnswer" >
+<Preview link="editableQuestion">
 <EditableQuestion className="mt-8 w-full" title="What is the impact of AI on drug sales?" />
 </Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | `undefined` | The question text to display and edit |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `onChange` | `(value: string) => void` | `undefined` | Callback when the question text changes |
+| `onSubmit` | `(value: string) => void` | `undefined` | Callback when the question is submitted |
+
+## forwardRef and ref management
+
+The EditableQuestion component uses forwardRef to pass references to the underlying div element. This allows you to access the question container directly for imperative operations like focusing or measuring.
+
+```tsx
+import { useRef } from 'react';
+import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
+
+const MyComponent = () => {
+  const questionRef = useRef<HTMLDivElement>(null);
+
+  const focusQuestion = () => {
+    if (questionRef.current) {
+      const textarea = questionRef.current.querySelector('textarea');
+      if (textarea) {
+        textarea.focus();
+      }
+    }
+  };
+
+  const getQuestionHeight = () => {
+    if (questionRef.current) {
+      return questionRef.current.offsetHeight;
+    }
+    return 0;
+  };
+
+  return (
+    <EditableQuestion
+      ref={questionRef}
+      title="What is the impact of AI on drug sales?"
+      className="w-full"
+      onChange={(value) => console.log("Question changed:", value)}
+      onSubmit={(value) => console.log("Question submitted:", value)}
+    />
+  );
+};
+```
+
+### Example Usage
+
+```jsx
+import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
+
+<EditableQuestion
+  title="What is the impact of AI on drug sales?"
+  className="w-full"
+  onChange={(value) => console.log("Question changed:", value)}
+  onSubmit={(value) => console.log("Question submitted:", value)}
+/>
+```

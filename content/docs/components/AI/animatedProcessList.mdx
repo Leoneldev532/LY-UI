@@ -1,13 +1,10 @@
 ---
-title: Animated process List
-description: Custom Animated process List
+title: Animated Process List
+description: Custom animated process list with scrolling text and skeleton loading
 full: true
 ---
 
-
-
 import AnimatedProcessList from "@/components/LY UI/AI/animatedProcessList";
-
 
 <Preview link="animatedProcessList" >
  <AnimatedProcessList
@@ -45,3 +42,27 @@ import AnimatedProcessList from "@/components/LY UI/AI/animatedProcessList";
           />
 
 </Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | `"Generating elements for your web page"` | Title displayed at the top of the component |
+| `lines` | `string[]` | `[]` | Array of lines to display in the animated list |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation (slow: 5s, normal: 3s, fast: 1.5s) |
+| `onAnimationEnd` | `() => void` | `undefined` | Callback when the reveal animation ends |
+| `skeletonDuration` | `number` | `2000` | Duration in milliseconds of the skeleton phase |
+| `lineRevealDelay` | `number` | `150` | Delay in milliseconds between each line reveal |
+
+### Example Usage
+
+```jsx
+<AnimatedProcessList
+  title="Generating elements for your web page"
+  lines={["Initializing main component", "Configuring Tailwind styles", "Creating HTML structure"]}
+  animationSpeed="normal"
+  scrollDirection="up"
+/>
+```

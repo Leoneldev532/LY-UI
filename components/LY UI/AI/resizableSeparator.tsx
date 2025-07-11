@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import React, { useRef, useEffect, useState, RefObject } from "react";
+import React, { useRef, useEffect, useState, RefObject, forwardRef } from "react";
 
 type ResizableSeparatorDirection = "vertical" | "horizontal";
 type ResizableSeparatorVariant = "ghost" | "outline";
@@ -25,7 +25,7 @@ const cnFallback = (...classes: (string | undefined | false)[]): string =>
   classes.filter(Boolean).join(" ");
 const cnUtil = typeof cn !== "undefined" ? cn : cnFallback;
 
-const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
+const ResizableSeparator = forwardRef<HTMLDivElement, ResizableSeparatorProps>(({
   direction = "vertical",
   variant = "ghost",
   size = "medium",
@@ -37,7 +37,8 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
   showIndicator = false,
   animated = true,
   zIndex = 20,
-}) => {
+  ...props
+}, ref) => {
   const isDragging = useRef(false);
 
   const ResizableSeparatorVariants = cva("flex-shrink-0 relative", {
@@ -160,6 +161,7 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
 
   return (
     <div
+      ref={ref}
       className={cnUtil(
         ResizableSeparatorVariants({ variant, size }),
         getSizeClasses(),
@@ -176,6 +178,7 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
       }}
       onMouseDown={handleDragStart}
       onTouchStart={handleDragStart}
+      {...props}
     >
       {showIndicator && (
         <div className={indicatorClasses.container}>
@@ -184,7 +187,7 @@ const ResizableSeparator: React.FC<ResizableSeparatorProps> = ({
       )}
     </div>
   );
-};
+});
 
 ResizableSeparator.displayName = "ResizableSeparator";
 export default React.memo(ResizableSeparator);

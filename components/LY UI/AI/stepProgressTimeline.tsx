@@ -1,7 +1,7 @@
 
 "use client"
 import { Loader } from "lucide-react";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 
 type initialTabListPageProps = {
   step?: number;
@@ -16,11 +16,10 @@ type ProcessList_V0Props = {
   onGenerationComplete?: () => void;
   onGenerationStop?: () => void;
   externalStop?: boolean;
-
   externalStart?: boolean;
 };
 
-const ProcessList_V0: React.FC<ProcessList_V0Props> = ({
+const ProcessList_V0 = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   initialTabListPage = [
     {
       step: 1,
@@ -51,9 +50,9 @@ const ProcessList_V0: React.FC<ProcessList_V0Props> = ({
   onGenerationComplete,
   onGenerationStop,
   externalStop = false,
-
   externalStart = false,
-}) => {
+  ...props
+}, ref) => {
   const [tabListPage, setTabListPage] = useState(initialTabListPage);
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const [currentProcessing, setCurrentProcessing] = useState(-1);
@@ -155,7 +154,7 @@ const ProcessList_V0: React.FC<ProcessList_V0Props> = ({
   }, [currentProcessing, isGenerating]);
 
   return (
-    <div className="flex items-center w-full justify-center p-6">
+    <div ref={ref} className="flex items-center w-full justify-center p-6" {...props}>
       <div className="flex flex-col min-w-sm">
         {tabListPage.map(
           (page, index) =>
@@ -199,6 +198,7 @@ const ProcessList_V0: React.FC<ProcessList_V0Props> = ({
       </div>
     </div>
   );
-};
+});
 
+ProcessList_V0.displayName = 'ProcessList_V0';
 export default ProcessList_V0;

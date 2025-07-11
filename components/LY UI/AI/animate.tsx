@@ -1,7 +1,7 @@
 "use client"
 import { Loader } from "lucide-react"
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
 interface LineListItemProps {
@@ -43,7 +43,7 @@ const LineListItem: React.FC<LineListItemProps> = ({ numberOfLine, contenu, load
   )
 }
 
-const AnimatedProcessList: React.FC<AnimatedProcessListProps> = ({
+const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>(({
   title = "Génération d'éléments pour votre page web",
   lignes = [
     "Initialisation du composant principal",
@@ -63,7 +63,8 @@ const AnimatedProcessList: React.FC<AnimatedProcessListProps> = ({
   onAnimationEnd,
   skeletonDuration = 2000,
   lineRevealDelay = 150,
-}) => {
+  ...props
+}, ref) => {
   const [revealedLines, setRevealedLines] = useState<boolean[]>([])
   const [isSkeletonPhase, setIsSkeletonPhase] = useState(true)
   const [startAnimation, setStartAnimation] = useState(false)
@@ -157,10 +158,12 @@ const AnimatedProcessList: React.FC<AnimatedProcessListProps> = ({
       `}</style>
 
       <div
+        ref={ref}
         className={cn(
           "flex flex-col max-w-xl justify-start items-center gap-2 bg-transparent rounded-xl p-4",
           className,
         )}
+        {...props}
       >
         <div className="flex gap-2 justify-start items-center w-full">
           <Loader className="animate-spin w-5 h-5 text-black dark:text-white" />
@@ -206,8 +209,8 @@ const AnimatedProcessList: React.FC<AnimatedProcessListProps> = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+});
 
-AnimatedProcessList.displayName = "AnimatedProcessList"
-export default AnimatedProcessList
+AnimatedProcessList.displayName = 'AnimatedProcessList';
+export default AnimatedProcessList;

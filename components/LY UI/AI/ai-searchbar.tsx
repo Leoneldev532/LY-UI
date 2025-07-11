@@ -1,6 +1,6 @@
 "use client";
 import { cva } from "class-variance-authority";
-import React from "react";
+import React, { forwardRef } from "react";
 
 import {
   ArrowUp,
@@ -54,13 +54,14 @@ type AI_SearchBarProps = {
   className?: string;
 };
 
-const AiSearchBar : React.FC<AI_SearchBarProps> = ({
+const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
   variant,
   placeholder = "What can I do for you?",
   onSubmit,
   onChange,
   className,
-}) => {
+  ...props
+}, ref) => {
   const [value, setValue] = React.useState("");
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const isFilled = value.trim().length > 0;
@@ -287,6 +288,7 @@ const AiSearchBar : React.FC<AI_SearchBarProps> = ({
 
   return (
     <div
+      ref={ref}
       className={cn(
         AiSearchBarVariants({ variant }),
 
@@ -519,8 +521,7 @@ const AiSearchBar : React.FC<AI_SearchBarProps> = ({
       </div>
     </div>
   );
-};
-
+});
 
 AiSearchBar.displayName = 'AiSearchBar';
-export default AiSearchBar ;
+export default AiSearchBar;

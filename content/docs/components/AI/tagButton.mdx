@@ -1,0 +1,96 @@
+---
+title: TagButton
+description: A customizable tag button component with icon support and forwardRef integration.
+component: true
+---
+
+<ComponentExample src="/r/tagButton.json">
+
+<TagButton
+  icon={<CheckCircle className="w-4 h-4" />}
+  title="Active Tag"
+  variant="default"
+  onClick={() => console.log('Tag clicked')}
+/>
+
+</ComponentExample>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon` | `ReactNode` | - | Icon component to display |
+| `title` | `string` | - | Text content for the button |
+| `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Visual style variant |
+| `onClick` | `() => void` | - | Click handler function |
+| `className` | `string` | - | Additional CSS classes |
+
+## forwardRef and ref management
+
+The TagButton component uses forwardRef to pass references to the underlying button element. This allows you to access the button directly for imperative operations like focusing or programmatic clicks.
+
+```tsx
+import { useRef } from 'react';
+import TagButton from "@/components/LY UI/AI/tagButton";
+import { CheckCircle } from "lucide-react";
+
+const MyComponent = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const focusButton = () => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  };
+
+  const clickButton = () => {
+    if (buttonRef.current) {
+      buttonRef.current.click();
+    }
+  };
+
+  return (
+    <TagButton
+      ref={buttonRef}
+      icon={<CheckCircle className="w-4 h-4" />}
+      title="Clickable Tag"
+      variant="outline"
+      onClick={() => console.log('Tag clicked')}
+    />
+  );
+};
+```
+
+### Example Usage
+
+```tsx
+import TagButton from "@/components/LY UI/AI/tagButton";
+import { Settings, FileText, Image } from "lucide-react";
+
+export default function TagButtonExample() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <TagButton
+        icon={<Settings className="w-4 h-4" />}
+        title="Settings"
+        variant="default"
+        onClick={() => console.log('Settings clicked')}
+      />
+
+      <TagButton
+        icon={<FileText className="w-4 h-4" />}
+        title="Documents"
+        variant="outline"
+        onClick={() => console.log('Documents clicked')}
+      />
+
+      <TagButton
+        icon={<Image className="w-4 h-4" />}
+        title="Images"
+        variant="ghost"
+        onClick={() => console.log('Images clicked')}
+      />
+    </div>
+  );
+}
+```

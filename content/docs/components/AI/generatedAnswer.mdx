@@ -4,13 +4,63 @@ description: Displays an AI-generated answer with animation
 full: true
 ---
 
-
-
 import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
-
 
 <Preview link="generatedAnswer" >
  <GeneratedAnswer className="mt-8 w-full"
   GeneratedAnswer="Artificial intelligence is revolutionizing drug sales by optimizing inventory management, personalizing recommendations for patients, and facilitating fraud detection. It also enhances the customer experience through virtual assistants and accelerates the discovery of new treatments. However, its use raises important ethical and regulatory questions." />
 
 </Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `GeneratedAnswer` | `string` | `undefined` | The content of the AI-generated answer |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `hours` | `string` | `"00:00"` | Time displayed at the bottom of the answer |
+
+## forwardRef and ref management
+
+The GeneratedAnswer component uses forwardRef to pass references to the underlying div element. This allows you to access the answer container directly for imperative operations like scrolling or measuring.
+
+```tsx
+import { useRef } from 'react';
+import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
+
+const MyComponent = () => {
+  const answerRef = useRef<HTMLDivElement>(null);
+
+  const scrollToTop = () => {
+    if (answerRef.current) {
+      answerRef.current.scrollTop = 0;
+    }
+  };
+
+  const getAnswerHeight = () => {
+    if (answerRef.current) {
+      return answerRef.current.offsetHeight;
+    }
+    return 0;
+  };
+
+  return (
+    <GeneratedAnswer
+      ref={answerRef}
+      GeneratedAnswer="AI is revolutionizing drug sales by optimizing inventory management."
+      hours="12:34"
+      className="w-full"
+    />
+  );
+};
+```
+
+### Example Usage
+
+```jsx
+<GeneratedAnswer
+  GeneratedAnswer="AI is revolutionizing drug sales by optimizing inventory management."
+  hours="12:34"
+  className="w-full"
+/>
+```

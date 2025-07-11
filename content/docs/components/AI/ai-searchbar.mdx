@@ -1,6 +1,6 @@
 ---
-title: Ai Search Bar
-description: Smart search bar
+title: AI Search Bar
+description: Smart search bar with AI capabilities
 full: true
 ---
 
@@ -9,3 +9,24 @@ import AiSearchBar from "@/components/LY UI/AI/ai-searchbar";
 <Preview link="ai-searchbar">
   <AiSearchBar className="max-w-sm" />
 </Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style variant of the search bar |
+| `placeholder` | `string` | `"What can I do for you?"` | Placeholder text for the search bar |
+| `onSubmit` | `(value: string) => void` | `undefined` | Callback when user submits their search |
+| `onChange` | `(value: string) => void` | `undefined` | Callback when the search bar value changes |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+
+### Example Usage
+
+```jsx
+<AiSearchBar
+  variant="default"
+  placeholder="What can I do for you?"
+  onSubmit={value => console.log(value)}
+  onChange={value => console.log(value)}
+/>
+```

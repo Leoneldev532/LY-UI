@@ -1,6 +1,6 @@
 ---
-title: Thinking Search
-description: Thinking animation for intelligent search.
+title: Thinking Search Animation
+description: Animated thinking/searching component with scrolling text content
 full: true
 ---
 
@@ -25,38 +25,35 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
               "Your question helps enrich our knowledge base and improve our collective intelligence.",
               "We are almost ready to present you with a detailed answer tailored to your needs.",
               "Thank you for your patience, your answer will arrive in just a few moments!",
-              "Intelligent search in progress, please wait while we analyze your question and look for the best possible answer. We use advanced algorithms to understand the context and your intentions.",
-              "We are searching through vast databases and reliable resources to collect the most relevant information for your request.",
-              "Our system compiles and analyzes the gathered data to generate a clear, precise, and tailored answer to your question.",
-              "We validate the generated answer to ensure its relevance, reliability, and quality before presenting it to you.",
-              "Your personalized answer is almost ready! We are finalizing the last adjustments to provide you with the best possible experience.",
-              "We will also suggest additional resources to help you explore the topic further if you wish.",
-              "Thank you for waiting a little longer while we optimize the presentation of your answer.",
-              "Your feedback is valuable: it helps us continuously improve the quality of our answers and our service.",
-              "We are preparing a clear and concise summary of all the relevant information found.",
-              "Artificial intelligence is actively working to provide you with a personalized and reliable answer.",
-              "We are analyzing recent trends and up-to-date data to ensure the freshness of the answer.",
-              "We are checking the consistency and relevance of the selected information before finalizing the answer.",
-              "Your question helps enrich our knowledge base and improve our collective intelligence.",
-              "We are almost ready to present you with a detailed answer tailored to your needs.",
-              "Thank you for your patience, your answer will arrive in just a few moments!",
-              "Intelligent search in progress, please wait while we analyze your question and look for the best possible answer. We use advanced algorithms to understand the context and your intentions.",
-              "We are searching through vast databases and reliable resources to collect the most relevant information for your request.",
-              "Our system compiles and analyzes the gathered data to generate a clear, precise, and tailored answer to your question.",
-              "We validate the generated answer to ensure its relevance, reliability, and quality before presenting it to you.",
-              "Your personalized answer is almost ready! We are finalizing the last adjustments to provide you with the best possible experience.",
-              "We will also suggest additional resources to help you explore the topic further if you wish.",
-              "Thank you for waiting a little longer while we optimize the presentation of your answer.",
-              "Your feedback is valuable: it helps us continuously improve the quality of our answers and our service.",
-              "We are preparing a clear and concise summary of all the relevant information found.",
-              "Artificial intelligence is actively working to provide you with a personalized and reliable answer.",
-              "We are analyzing recent trends and up-to-date data to ensure the freshness of the answer.",
-              "We are checking the consistency and relevance of the selected information before finalizing the answer.",
-              "Your question helps enrich our knowledge base and improve our collective intelligence.",
-              "We are almost ready to present you with a detailed answer tailored to your needs.",
-              "Thank you for your patience, your answer will arrive in just a few moments!",
             ]}
             scrollDirection="up"
             animationSpeed="normal"
           />
 </Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `content` | `string[]` | `[]` | Array of text content to display in the animation |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
+
+### Example Usage
+
+```jsx
+import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimation";
+
+<ThinkingSearchAnimation
+  content={[
+    "Analyzing your question...",
+    "Searching for relevant information...",
+    "Compiling the best answer...",
+    "Almost ready..."
+  ]}
+  scrollDirection="up"
+  animationSpeed="normal"
+  className="max-w-md"
+/>
+```

@@ -1,7 +1,7 @@
 "use client"
 import { Loader, CheckCircle, Settings, FileText, Paintbrush, Sparkles, Moon, Gauge, Smartphone, Eye, Star } from "lucide-react"
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
 export interface ProcessLine {
@@ -47,7 +47,7 @@ const LineListItem: React.FC<ProcessLine> = ({ icon, content}) => {
   )
 }
 
-const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = ({
+const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessList_LovableProps>(({
   title = "Spinning up preview...",
   lines,
   className,
@@ -57,7 +57,8 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
   skeletonDuration = 2000,
   lineRevealDelay = 150,
   stepIcons,
-}) => {
+  ...props
+}, ref) => {
   const icons = stepIcons && stepIcons.length > 0 ? stepIcons : defaultStepIcons
   const defaultLines: ProcessLine[] = [
     { icon: icons[0 % icons.length], content: "We analyze your question to understand the context and intent." },
@@ -163,10 +164,12 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
       `}</style>
 
       <div
+        ref={ref}
         className={cn(
           "flex flex-col justify-start items-center rounded-xl p-4",
           className,
         )}
+        {...props}
       >
         <div className="flex gap-2 justify-start items-center py-4 w-full max-w-xl mx-auto">
           <Loader className="animate-spin min-w-5 min-h-5 text-black dark:text-white" />
@@ -174,7 +177,7 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
         </div>
 
         <div className="relative w-full max-w-xl h-72 overflow-hidden rounded-lg">
-         
+
           <div
             ref={contentRef}
             className={cn(
@@ -207,7 +210,7 @@ const AnimatedProcessList_Lovable: React.FC<AnimatedProcessList_LovableProps> = 
       </div>
     </>
   )
-}
+});
 
 AnimatedProcessList_Lovable.displayName = "AnimatedProcessList_Lovable"
 export default AnimatedProcessList_Lovable

@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { ChevronDown } from "lucide-react";
 import useScrollYAnimation from "@/components/hooks/useScrollYAnimation";
 
@@ -19,7 +19,7 @@ type ThinkingSearchAnimationProps = {
   animationSpeed?: "slow" | "normal" | "fast";
 };
 
-const ThinkingSearchAnimation: React.FC<ThinkingSearchAnimationProps> = ({
+const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimationProps>(({
   variant,
   step,
   content,
@@ -27,7 +27,8 @@ const ThinkingSearchAnimation: React.FC<ThinkingSearchAnimationProps> = ({
   className,
   scrollDirection = "up",
   animationSpeed = "normal",
-}) => {
+  ...props
+}, ref) => {
   const [animationEnded, setAnimationEnded] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -136,11 +137,13 @@ const ThinkingSearchAnimation: React.FC<ThinkingSearchAnimationProps> = ({
 
   return (
     <div
+      ref={ref}
       className={cnUtil(
         thinkingSearchAnimationVariants({ variant }),
         "w-full max-w-xl min-w-0 overflow-hidden",
         className
       )}
+      {...props}
     >
       <div
         className={cnUtil(
@@ -270,7 +273,7 @@ const ThinkingSearchAnimation: React.FC<ThinkingSearchAnimationProps> = ({
       </div>
     </div>
   );
-};
+});
 
 ThinkingSearchAnimation.displayName = "ThinkingSearchAnimation";
 export default React.memo(ThinkingSearchAnimation);

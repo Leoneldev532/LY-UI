@@ -1,11 +1,46 @@
 ---
 title: Resizable Separator
-description: Use it to manage space
+description: A resizable separator component for managing layout space
 full: true
 ---
+
 
 import ResizableSeparatorExample from "@/components/example/resizeExample";
 
 <Preview link="resizeExample">
   <ResizableSeparatorExample />
 </Preview>
+
+
+
+### Example Usage
+
+```jsx
+<ResizableSeparator
+  direction="vertical"
+  variant="ghost"
+  size="medium"
+  onResize={size => console.log(size)}
+  minSize={100}
+  maxSize={600}
+  parentRef={myRef}
+  showIndicator={true}
+  animated={true}
+  zIndex={20}
+/>
+```
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `direction` | `"vertical" \| "horizontal"` | `"vertical"` | Direction of the resizable separator |
+| `variant` | `"ghost" \| "outline"` | `"ghost"` | Visual style variant of the separator |
+| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Size of the separator |
+| `onResize` | `(size: number) => void` | `undefined` | Callback when the size changes |
+| `minSize` | `number` | `100` | Minimum size in pixels |
+| `maxSize` | `number` | `600` | Maximum size in pixels |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `parentRef` | `RefObject<HTMLElement \| null>` | `undefined` | Reference to the parent element |
+| `showIndicator` | `boolean` | `false` | Show the visual indicator |
+| `animated` | `boolean` | `true` | Enable animations |
+| `zIndex` | `number` | `20` | Z-index of the separator |

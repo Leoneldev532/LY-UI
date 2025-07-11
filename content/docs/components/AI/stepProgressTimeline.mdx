@@ -1,6 +1,6 @@
 ---
-title: Step progress timeline v0
-description: Custom Step progress timeline inspired by @V0
+title: Step Progress Timeline v0
+description: Custom step progress timeline inspired by @V0
 full: true
 ---
 
@@ -38,3 +38,37 @@ import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
 />
 
 </Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `initialTabListPage` | `initialTabListPageProps[]` | `[...]` | Array of steps to display in the timeline |
+| `onGenerationStart` | `() => void` | `undefined` | Callback when generation starts |
+| `onGenerationComplete` | `() => void` | `undefined` | Callback when generation is complete |
+| `onGenerationStop` | `() => void` | `undefined` | Callback when generation stops |
+| `externalStop` | `boolean` | `false` | External control to stop generation |
+| `externalStart` | `boolean` | `false` | External control to start generation |
+
+### initialTabListPageProps
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `step` | `number` | `undefined` | Step number |
+| `namePage` | `string` | `undefined` | Step name to display |
+| `numberOfTime` | `number` | `undefined` | Duration in milliseconds for the step |
+| `status` | `"waiting..." \| "generating..." \| "completed"` | `"waiting..."` | Current status of the step |
+
+### Example Usage
+
+```jsx
+<StepProgressTimeline
+  initialTabListPage={[
+    { step: 1, namePage: "Analysis", numberOfTime: 2000, status: "waiting..." },
+    { step: 2, namePage: "Research", numberOfTime: 2500, status: "waiting..." },
+    { step: 3, namePage: "Generation", numberOfTime: 3000, status: "waiting..." },
+    { step: 4, namePage: "Validation", numberOfTime: 2000, status: "waiting..." },
+  ]}
+  externalStart={true}
+/>
+```

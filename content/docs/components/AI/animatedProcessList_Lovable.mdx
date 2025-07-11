@@ -1,6 +1,6 @@
 ---
-title: Animated process List lovable
-description: Custom Animated process List lovable
+title: Animated Process List Lovable
+description: Custom animated process list with icons and lovable design
 full: true
 ---
 
@@ -13,33 +13,71 @@ import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessLi
     lines={[
       {
         icon: <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />,
-        content: "Nous analysons votre question pour bien comprendre le contexte et l’intention.",
+        content: "We analyze your question to understand the context and intention.",
       },
       {
         icon: <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
-        content: "Nous recherchons dans des bases de données fiables et des ressources pertinentes.",
+        content: "We search through reliable databases and relevant resources.",
       },
       {
         icon: <FileText className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />,
-        content: "Nous compilons les informations collectées pour générer une réponse claire et concise.",
+        content: "We compile the collected information to generate a clear and concise answer.",
       },
       {
         icon: <Paintbrush className="w-5 h-5 text-pink-600 dark:text-pink-400" />,
-        content: "Nous validons la réponse afin de garantir sa pertinence et sa fiabilité.",
+        content: "We validate the answer to ensure its relevance and reliability.",
       },
       {
         icon: <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
-        content: "Votre réponse personnalisée est prête à être affichée.",
+        content: "Your personalized answer is ready to be displayed.",
       },
       {
         icon: <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />,
-        content: "Nous suggérons des pistes ou ressources complémentaires pour approfondir le sujet.",
+        content: "We suggest additional paths or resources to explore the topic further.",
       },
       {
         icon: <Gauge className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
-        content: "Votre retour nous aide à améliorer la qualité des réponses futures.",
+        content: "Your feedback helps us improve the quality of future answers.",
       },
     ]}
   />
 </Preview>
 
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `lines` | `LineItem[]` | `[]` | Array of line items with icons and content |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+
+### LineItem
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `icon` | `ReactNode` | Icon component to display |
+| `content` | `string` | Text content for the line |
+
+### Example Usage
+
+```jsx
+import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessList_Lovable";
+import { CheckCircle, Settings } from "lucide-react";
+
+<AnimatedProcessList_Lovable
+  lines={[
+    {
+      icon: <CheckCircle className="w-5 h-5 text-green-600" />,
+      content: "Processing your request...",
+    },
+    {
+      icon: <Settings className="w-5 h-5 text-blue-600" />,
+      content: "Configuring the response...",
+    },
+  ]}
+  animationSpeed="normal"
+  scrollDirection="up"
+  className="h-64"
+/>
+```
