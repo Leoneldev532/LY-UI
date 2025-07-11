@@ -1,6 +1,13 @@
+"use client"
 import Link from "next/link";
-
+import  * as motion  from 'motion/react-client';
+import { AnimatePresence } from "motion/react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 export default function HomePage() {
+
+  const [showFirstContainer, setShowFirstContainer] = useState(false);
+
   return (
     <main className="flex flex-1 flex-col justify-center text-center">
       <div className="flex flex-col gap-4 w-full justify-center items-center">
@@ -148,6 +155,11 @@ export default function HomePage() {
             </g>
           </svg>
         </div>
+
+ 
+   
+
+    
 
         <div className="flex flex-col mt-4 lg:mt-16 gap-3 relative justify-center items-center max-w-xl pt-3">
           <div className="flex flex-col justify-center w-full relative h-36 items-center">

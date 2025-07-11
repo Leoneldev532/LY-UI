@@ -2,6 +2,7 @@
 "use client"
 import { Loader } from "lucide-react";
 import React, { useState, useEffect, useRef, forwardRef } from "react";
+import { cn } from "@/lib/utils";
 
 type initialTabListPageProps = {
   step?: number;
@@ -17,9 +18,12 @@ type ProcessList_V0Props = {
   onGenerationStop?: () => void;
   externalStop?: boolean;
   externalStart?: boolean;
+  className?: string;
+  autoScroll?: boolean;
+  scrollSpeed?: "fast" | "normal" | "slow";
 };
 
-const ProcessList_V0 = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
+const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   initialTabListPage = [
     {
       step: 1,
@@ -49,8 +53,11 @@ const ProcessList_V0 = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   onGenerationStart,
   onGenerationComplete,
   onGenerationStop,
+  className,
   externalStop = false,
   externalStart = false,
+  autoScroll = false,
+  scrollSpeed = "normal",
   ...props
 }, ref) => {
   const [tabListPage, setTabListPage] = useState(initialTabListPage);
@@ -154,51 +161,63 @@ const ProcessList_V0 = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   }, [currentProcessing, isGenerating]);
 
   return (
-    <div ref={ref} className="flex items-center w-full justify-center p-6" {...props}>
-      <div className="flex flex-col min-w-sm">
-        {tabListPage.map(
-          (page, index) =>
-            visibleItems.includes(index) && (
-              <div key={page.step} className="flex flex-col">
-                <div className="flex text-neutral-400 w-full items-center justify-between gap-4">
-                  <div className="flex items-center w-full gap-2">
-                    {page.status === "generating..." ? (
-                      <Loader className="animate-spin w-6 h-6" />
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+    <>
+      <style>{/* ...styles... */}</style>
+      <div className="relative">
+      
+        <div
+          ref={ref}
+          className={cn(
+            "flex items-center w-full justify-center p-6 max-h-96 overflow-y-auto relative",
+            className
+          )}
+          {...props}
+        >
+          <div className="flex flex-col min-w-sm">
+            {tabListPage.map(
+              (page, index) =>
+                visibleItems.includes(index) && (
+                  <div key={page.step} className="flex flex-col">
+                    <div className="flex text-neutral-400 w-full items-center justify-between gap-4">
+                      <div className="flex items-center w-full gap-2">
+                        {page.status === "generating..." ? (
+                          <Loader className="animate-spin w-6 h-6" />
+                        ) : (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                        )}
+                        <span>{page.namePage}</span>
+                      </div>
+                      <span className="text-sm">{page.status}</span>
+                    </div>
+                    {index !== initialTabListPage.length - 1 &&
+                      page.status === "completed" && (
+                        <div
+                          className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease-out ${
+                            connectorHeights[index] ? "h-3" : "h-0"
+                          }`}
                         />
-                      </svg>
-                    )}
-                    <span>{page.namePage}</span>
+                      )}
                   </div>
-                  <span className="text-sm">{page.status}</span>
-                </div>
-                {index !== initialTabListPage.length - 1 &&
-                  page.status === "completed" && (
-                    <div
-                      className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease-out ${
-                        connectorHeights[index] ? "h-3" : "h-0"
-                      }`}
-                    />
-                  )}
-              </div>
-            )
-        )}
+                )
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 });
-
-ProcessList_V0.displayName = 'ProcessList_V0';
-export default ProcessList_V0;
+StepProgressTimeline.displayName = "StepProgressTimeline";
+export default StepProgressTimeline;
