@@ -36,7 +36,7 @@
       "type": "registry:component",
       "title": "Tag Button",
       "dependencies": ["react", "lucide-react", "motion"],
-      "registryDependencies": ["button"],
+      "registryDependencies": ["Button","button"],
       "description": "A customizable tag button component with icon support, dropdown support, and forwardRef integration.",
       "files": [
         {
