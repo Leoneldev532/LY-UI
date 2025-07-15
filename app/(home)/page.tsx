@@ -46,8 +46,9 @@ export default function HomePage() {
       />
 
 <TagButton
+  
         title="Select a category"
-        variant="default"
+        variant="outline"
         items={["Marketing", "Analytics", "E-commerce", "SaaS", "Portfolio"]}
       />
 

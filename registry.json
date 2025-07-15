@@ -32,6 +32,24 @@
       ]
     },
     {
+      "name": "tagButton",
+      "type": "registry:component",
+      "title": "Tag Button",
+      "dependencies": ["react", "lucide-react", "motion"],
+      "registryDependencies": ["button"],
+      "description": "A customizable tag button component with icon support, dropdown support, and forwardRef integration.",
+      "files": [
+        {
+          "path": "components/LY UI/AI/tagButton.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "stepProgressTimeline",
       "type": "registry:component",
       "title": "Step Progress Timeline V0",
