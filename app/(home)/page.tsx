@@ -4,7 +4,7 @@ import  * as motion  from 'motion/react-client';
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import Test, { Disclosure } from "@/components/example/test";
+import TagButton from "@/components/LY UI/AI/tagButton"
 export default function HomePage() {
 
   const [showFirstContainer, setShowFirstContainer] = useState(false);
@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col justify-center text-center">
       <div className="flex flex-col gap-4 w-full justify-center items-center">
-        <div className="flex flex-col gap-y-3 justify-center items-center max-w-xl pt-3">
+        {/* <div className="flex flex-col gap-y-3 justify-center items-center max-w-xl pt-3">
           <h2 className="text-2xl sm:text-3xl md:text-4xl dark:text-white text-customDarkTwo text-center text-balance">
             Unlock Free Ui Components For Your Next Masterpiece
           </h2>
@@ -35,9 +35,31 @@ export default function HomePage() {
             </svg>
             <span>Explore components</span>
           </button>
-        </Link>
+        </Link> */}
 
-        <div className="flex gap-x-3 py-4 justify-center items-center">
+
+    <div className="flex gap-3">
+      <TagButton
+        title="Choose a tag"
+        variant="default"
+        items={["UI", "UX", "Frontend", "Backend", "Design"]}
+      />
+
+<TagButton
+        title="Select a category"
+        variant="default"
+        items={["Marketing", "Analytics", "E-commerce", "SaaS", "Portfolio"]}
+      />
+
+
+<TagButton
+        title="Select a category"
+        variant="default"
+        items={["Marketing", "Analytics", "E-commerce", "SaaS", "Portfolio"]}
+      />
+</div>
+
+        {/* <div className="flex gap-x-3 py-4 justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 256 256"
@@ -56,7 +78,6 @@ export default function HomePage() {
               d="M208 128l-80 80M192 40L40 192"
             ></path>
           </svg>
-            <Disclosure body={"helllllllllo"} title="hrllo les amis"  />
           <svg
             viewBox="0 0 256 228"
             width="1em"
@@ -155,14 +176,14 @@ export default function HomePage() {
               ></path>
             </g>
           </svg>
-        </div>
+        </div> */}
 
 
 
 
 
 
-        <div className="flex flex-col mt-4 lg:mt-16 gap-3 relative justify-center items-center max-w-xl pt-3">
+        {/* <div className="flex flex-col mt-4 lg:mt-16 gap-3 relative justify-center items-center max-w-xl pt-3">
           <div className="flex flex-col justify-center w-full relative h-36 items-center">
             <img
               src="/pattern.png"
@@ -176,7 +197,7 @@ export default function HomePage() {
               <span className="text-white text-lg  underline underline-offset-3 font-mono">Leonel Yimga</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </main>
   );
