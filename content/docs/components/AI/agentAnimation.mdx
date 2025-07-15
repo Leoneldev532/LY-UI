@@ -1,0 +1,28 @@
+---
+title: AgentAnimation
+description: Un composant d'animation affichant le pourcentage de travail d'un agent avec une bande de pointillés animée.
+component: true
+---
+import AgentAnimation from "@/components/LY UI/AI/agentAnimation"
+
+<Preview link="agentAnimation">
+  <AgentAnimation title="Agent" duration={4000} />
+</Preview>
+
+## Description
+
+`AgentAnimation` affiche un titre en police Consolas avec le pourcentage de progression d'un agent, ainsi qu'une bande horizontale de pointillés qui se remplit progressivement de 0 à 100%.
+
+## Props
+
+| Prop         | Type         | Default   | Description                                              |
+|--------------|--------------|-----------|----------------------------------------------------------|
+| `title`      | `string`     | "Agent"  | Le titre affiché avant le pourcentage                    |
+| `duration`   | `number`     | 3000      | Durée de l'animation en millisecondes                    |
+| `onComplete` | `() => void` | -         | Callback appelée à la fin de l'animation                 |
+
+## Exemple d'utilisation
+
+```tsx
+<AgentAnimation title="Chargement" duration={5000} onComplete={() => alert('Terminé !')} />
+``` 
