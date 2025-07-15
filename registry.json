@@ -46,6 +46,10 @@
         {
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
         }
       ]
     },
