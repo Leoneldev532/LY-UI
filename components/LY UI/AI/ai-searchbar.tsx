@@ -65,7 +65,6 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
   const [value, setValue] = React.useState("");
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const isFilled = value.trim().length > 0;
-  // State to manage checkboxes for the first 5 tools
   const [checkedTools, setCheckedTools] = React.useState<boolean[]>([
     false,
     false,

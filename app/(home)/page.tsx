@@ -1,46 +1,216 @@
-"use client"
+"use client";
 import Link from "next/link";
-import  * as motion  from 'motion/react-client';
+import * as motion from "motion/react-client";
 import { AnimatePresence } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import { Button } from "@/components/ui/button";
-import TagButton from "@/components/LY UI/AI/tagButton"
-export default function HomePage() {
+import TagButton from "@/components/LY UI/AI/tagButton";
+import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
+import CodeSection from "@/components/LY UI/CODING/CodeSection";
 
-  const [showFirstContainer, setShowFirstContainer] = useState(false);
+export default function HomePage() {
+  // Animation state for long lines
+  const [linesExpanded, setLinesExpanded] = useState(false);
+  const longLineRefs = useRef<(SVGPolygonElement | null)[]>([]);
+  const animationValues = useRef<number[]>([]);
+  const animationTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Initialiser les valeurs d'animation
+  useEffect(() => {
+    // Initialiser 12 valeurs (96/8 = 12 lignes longues)
+    animationValues.current = new Array(12).fill(0);
+  }, []);
+
+  // Fonction pour recalculer les points du polygone
+  const calculatePolygonPoints = (i: number, animValue: number) => {
+    const angle = (i * 360 / 96) * (Math.PI / 180);
+    const center = 200;
+    
+    // Paramètres d'animation - corrigés pour correspondre à l'original
+    const r1Collapsed = 120; // Position initiale plus proche du centre
+    const r2Collapsed = 200; // Position finale
+    const r1Expanded = 80;   // Position contractée
+    const r2Expanded = 200;  // Position finale reste la même
+    const baseWidth = 4;
+    const tipLength = 100;
+    
+    // Interpolation avec les bonnes valeurs
+    const r1 = r1Collapsed + (r1Expanded - r1Collapsed) * animValue;
+    const r2 = r2Collapsed + (r2Expanded - r2Collapsed) * animValue;
+    
+    const x1 = center + r1 * Math.cos(angle);
+    const y1 = center + r1 * Math.sin(angle);
+    const x2 = center + r2 * Math.cos(angle);
+    const y2 = center + r2 * Math.sin(angle);
+    const tipInX = center + (r1 - tipLength) * Math.cos(angle);
+    const tipInY = center + (r1 - tipLength) * Math.sin(angle);
+    const tipOutX = center + (r2 + tipLength) * Math.cos(angle);
+    const tipOutY = center + (r2 + tipLength) * Math.sin(angle);
+    
+    const perpAngle = angle + Math.PI / 2;
+    const bx1 = x1 + (baseWidth / 2) * Math.cos(perpAngle);
+    const by1 = y1 + (baseWidth / 2) * Math.sin(perpAngle);
+    const bx2 = x1 - (baseWidth / 2) * Math.cos(perpAngle);
+    const by2 = y1 - (baseWidth / 2) * Math.sin(perpAngle);
+    const ex1 = x2 + (baseWidth / 2) * Math.cos(perpAngle);
+    const ey1 = y2 + (baseWidth / 2) * Math.sin(perpAngle);
+    const ex2 = x2 - (baseWidth / 2) * Math.cos(perpAngle);
+    const ey2 = y2 - (baseWidth / 2) * Math.sin(perpAngle);
+    
+    return `${tipInX},${tipInY} ${bx1},${by1} ${ex1},${ey1} ${tipOutX},${tipOutY} ${ex2},${ey2} ${bx2},${by2}`;
+  };
+
+  // Animate with GSAP
+  useEffect(() => {
+    let direction: 'expand' | 'collapse' = 'expand';
+    let interval: NodeJS.Timeout | null = null;
+    let timeout: NodeJS.Timeout | null = null;
+
+    function animateLines(toExpand: boolean) {
+      if (longLineRefs.current.length > 0) {
+        gsap.to(longLineRefs.current, {
+          duration: 3,
+          stagger: 0.08,
+          ease: "elastic.out(1, 0.5)",
+          onUpdate: function() {
+            // 'this' fait référence au tween GSAP
+            const targets = this.targets();
+            targets.forEach((target: SVGPolygonElement, index: number) => {
+              if (target) {
+                const progress = this.progress();
+                const staggerDelay = index * 0.08;
+                const totalDuration = this.duration();
+                const currentTime = progress * totalDuration;
+                const elementStartTime = staggerDelay * totalDuration;
+                
+                // Calculer le progrès pour cet élément spécifique
+                const elementProgress = Math.max(0, Math.min(1, (currentTime - elementStartTime) / (totalDuration - elementStartTime)));
+                const animValue = toExpand ? elementProgress : (1 - elementProgress);
+                
+                // Calculer l'index original (i)
+                const originalIndex = index * 8;
+                const points = calculatePolygonPoints(originalIndex, animValue);
+                target.setAttribute('points', points);
+              }
+            });
+          },
+          onStart: () => setLinesExpanded(toExpand),
+        });
+      }
+    }
+
+    // Start expanded
+    animateLines(true);
+    direction = 'collapse';
+
+    interval = setInterval(() => {
+      animateLines(direction === 'expand');
+      direction = direction === 'expand' ? 'collapse' : 'expand';
+    }, 15000);
+
+    // Also trigger the first collapse after 7.5s for a smooth loop
+    timeout = setTimeout(() => {
+      animateLines(false);
+      direction = 'expand';
+    }, 7500);
+
+    return () => {
+      if (interval) clearInterval(interval);
+      if (timeout) clearTimeout(timeout);
+    };
+  }, []);
 
   return (
-    <main className="flex flex-1 flex-col justify-center text-center">
-      <div className="flex flex-col gap-4 w-full justify-center items-center">
-        <div className="flex flex-col gap-y-3 justify-center items-center max-w-xl pt-3">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl dark:text-white text-customDarkTwo text-center text-balance">
-            Unlock Free Ui Components For Your Next Masterpiece
+    <main className="flex flex-1 flex-col justify-center text-center bg-linear-to-bl min-h-screen">
+      <div className="flex relative flex-col gap-4 w-full justify-center items-center">
+        <div className="relative flex items-center justify-center">
+          <svg
+            className="relative left-0 top-0"
+            width={400}
+            height={400}
+            viewBox="0 0 400 400"
+            style={{ pointerEvents: "none" }}
+          >
+            {Array.from({ length: 96 }).map((_, i) => {
+              const angle = (i * 360 / 96) * (Math.PI / 180);
+              const center = 200;
+              const isLong = i % 8 === 0;
+
+              if (isLong) {
+                const longLineIndex = i / 8;
+                const initialPoints = calculatePolygonPoints(i, 0);
+                
+                return (
+                  <polygon
+                    key={i}
+                    ref={el => { longLineRefs.current[longLineIndex] = el; }}
+                    points={initialPoints}
+                    fill="#222"
+                    className="dark:fill-white"
+                  />
+                );
+              } else {
+                const r1 = 120;
+                const r2 = 170;
+                const x1 = center + r1 * Math.cos(angle);
+                const y1 = center + r1 * Math.sin(angle);
+                const x2 = center + r2 * Math.cos(angle);
+                const y2 = center + r2 * Math.sin(angle);
+                return (
+                  <line
+                    key={i}
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                    stroke="#222"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    className="dark:stroke-white"
+                  />
+                );
+              }
+            })}
+          </svg>
+        </div>
+        
+        <div className="flex flex-col gap-y-3 justify-center items-center max-w-3xl pt-3">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-medium dark:text-white text-customDarkTwo text-center text-balance">
+            Unlock <span className="text-neutral-400">Free</span> Ui{" "}
+            <span className="text-neutral-400">Components</span> For Your Next{" "}
+            <span className="text-neutral-400">Masterpiece</span>
           </h2>
-          <span className="text-sm md:text-lg text-customDarkTwo/30 max-w-sm text-center text-balance dark:text-customGrayTwo/70">
-            Seamlessly access all your UI components in one place and build with
-            ease
-          </span>
         </div>
 
-        <Link href="/docs" className="relative">
-          <button className="flex gap-x-3 bg-black border border-white/20 dark:text-white justify-center cursor-pointer items-center customGrayTwo border-customGrayTwoBorder rounded-xl mt-8 dark:border-customDarkTwoBorder dark:hover:bg-transparent hover:bg-transparent bg-customGrayTwo dark:bg-customDarkTwo text-customDarkTwo px-4 py-2">
+        <Link
+          href="/docs"
+          className="relative mt-8 border rounded-2xl p-1 hover:bg-neutral-300/20 transition-all ease duration-300 border-neutral-500/30 dark:border-white/20"
+        >
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -top-1 -left-1"></span>
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -top-1 -right-1"></span>
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -bottom-1 -left-1"></span>
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -bottom-1 -right-1"></span>
+          <button className="flex gap-x-3 bg-neutral-300/20 dark:bg-black border border-white/30 dark:text-white justify-center cursor-pointer items-center customGrayTwo border-customGrayTwoBorder rounded-xl dark:border-customDarkTwoBorder dark:hover:bg-transparent hover:bg-transparent bg-customGrayTwo dark:bg-customDarkTwo text-customDarkTwo px-4 py-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="11"
-              viewBox="0 0 12 11"
+              width="22"
+              height="22"
               fill="none"
+              viewBox="0 0 103 109"
             >
-              <circle cx="6" cy="5.5" r="5" fill="#5E5E5E" stroke="white" />
+              <path
+                stroke="#fff"
+                className="stroke-black dark:stroke-white"
+                strokeWidth="3"
+                d="m67.105 70.846-63.613 34.55c5.574-11.17 9.785-20.364 13.985-29.54 4.678-10.217 9.346-20.411 15.89-33.322L99.504 3.785zm-10.47-13.99c0 4.146-3.516 7.61-7.979 7.61s-7.978-3.464-7.978-7.61 3.515-7.61 7.978-7.61 7.979 3.463 7.979 7.61Zm3 0c0-5.915-4.972-10.61-10.979-10.61s-10.978 4.695-10.978 10.61 4.972 10.61 10.978 10.61c6.007 0 10.979-4.695 10.979-10.61Z"
+              ></path>
             </svg>
             <span>Explore components</span>
           </button>
         </Link>
 
-
-    <div className="flex gap-3">
-
-</div>
+        <div className="flex gap-3"></div>
 
         <div className="flex gap-x-3 py-4 justify-center items-center">
           <svg
@@ -75,7 +245,6 @@ export default function HomePage() {
               fill="#00D8FF"
             ></path>
           </svg>
-
           <svg
             width="1em"
             height="1em"
@@ -142,7 +311,6 @@ export default function HomePage() {
               </linearGradient>
             </defs>
           </svg>
-
           <svg
             viewBox="0 0 54 33"
             className="w-8 h-8"
@@ -160,27 +328,6 @@ export default function HomePage() {
             </g>
           </svg>
         </div>
-
-
-
-
-
-
-          <div className="flex flex-col mt-4 lg:mt-16 gap-3 relative justify-center items-center max-w-xl pt-3">
-            <div className="flex flex-col justify-center w-full relative h-36 items-center">
-              <img
-                src="/pattern.png"
-                alt="Descriptive text for the image"
-                className="w-full inset-0 z-0 object-cover"
-              />
-            </div>
-            <div className="w-full flex flex-col items-center">
-              <div className="flex gap-x-2 justify-center   items-center text-lg">
-                <span className="text-neutral-300/50">Build by</span>
-                <span className="text-white text-lg  underline underline-offset-3 font-mono">Leonel Yimga</span>
-              </div>
-            </div>
-          </div>
       </div>
     </main>
   );

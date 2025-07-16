@@ -1,7 +1,7 @@
 import { siteConfig } from '@/config/site';
 import './global.css';
 import { RootProvider } from 'fumadocs-ui/provider';
-import { Inter,  Lora } from 'next/font/google';
+import { Crimson_Pro, Inter,  Lora } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react";
@@ -11,7 +11,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const instrument = Lora({
+const instrument = Crimson_Pro({
   weight: "400",
   subsets: ["latin"],
   variable: '--font-instrument-serif',
