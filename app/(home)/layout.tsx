@@ -3,6 +3,8 @@ import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import { baseOptions } from '@/app/layout.config';
 import { Metadata } from 'next';
 import Header from '../components/Header';
+import PatternSVG from '../components/patternSvg';
+import PatternLayout from '../components/patternLayout';
 
 export const metadata: Metadata = {
   title: {
@@ -13,5 +15,10 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   // return <HomeLayout {...baseOptions}>{children}</HomeLayout>;
-  return  <div className='flex flex-col gap-y-4  '> <Header/> {children} </div>;
+  return  <div className='flex flex-col min-h-screen  items-center justify-start w-full '>   
+   <PatternLayout>
+   <Header/> 
+   {children} 
+   </PatternLayout>
+   </div>;
 }

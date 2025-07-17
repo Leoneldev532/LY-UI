@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import TagButton from "@/components/LY UI/AI/tagButton";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import CodeSection from "@/components/LY UI/CODING/CodeSection";
+import PatternSVG from "../components/patternSvg";
 
 export default function HomePage() {
   // Animation state for long lines
@@ -24,21 +25,21 @@ export default function HomePage() {
 
   // Fonction pour recalculer les points du polygone
   const calculatePolygonPoints = (i: number, animValue: number) => {
-    const angle = (i * 360 / 96) * (Math.PI / 180);
+    const angle = ((i * 360) / 96) * (Math.PI / 180);
     const center = 200;
-    
-    // Paramètres d'animation - corrigés pour correspondre à l'original
-    const r1Collapsed = 120; // Position initiale plus proche du centre
-    const r2Collapsed = 200; // Position finale
-    const r1Expanded = 80;   // Position contractée
-    const r2Expanded = 200;  // Position finale reste la même
+
+    // Paramètres d'animation - correction pour un meilleur recul
+    const r1Collapsed = 130; // Position initiale (état normal)
+    const r2Collapsed = 170; // Position finale (état normal)
+    const r1Expanded = 60; // Position contractée (recul plus important)
+    const r2Expanded = 170; // Position finale reste la même
     const baseWidth = 4;
-    const tipLength = 100;
-    
+    const tipLength = 80; // Réduction de la longueur des pointes
+
     // Interpolation avec les bonnes valeurs
     const r1 = r1Collapsed + (r1Expanded - r1Collapsed) * animValue;
     const r2 = r2Collapsed + (r2Expanded - r2Collapsed) * animValue;
-    
+
     const x1 = center + r1 * Math.cos(angle);
     const y1 = center + r1 * Math.sin(angle);
     const x2 = center + r2 * Math.cos(angle);
@@ -47,7 +48,7 @@ export default function HomePage() {
     const tipInY = center + (r1 - tipLength) * Math.sin(angle);
     const tipOutX = center + (r2 + tipLength) * Math.cos(angle);
     const tipOutY = center + (r2 + tipLength) * Math.sin(angle);
-    
+
     const perpAngle = angle + Math.PI / 2;
     const bx1 = x1 + (baseWidth / 2) * Math.cos(perpAngle);
     const by1 = y1 + (baseWidth / 2) * Math.sin(perpAngle);
@@ -57,41 +58,63 @@ export default function HomePage() {
     const ey1 = y2 + (baseWidth / 2) * Math.sin(perpAngle);
     const ex2 = x2 - (baseWidth / 2) * Math.cos(perpAngle);
     const ey2 = y2 - (baseWidth / 2) * Math.sin(perpAngle);
-    
+
     return `${tipInX},${tipInY} ${bx1},${by1} ${ex1},${ey1} ${tipOutX},${tipOutY} ${ex2},${ey2} ${bx2},${by2}`;
   };
 
-  // Animate with GSAP
+  // Animate with GSAP - correction pour synchronisation
   useEffect(() => {
-    let direction: 'expand' | 'collapse' = 'expand';
+    let direction: "expand" | "collapse" = "expand";
     let interval: NodeJS.Timeout | null = null;
     let timeout: NodeJS.Timeout | null = null;
 
     function animateLines(toExpand: boolean) {
       if (longLineRefs.current.length > 0) {
-        gsap.to(longLineRefs.current, {
-          duration: 3,
-          stagger: 0.08,
-          ease: "elastic.out(1, 0.5)",
-          onUpdate: function() {
-            // 'this' fait référence au tween GSAP
+        // Animation synchronisée pour toutes les lignes
+        const tl = gsap.timeline();
+
+        // Animer toutes les lignes en même temps avec un léger décalage
+        tl.to(longLineRefs.current, {
+          duration: 2.5,
+          stagger: 0.05, // Réduction du décalage pour meilleure synchronisation
+          ease: "power2.inOut", // Changement d'easing pour plus de fluidité
+          onUpdate: function () {
             const targets = this.targets();
             targets.forEach((target: SVGPolygonElement, index: number) => {
               if (target) {
                 const progress = this.progress();
-                const staggerDelay = index * 0.08;
+                const staggerDelay = index * 0.05; // Même valeur que le stagger
                 const totalDuration = this.duration();
                 const currentTime = progress * totalDuration;
                 const elementStartTime = staggerDelay * totalDuration;
-                
+
                 // Calculer le progrès pour cet élément spécifique
-                const elementProgress = Math.max(0, Math.min(1, (currentTime - elementStartTime) / (totalDuration - elementStartTime)));
-                const animValue = toExpand ? elementProgress : (1 - elementProgress);
-                
+                let elementProgress = Math.max(
+                  0,
+                  Math.min(
+                    1,
+                    (currentTime - elementStartTime) /
+                      (totalDuration - elementStartTime)
+                  )
+                );
+
+                // Appliquer une courbe d'animation pour un meilleur effet
+                if (elementProgress > 0) {
+                  elementProgress = toExpand
+                    ? elementProgress
+                    : 1 - elementProgress;
+                }
+
                 // Calculer l'index original (i)
                 const originalIndex = index * 8;
-                const points = calculatePolygonPoints(originalIndex, animValue);
-                target.setAttribute('points', points);
+                const points = calculatePolygonPoints(
+                  originalIndex,
+                  elementProgress
+                );
+                target.setAttribute("points", points);
+
+                // Mise à jour de la valeur d'animation
+                animationValues.current[index] = elementProgress;
               }
             });
           },
@@ -100,20 +123,20 @@ export default function HomePage() {
       }
     }
 
-    // Start expanded
-    animateLines(true);
-    direction = 'collapse';
+    // Démarrer avec l'état normal (collapsed)
+    animateLines(false);
 
-    interval = setInterval(() => {
-      animateLines(direction === 'expand');
-      direction = direction === 'expand' ? 'collapse' : 'expand';
-    }, 15000);
-
-    // Also trigger the first collapse after 7.5s for a smooth loop
+    // Première expansion après 2 secondes
     timeout = setTimeout(() => {
-      animateLines(false);
-      direction = 'expand';
-    }, 7500);
+      animateLines(true);
+      direction = "collapse";
+
+      // Puis alterner toutes les 8 secondes
+      interval = setInterval(() => {
+        animateLines(direction === "expand");
+        direction = direction === "expand" ? "collapse" : "expand";
+      }, 8000);
+    }, 2000);
 
     return () => {
       if (interval) clearInterval(interval);
@@ -122,36 +145,38 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="flex flex-1 flex-col justify-center text-center bg-linear-to-bl min-h-screen">
-      <div className="flex relative flex-col gap-4 w-full justify-center items-center">
+    <main className="flex flex-1 flex-col h-full  justify-center text-center w-full ">
+      <div className="flex relative flex-col h-full gap-4 w-full justify-center items-center">
         <div className="relative flex items-center justify-center">
           <svg
             className="relative left-0 top-0"
-            width={400}
-            height={400}
+            width={300}
+            height={300}
             viewBox="0 0 400 400"
             style={{ pointerEvents: "none" }}
           >
             {Array.from({ length: 96 }).map((_, i) => {
-              const angle = (i * 360 / 96) * (Math.PI / 180);
+              const angle = ((i * 360) / 96) * (Math.PI / 180);
               const center = 200;
               const isLong = i % 8 === 0;
 
               if (isLong) {
                 const longLineIndex = i / 8;
                 const initialPoints = calculatePolygonPoints(i, 0);
-                
+
                 return (
                   <polygon
                     key={i}
-                    ref={el => { longLineRefs.current[longLineIndex] = el; }}
+                    ref={(el) => {
+                      longLineRefs.current[longLineIndex] = el;
+                    }}
                     points={initialPoints}
                     fill="#222"
-                    className="dark:fill-white"
+                    className="dark:fill-white fill-neutral-400"
                   />
                 );
               } else {
-                const r1 = 120;
+                const r1 = 130;
                 const r2 = 170;
                 const x1 = center + r1 * Math.cos(angle);
                 const y1 = center + r1 * Math.sin(angle);
@@ -174,9 +199,9 @@ export default function HomePage() {
             })}
           </svg>
         </div>
-        
-        <div className="flex flex-col gap-y-3 justify-center items-center max-w-3xl pt-3">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-medium dark:text-white text-customDarkTwo text-center text-balance">
+
+        <div className="flex flex-col gap-y-3 w-full border-y border-neutral-200/20 justify-center items-center  mt-4 ">
+          <h2 className="text-2xl sm:text-3xl md:max-w-3xl max-w-lg md:text-5xl m-0 p-0 font-medium dark:text-white text-customDarkTwo text-center text-balance">
             Unlock <span className="text-neutral-400">Free</span> Ui{" "}
             <span className="text-neutral-400">Components</span> For Your Next{" "}
             <span className="text-neutral-400">Masterpiece</span>

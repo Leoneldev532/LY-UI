@@ -208,7 +208,6 @@ const AgentAnimation: React.FC<AgentAnimationProps> = ({
     const rawProgress = Math.min(1, (percent / 100) * (duration / lineDuration));
     const easing = getEasing(row);
     const lineProgress = easing(rawProgress);
-    // Correction : remplissage progressif sans trous
     return col <= Math.floor(lineProgress * computedColumns);
   };
 

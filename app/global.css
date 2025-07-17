@@ -25,4 +25,5 @@ h1,h2,h3,h4,h5,h6{
   }
   .dark {
     --color-fd-background: hsl(0, 2%, 10%);
+    --pattern-fg : color-mix(in oklab, #fff 10%,red) : color-mix(in oklab, var(--color-black) 5%, transparent)
   }
