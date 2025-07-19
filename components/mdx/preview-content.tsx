@@ -47,7 +47,7 @@ export default function PreviewContent({
     const pm = packageManager || selectedPackageManager;
 
     let commandToCopy: string;
-    const componentAddCommand = `shadcn@latest add ${prePath}/r/${componentName}`;
+    const componentAddCommand = `shadcn@latest add ${prePath}/ly-ui/${componentName}`;
 
     if (pm === "pnpm") {
       commandToCopy = `pnpm dlx ${componentAddCommand}`;
