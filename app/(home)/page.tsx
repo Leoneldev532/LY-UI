@@ -82,9 +82,11 @@ export default function HomePage() {
             const targets = this.targets();
             targets.forEach((target: SVGPolygonElement, index: number) => {
               if (target) {
-                const progress = this.progress();
+                // Correction: Typage explicite et vérification de l'existence des méthodes
+                const timeline = this as unknown as gsap.core.Timeline;
+                const progress = typeof timeline.progress === "function" ? timeline.progress() : 0;
+                const totalDuration = typeof timeline.duration === "function" ? timeline.duration() : 1;
                 const staggerDelay = index * 0.05; // Même valeur que le stagger
-                const totalDuration = this.duration();
                 const currentTime = progress * totalDuration;
                 const elementStartTime = staggerDelay * totalDuration;
 
