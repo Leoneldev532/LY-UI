@@ -1,15 +1,27 @@
+
+
 import { NextResponse, NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
 
-    // Masquer /r/ avec un autre préfixe
-    if (url.pathname.startsWith('/components/')) {
-        url.pathname = url.pathname.replace('/components/', '/r/');
+    if (url.pathname.startsWith('/ly-ui/')) {
+        const comp = url.pathname.replace('/ly-ui/', '');
+        url.pathname = `/r/${comp}.json`;
         return NextResponse.rewrite(url);
     }
 
-    // Ajouter .json si pas présent
+ 
+    if (url.pathname.startsWith('/components/')) {
+        url.pathname = url.pathname.replace('/components/', '/r/');
+        // Ajoute .json si manquant
+        if (!url.pathname.endsWith('.json')) {
+            url.pathname += '.json';
+        }
+        return NextResponse.rewrite(url);
+    }
+
+
     if (url.pathname.startsWith('/r/') && !url.pathname.endsWith('.json')) {
         url.pathname += '.json';
         return NextResponse.rewrite(url);
@@ -19,5 +31,9 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/components/:path*', '/r/:path*']
+    matcher: [
+        '/components/:path*',
+        '/r/:path*',
+        '/ly-ui/:path*', 
+    ]
 };
