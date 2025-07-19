@@ -283,6 +283,44 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "AiAgentAnimation",
+      "type": "registry:component",
+      "title": "AI Agent Animation",
+      "dependencies": ["react", "class-variance-authority"],
+      "registryDependencies": ["button", "dropdown-menu", "textarea"],
+      "description": "Animated agent progress bar with customizable dots, callbacks, and control.",
+      "files": [
+        {
+          "path": "components/LY UI/AI/AiAgentAnimation.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "components/hooks/useAnimationState.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "components/hooks/useResponsiveColumns.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "components/LY UI/AI/AnimationStatus.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/LY UI/AI/dotsGrid.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
 
   ]

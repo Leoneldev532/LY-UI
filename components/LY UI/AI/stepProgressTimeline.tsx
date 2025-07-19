@@ -179,9 +179,9 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
                 visibleItems.includes(index) && (
                   <div key={page.step} className="flex flex-col">
                     <div className="flex text-neutral-400 w-full items-center justify-between gap-4">
-                      <div className="flex items-center w-full gap-2">
+                      <div className="flex items-center text-xs md:text-sm w-full gap-2">
                         {page.status === "generating..." ? (
-                          <Loader className="animate-spin w-6 h-6" />
+                          <Loader className="animate-spin min-h-3 mim-w-3 md:min-w-5 md:min-h-5" />
                         ) : (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -200,12 +200,13 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
                         )}
                         <span>{page.namePage}</span>
                       </div>
-                      <span className="text-sm">{page.status}</span>
+                      <span className="text-xs md:text-sm ">{page.status}</span>
                     </div>
                     {index !== initialTabListPage.length - 1 &&
                       page.status === "completed" && (
                         <div
-                          className={`w-[1px] ml-3 bg-neutral-400 transition-all duration-500 ease-out ${
+                          className={`w-[1px] ml-3  bg-neutral-400 transition-all 
+                            duration-500 ease-out ${
                             connectorHeights[index] ? "h-3" : "h-0"
                           }`}
                         />

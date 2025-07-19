@@ -1,6 +1,6 @@
 ---
 title: Step Progress Timeline v0
-description: Custom step progress timeline inspired by @V0
+description: Custom step progress timeline inspired by @V0, with external and internal control, auto-scroll, and customizable speed.
 full: true
 ---
 
@@ -41,23 +41,26 @@ import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `initialTabListPage` | `initialTabListPageProps[]` | `[...]` | Array of steps to display in the timeline |
-| `onGenerationStart` | `() => void` | `undefined` | Callback when generation starts |
-| `onGenerationComplete` | `() => void` | `undefined` | Callback when generation is complete |
-| `onGenerationStop` | `() => void` | `undefined` | Callback when generation stops |
-| `externalStop` | `boolean` | `false` | External control to stop generation |
-| `externalStart` | `boolean` | `false` | External control to start generation |
+| Prop                  | Type                                   | Default     | Description                                                        |
+|-----------------------|----------------------------------------|-------------|--------------------------------------------------------------------|
+| `initialTabListPage`  | `initialTabListPageProps[]`            | `[...]`     | Array of steps to display in the timeline                          |
+| `onGenerationStart`   | `() => void`                           | `undefined` | Callback when generation starts                                    |
+| `onGenerationComplete`| `() => void`                           | `undefined` | Callback when generation is complete                               |
+| `onGenerationStop`    | `() => void`                           | `undefined` | Callback when generation stops                                     |
+| `externalStop`        | `boolean`                              | `false`     | External control to stop generation                                |
+| `externalStart`       | `boolean`                              | `false`     | External control to start generation                               |
+| `className`           | `string`                               | `undefined` | Additional CSS classes for styling                                 |
+| `autoScroll`          | `boolean`                              | `false`     | Automatically scrolls to the current step                          |
+| `scrollSpeed`         | `"fast" \| "normal" \| "slow"`         | `"normal"`  | Speed of the scroll animation                                      |
 
 ### initialTabListPageProps
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `step` | `number` | `undefined` | Step number |
-| `namePage` | `string` | `undefined` | Step name to display |
-| `numberOfTime` | `number` | `undefined` | Duration in milliseconds for the step |
-| `status` | `"waiting..." \| "generating..." \| "completed"` | `"waiting..."` | Current status of the step |
+| Prop         | Type                                         | Default     | Description                                                        |
+|--------------|----------------------------------------------|-------------|--------------------------------------------------------------------|
+| `step`       | `number`                                     | `undefined` | Step number                                                        |
+| `namePage`   | `string`                                     | `undefined` | Step name to display                                               |
+| `numberOfTime`| `number`                                    | `undefined` | Duration in milliseconds for the step                              |
+| `status`     | `"waiting..." \| "generating..." \| "completed"`| `"waiting..."`| Current status of the step                                         |
 
 ### Example Usage
 
@@ -70,5 +73,8 @@ import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
     { step: 4, namePage: "Validation", numberOfTime: 2000, status: "waiting..." },
   ]}
   externalStart={true}
+  className="w-full"
+  autoScroll={true}
+  scrollSpeed="fast"
 />
 ```

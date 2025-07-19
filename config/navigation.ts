@@ -1,3 +1,4 @@
+
 export interface NavItem {
     id: string | number;
     title: string;
@@ -74,6 +75,31 @@ export const navigationSections: NavSection[] = [
                 title: "Thinking Search Animation",
                 href: "/docs/components/thinkingSearchAnimation",
             },
+            {
+                id: 10,
+                title: "Tag Button",
+                href: "/docs/components/tagButton",
+            },
+            {
+                id: 11,
+                title: "Particle Animation",
+                href: "/docs/components/particleAnimation",
+            },
+            {
+                id: 12,
+                title: "Resize Example",
+                href: "/docs/components/resizeExample",
+            },
+            {
+                id: 13,
+                title: "Animated Process List Lovable",
+                href: "/docs/components/animatedProcessList_Lovable",
+            },
+            {
+                id: 14,
+                title: "AI Agent Animation",
+                href: "/docs/components/AiAgentAnimation",
+            },
         ],
     },
     {
@@ -86,5 +112,4 @@ export const navigationSections: NavSection[] = [
             },
         ],
     },
-  
 ];

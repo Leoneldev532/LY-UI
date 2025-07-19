@@ -1,6 +1,6 @@
 ---
 title: Thinking Search Animation
-description: Animated thinking/searching component with scrolling text content
+description: Animated thinking/searching component with scrolling text content and customizable animation.
 full: true
 ---
 
@@ -33,12 +33,15 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `content` | `string[]` | `[]` | Array of text content to display in the animation |
-| `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
-| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
+| Prop                  | Type                              | Default     | Description                                                        |
+|-----------------------|-----------------------------------|-------------|--------------------------------------------------------------------|
+| `content`             | `string[]`                        | `[]`        | Array of text content to display in the animation                  |
+| `className`           | `string`                          | `undefined` | Additional CSS classes for styling                                 |
+| `scrollDirection`     | `"up" \| "down"`                  | `"up"`      | Direction of the scrolling animation                               |
+| `animationSpeed`      | `"slow" \| "normal" \| "fast"`     | `"normal"`  | Speed of the animation                                             |
+| `variant`             | `"default" \| "ghost" \| "outline"`| `"default"` | Visual style variant of the component                              |
+| `step`                | `number`                          | `undefined` | Optional step index for advanced control                           |
+| `callBackAnimationEnd`| `() => void`                      | `undefined` | Callback called when the animation ends                            |
 
 ### Example Usage
 
@@ -55,5 +58,8 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
   scrollDirection="up"
   animationSpeed="normal"
   className="max-w-md"
+  variant="default"
+  step={1}
+  callBackAnimationEnd={() => console.log('Animation ended')}
 />
 ```

@@ -171,12 +171,44 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
         )}
         {...props}
       >
-        <div className="flex gap-2 justify-start items-center py-4 w-full max-w-xl mx-auto">
+        <div className="flex gap-2 justify-start items-center py-2 w-full max-w-xl mx-auto">
           <Loader className="animate-spin min-w-5 min-h-5 text-black dark:text-white" />
-          <h2 className="text-xl font-semibold py-2 text-center text-neutral-700 dark:text-gray-200 w-full">{title}</h2>
+          <h2 className="text-lg md:text-xl line-clamp-1 font-semibold py-2 text-center text-neutral-700 dark:text-gray-200 w-full">{title}</h2>
         </div>
 
-        <div className="relative w-full max-w-xl h-72 overflow-hidden rounded-lg">
+        <div className="relative w-full max-w-xl h-72 overflow-hidden ">
+       
+     
+          <div className="pointer-events-none absolute inset-0 z-10">
+            <div
+              className="
+                absolute top-0 left-0 w-full h-4
+                pointer-events-none
+                bg-gradient-to-b
+                from-[rgba(255,255,255,1)]/90
+                via-[rgba(255,255,255,0.7)]/70
+                to-transparent
+                dark:from-neutral-900
+                dark:via-neutral-900
+                dark:to-transparent
+              "
+              style={{ zIndex: 11 }}
+            />
+            <div
+              className="
+                absolute bottom-0 left-0 w-full h-4
+                pointer-events-none
+                bg-gradient-to-t
+                from-[rgba(255,255,255,1)]/90
+                via-[rgba(255,255,255,0.7)]/70
+                to-transparent
+                dark:from-neutral-900
+                dark:via-neutral-900
+                dark:to-transparent
+              "
+              style={{ zIndex: 11 }}
+            />
+          </div>
 
           <div
             ref={contentRef}

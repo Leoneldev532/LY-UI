@@ -341,13 +341,13 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <Button variant="outline" className="h-8">
+              <Button variant="outline" className="h-8 border-neutral-500">
                 <Lightbulb /> <span className="md:inline hidden">Think</span>
               </Button>
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="h-8">
+                  <Button variant="outline" className="h-8 border-neutral-500">
                     <LayoutGrid />{" "}
                     <span className="md:inline hidden">Tools</span>
                   </Button>
@@ -470,7 +470,10 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="none"
-                    className="flex items-center gap-1 h-8 pl-3 pr-2 text-xs rounded-md dark:text-white hover:bg-neutral-200 dark:hover:bg-white/10 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-black"
+                    className="flex items-center gap-1 h-8 pl-3 pr-2 text-xs
+                     rounded-md dark:text-white hover:bg-neutral-200 
+                     dark:hover:bg-white/10 
+                     focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-black"
                   >
                     <div className="flex items-center gap-1">
                       {modelList[selectedModel].icon}

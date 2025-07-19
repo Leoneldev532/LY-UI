@@ -162,7 +162,7 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
       >
         <div className="flex gap-2 justify-start items-center w-full">
           <Loader className="animate-spin min-h-5 min-w-5  text-black dark:text-white" />
-          <h2 className="text-xl font-semibold py-2 text-center text-neutral-700 dark:text-gray-200">
+          <h2 className="text-lg md:text-xl line-clamp-1 font-semibold py-2 text-center text-neutral-700 dark:text-gray-200 w-full">
             {title}
           </h2>
         </div>

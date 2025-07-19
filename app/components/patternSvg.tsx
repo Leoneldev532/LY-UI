@@ -12,7 +12,6 @@ const PatternSVG: React.FC<PatternSVGProps> = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [svgWidth, setSvgWidth] = useState(0);
 
-  // Ajuster dynamiquement la largeur du SVG à celle du conteneur parent
   useEffect(() => {
     function updateWidth() {
       if (svgRef.current && svgRef.current.parentElement) {
