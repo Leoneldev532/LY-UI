@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
         return NextResponse.rewrite(url);
     }
 
-    // Pour compatibilité, on garde aussi /components/ et /r/
+    // Pour compatibilité, on garde aussi /components/ et /r/ -----------
     if (url.pathname.startsWith('/components/')) {
         url.pathname = url.pathname.replace('/components/', '/r/');
         if (!url.pathname.endsWith('.json')) {
