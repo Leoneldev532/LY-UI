@@ -9,29 +9,29 @@ import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
 <Preview link="StepProgressTimeline" >
 <StepProgressTimeline
   externalStart={true}
-  initialTabListPage={[
+  steps={[
     {
       step: 1,
-      namePage: "Question analysis",
-      numberOfTime: 2000,
+      stepName: "Question analysis",
+      duration: 2000,
       status: "waiting...",
     },
     {
       step: 2,
-      namePage: "Searching for reliable sources",
-      numberOfTime: 2500,
+      stepName: "Searching for reliable sources",
+      duration: 2500,
       status: "waiting...",
     },
     {
       step: 3,
-      namePage: "Generating the answer",
-      numberOfTime: 3000,
+      stepName: "Generating the answer",
+      duration: 3000,
       status: "waiting...",
     },
     {
       step: 4,
-      namePage: "Validation & display",
-      numberOfTime: 2000,
+      stepName: "Validation & display",
+      duration: 2000,
       status: "waiting...",
     },
   ]}
@@ -43,38 +43,36 @@ import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
 
 | Prop                  | Type                                   | Default     | Description                                                        |
 |-----------------------|----------------------------------------|-------------|--------------------------------------------------------------------|
-| `initialTabListPage`  | `initialTabListPageProps[]`            | `[...]`     | Array of steps to display in the timeline                          |
+| `steps`               | `StepProps[]`                          | `[...]`     | Array of steps to display in the timeline                          |
 | `onGenerationStart`   | `() => void`                           | `undefined` | Callback when generation starts                                    |
 | `onGenerationComplete`| `() => void`                           | `undefined` | Callback when generation is complete                               |
 | `onGenerationStop`    | `() => void`                           | `undefined` | Callback when generation stops                                     |
 | `externalStop`        | `boolean`                              | `false`     | External control to stop generation                                |
 | `externalStart`       | `boolean`                              | `false`     | External control to start generation                               |
 | `className`           | `string`                               | `undefined` | Additional CSS classes for styling                                 |
-| `autoScroll`          | `boolean`                              | `false`     | Automatically scrolls to the current step                          |
 | `scrollSpeed`         | `"fast" \| "normal" \| "slow"`         | `"normal"`  | Speed of the scroll animation                                      |
 
-### initialTabListPageProps
+### StepProps
 
 | Prop         | Type                                         | Default     | Description                                                        |
 |--------------|----------------------------------------------|-------------|--------------------------------------------------------------------|
 | `step`       | `number`                                     | `undefined` | Step number                                                        |
-| `namePage`   | `string`                                     | `undefined` | Step name to display                                               |
-| `numberOfTime`| `number`                                    | `undefined` | Duration in milliseconds for the step                              |
+| `stepName`   | `string`                                     | `undefined` | Step name to display                                               |
+| `duration`   | `number`                                     | `undefined` | Duration in milliseconds for the step                              |
 | `status`     | `"waiting..." \| "generating..." \| "completed"`| `"waiting..."`| Current status of the step                                         |
 
 ### Example Usage
 
 ```jsx
 <StepProgressTimeline
-  initialTabListPage={[
-    { step: 1, namePage: "Analysis", numberOfTime: 2000, status: "waiting..." },
-    { step: 2, namePage: "Research", numberOfTime: 2500, status: "waiting..." },
-    { step: 3, namePage: "Generation", numberOfTime: 3000, status: "waiting..." },
-    { step: 4, namePage: "Validation", numberOfTime: 2000, status: "waiting..." },
+  steps={[
+    { step: 1, stepName: "Analysis", duration: 2000, status: "waiting..." },
+    { step: 2, stepName: "Research", duration: 2500, status: "waiting..." },
+    { step: 3, stepName: "Generation", duration: 3000, status: "waiting..." },
+    { step: 4, stepName: "Validation", duration: 2000, status: "waiting..." },
   ]}
   externalStart={true}
   className="w-full"
-  autoScroll={true}
   scrollSpeed="fast"
 />
 ```

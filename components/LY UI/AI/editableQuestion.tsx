@@ -8,25 +8,25 @@ import { Button } from "@/components/ui/button";
 
 type EditableQuestionProps = {
   className?: string;
-  title?: string;
-  onUpdateTitle?: (newTitle: string) => void;
+  question?: string;
+  onQuestionChange?: (newQuestion: string) => void;
 };
 
 const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
   className,
-  title: initialTitle,
-  onUpdateTitle,
+  question: initialQuestion,
+  onQuestionChange,
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(initialTitle || "");
-  const [editingTitle, setEditingTitle] = useState("");
+  const [question, setQuestion] = useState(initialQuestion || "");
+  const [editingQuestion, setEditingQuestion] = useState("");
 
   const handleCopy = async () => {
-    if (title) {
+    if (question) {
       try {
-        await navigator.clipboard.writeText(title);
+        await navigator.clipboard.writeText(question);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       } catch (error) {
@@ -36,19 +36,19 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
   };
 
   const handleEdit = () => {
-    setEditingTitle(title);
+    setEditingQuestion(question);
     setIsEditing(true);
   };
 
   const handleUpdate = () => {
     setIsEditing(false);
-    setTitle(editingTitle);
-    if (onUpdateTitle) onUpdateTitle(editingTitle);
+    setQuestion(editingQuestion);
+    if (onQuestionChange) onQuestionChange(editingQuestion);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    setEditingTitle("");
+    setEditingQuestion("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -71,8 +71,8 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
           <div className="flex gap-2 items-center">
             <Textarea
               className="flex-1 bg-transparent border-b border-neutral-400 outline-none px-1 resize-none"
-              value={editingTitle}
-              onChange={(e) => setEditingTitle(e.target.value)}
+              value={editingQuestion}
+              onChange={(e) => setEditingQuestion(e.target.value)}
               onKeyDown={handleKeyDown}
               autoFocus
               rows={2}
@@ -100,7 +100,7 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
             </div>
           </div>
         ) : (
-          <span>{title}</span>
+          <span>{question}</span>
         )}
       </div>
       <div className="opacity-0 group-hover:opacity-100 w-full flex gap-4 justify-end items-center transition-opacity duration-200">
@@ -122,7 +122,7 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
           className="bg-transparent dark:bg-transparent hover:bg-neutral-200/40 dark:hover:bg-neutral-500 rounded-full w-8 h-8 p-0"
           onClick={handleCopy}
           title="Copier la question"
-          disabled={!title}
+          disabled={!question}
         >
           {copied ? <CheckIcon size={16} /> : <Copy size={16} />}
         </Button>

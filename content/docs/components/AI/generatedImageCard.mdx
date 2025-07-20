@@ -9,11 +9,11 @@ import car from "@/public/car.jpg";
 
 <Preview link="GeneratedImageCard">
   <GeneratedImageCard
-    hours="00:00"
+    timestamp="00:00"
     prompt="generate bird image"
     className="max-w-lg w-full h-[447px] "
     src={car}
-    title="AI Generated Image"
+    imageTitle="AI Generated Image"
   />
 </Preview>
 
@@ -22,11 +22,11 @@ import car from "@/public/car.jpg";
 ```jsx
 <GeneratedImageCard
   src="https://via.placeholder.com/150"
-  title="AI Generated Image"
+  imageTitle="AI Generated Image"
   width={400}
   height={400}
   prompt="A blue bird on a branch"
-  hours="10:00"
+  timestamp="10:00"
 />
 ```
 
@@ -35,11 +35,11 @@ import car from "@/public/car.jpg";
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `src` | `string | Blob | StaticImport` | `"https://via.placeholder.com/150"` | Source of the image to display |
-| `title` | `string | null` | `undefined` | Title of the image |
+| `imageTitle` | `string | null` | `undefined` | Title of the image |
 | `width` | `number` | `2225` | Width of the image |
 | `height` | `number` | `2465` | Height of the image |
 | `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `hours` | `string` | `"00:00"` | Time displayed at the bottom of the card |
+| `timestamp` | `string` | `"00:00"` | Time displayed at the bottom of the card |
 | `prompt` | `string` | `""` | The prompt associated with the image (can be copied) |
 | `onLike` | `() => void` | `undefined` | Callback when user likes the image |
 | `onDislike` | `() => void` | `undefined` | Callback when user dislikes the image |

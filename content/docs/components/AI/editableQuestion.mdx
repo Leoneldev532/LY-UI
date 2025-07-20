@@ -7,17 +7,16 @@ full: true
 import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
 
 <Preview link="editableQuestion">
-<EditableQuestion className="mt-8 w-full" title="What is the impact of AI on drug sales?" />
+<EditableQuestion className="mt-8 w-full" question="What is the impact of AI on drug sales?" />
 </Preview>
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `string` | `undefined` | The question text to display and edit |
+| `question` | `string` | `undefined` | The question text to display and edit |
 | `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `onChange` | `(value: string) => void` | `undefined` | Callback when the question text changes |
-| `onSubmit` | `(value: string) => void` | `undefined` | Callback when the question is submitted |
+| `onQuestionChange` | `(value: string) => void` | `undefined` | Callback when the question text changes |
 
 ## forwardRef and ref management
 
@@ -49,10 +48,9 @@ const MyComponent = () => {
   return (
     <EditableQuestion
       ref={questionRef}
-      title="What is the impact of AI on drug sales?"
+      question="What is the impact of AI on drug sales?"
       className="w-full"
-      onChange={(value) => console.log("Question changed:", value)}
-      onSubmit={(value) => console.log("Question submitted:", value)}
+      onQuestionChange={(value) => console.log("Question changed:", value)}
     />
   );
 };
@@ -64,9 +62,8 @@ const MyComponent = () => {
 import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
 
 <EditableQuestion
-  title="What is the impact of AI on drug sales?"
+  question="What is the impact of AI on drug sales?"
   className="w-full"
-  onChange={(value) => console.log("Question changed:", value)}
-  onSubmit={(value) => console.log("Question submitted:", value)}
+  onQuestionChange={(value) => console.log("Question changed:", value)}
 />
 ```

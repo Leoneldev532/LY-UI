@@ -4,49 +4,48 @@ import { Loader } from "lucide-react";
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
-type initialTabListPageProps = {
+type StepProps = {
   step?: number;
-  namePage?: string;
-  numberOfTime?: number;
+  stepName?: string;
+  duration?: number;
   status: "waiting..." | "generating..." | "completed";
 };
 
-type ProcessList_V0Props = {
-  initialTabListPage: initialTabListPageProps[];
+type StepProgressTimelineProps = {
+  steps: StepProps[];
   onGenerationStart?: () => void;
   onGenerationComplete?: () => void;
   onGenerationStop?: () => void;
   externalStop?: boolean;
   externalStart?: boolean;
   className?: string;
-  autoScroll?: boolean;
   scrollSpeed?: "fast" | "normal" | "slow";
 };
 
-const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
-  initialTabListPage = [
+const StepProgressTimeline = forwardRef<HTMLDivElement, StepProgressTimelineProps>(({
+  steps = [
     {
       step: 1,
-      namePage: "page1",
-      numberOfTime: 3000,
+      stepName: "page1",
+      duration: 3000,
       status: "waiting",
     },
     {
       step: 2,
-      namePage: "page2",
-      numberOfTime: 2500,
+      stepName: "page2",
+      duration: 2500,
       status: "waiting",
     },
     {
       step: 3,
-      namePage: "page3",
-      numberOfTime: 4000,
+      stepName: "page3",
+      duration: 4000,
       status: "waiting",
     },
     {
       step: 4,
-      namePage: "page4",
-      numberOfTime: 4000,
+      stepName: "page4",
+      duration: 4000,
       status: "waiting",
     },
   ],
@@ -56,11 +55,10 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   className,
   externalStop = false,
   externalStart = false,
-  autoScroll = false,
   scrollSpeed = "normal",
   ...props
 }, ref) => {
-  const [tabListPage, setTabListPage] = useState(initialTabListPage);
+  const [tabListPage, setTabListPage] = useState(steps);
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const [currentProcessing, setCurrentProcessing] = useState(-1);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -70,7 +68,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startGeneration = () => {
-    setTabListPage(initialTabListPage);
+    setTabListPage(steps);
     setVisibleItems([]);
     setCurrentProcessing(0);
     setIsGenerating(true);
@@ -104,7 +102,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
   useEffect(() => {
     if (!isGenerating || currentProcessing === -1) return;
 
-    if (currentProcessing < initialTabListPage.length) {
+    if (currentProcessing < steps.length) {
       setVisibleItems((prev: any) => {
         if (!prev.includes(currentProcessing)) {
           return [...prev, currentProcessing];
@@ -114,8 +112,8 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
 
       // Set status to generating
       setTabListPage((prev) => {
-        // Ensure all items are of type initialTabListPageProps
-        return (prev as initialTabListPageProps[]).map((page, index) =>
+        // Ensure all items are of type StepProps
+        return (prev as StepProps[]).map((page, index) =>
           index === currentProcessing ? { ...page, status: "generating..." } : page
         );
       });
@@ -123,7 +121,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
       // Timer for generation completion
       timerRef.current = setTimeout(() => {
         setTabListPage((prev) => {
-          return (prev as initialTabListPageProps[]).map((page, index) =>
+          return (prev as StepProps[]).map((page, index) =>
             index === currentProcessing
               ? { ...page, status: "completed" }
               : page
@@ -131,7 +129,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
         });
 
         // Animer le connecteur après la complétion
-        if (currentProcessing < initialTabListPage.length - 1) {
+        if (currentProcessing < steps.length - 1) {
           setTimeout(() => {
             setConnectorHeights((prev) => ({
               ...prev,
@@ -142,14 +140,14 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
 
         // Move to next page after a short delay
         setTimeout(() => {
-          if (currentProcessing + 1 >= initialTabListPage.length) {
+          if (currentProcessing + 1 >= steps.length) {
             setIsGenerating(false);
             onGenerationComplete?.();
           } else {
             setCurrentProcessing((prev) => prev + 1);
           }
         }, 300);
-      }, initialTabListPage[currentProcessing].numberOfTime);
+      }, steps[currentProcessing].duration);
 
       return () => {
         if (timerRef.current) {
@@ -164,7 +162,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
     <>
       <style>{/* ...styles... */}</style>
       <div className="relative">
-      
+
         <div
           ref={ref}
           className={cn(
@@ -198,14 +196,14 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, ProcessList_V0Props>(({
                             />
                           </svg>
                         )}
-                        <span>{page.namePage}</span>
+                        <span>{page.stepName}</span>
                       </div>
                       <span className="text-xs md:text-sm ">{page.status}</span>
                     </div>
-                    {index !== initialTabListPage.length - 1 &&
+                    {index !== steps.length - 1 &&
                       page.status === "completed" && (
                         <div
-                          className={`w-[1px] ml-3  bg-neutral-400 transition-all 
+                          className={`w-[1px] ml-3  bg-neutral-400 transition-all
                             duration-500 ease-out ${
                             connectorHeights[index] ? "h-3" : "h-0"
                           }`}

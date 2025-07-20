@@ -11,9 +11,8 @@ const cnUtil = typeof cn !== "undefined" ? cn : cnFallback;
 
 type ThinkingSearchAnimationProps = {
   variant?: "default" | "ghost" | "outline";
-  step?: number;
-  content?: string[];
-  callBackAnimationEnd?: () => void;
+  messages?: string[];
+  onAnimationEnd?: () => void;
   className?: string;
   scrollDirection?: "up" | "down";
   animationSpeed?: "slow" | "normal" | "fast";
@@ -21,9 +20,8 @@ type ThinkingSearchAnimationProps = {
 
 const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimationProps>(({
   variant,
-  step,
-  content,
-  callBackAnimationEnd,
+  messages,
+  onAnimationEnd,
   className,
   scrollDirection = "up",
   animationSpeed = "normal",
@@ -43,12 +41,12 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
     setFinalTime(currentTime);
     setAnimationEnded(true);
     setTimeout(() => setCollapsed(true), 2000);
-    callBackAnimationEnd?.();
+    onAnimationEnd?.();
   };
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    if (!animationEnded && content && content.length > 0) {
+    if (!animationEnded && messages && messages.length > 0) {
       interval = setInterval(() => {
         timerRef.current += 1;
         setTimer(timerRef.current);
@@ -57,10 +55,10 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [animationEnded, content]);
+  }, [animationEnded, messages]);
 
   useEffect(() => {
-    if (content && content.length > 0 && timerRef.current === 0) {
+    if (messages && messages.length > 0 && timerRef.current === 0) {
       console.log("Resetting states for new content");
       setTimer(0);
       timerRef.current = 0;
@@ -68,21 +66,21 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
       setAnimationEnded(false);
       setCollapsed(false);
     }
-  }, [content]);
+  }, [messages]);
 
   // Calculate content height based on actual content
   useEffect(() => {
-    if (content && content.length > 0 && measureRef.current) {
+    if (messages && messages.length > 0 && measureRef.current) {
       const measureHeight = measureRef.current.scrollHeight;
       const padding = 32; // Padding top/bottom
       const calculatedHeight = measureHeight + padding;
       const maxHeight = 400; // Maximum height during animation
       setContentHeight(Math.min(calculatedHeight, maxHeight));
     }
-  }, [content]);
+  }, [messages]);
 
   const { contentRef } = useScrollYAnimation(
-    content || [],
+    messages || [],
     scrollDirection,
     animationSpeed,
     handleAnimationEnd
@@ -154,7 +152,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
       >
         <div className="flex items-center gap-2 min-w-0 flex-1">
           <h5 className="whitespace-nowrap">Thinking Search</h5>
-          {!animationEnded && content && content.length > 0 && (
+          {!animationEnded && messages && messages.length > 0 && (
             <span className="text-neutral-500 dark:text-neutral-400 text-xs font-normal whitespace-nowrap">
               {timer}s
             </span>
@@ -225,7 +223,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
             aria-hidden="true"
           >
             <ul className="space-y-4 w-full min-w-0">
-              {content?.map((item, index) => (
+              {messages?.map((item, index) => (
                 <li
                   key={index}
                   className="mb-4 text-sm leading-relaxed w-full min-w-0 break-words"
@@ -246,7 +244,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
             aria-labelledby="thinking-search-title"
           >
             <ul className={cnUtil("space-y-4 w-full min-w-0", animationEnded ? "max-h-full" : "")}>
-              {content?.map((item, index) => (
+              {messages?.map((item, index) => (
                 <li
                   key={index}
                   className={cnUtil(

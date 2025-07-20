@@ -4,14 +4,14 @@ import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface LineListItemProps {
-  numberOfLine: number;
-  contenu: string;
+  lineNumber: number;
+  content: string;
   loading?: boolean;
 }
 
 interface AnimatedProcessListProps {
   title?: string;
-  lines?: string[];
+  processSteps?: string[];
   className?: string;
   scrollDirection?: "up" | "down";
   animationSpeed?: "slow" | "normal" | "fast";
@@ -28,8 +28,8 @@ const SkeletonItem: React.FC = () => (
 );
 
 const LineListItem: React.FC<LineListItemProps> = ({
-  numberOfLine,
-  contenu,
+  lineNumber,
+  content,
   loading = false,
 }) => {
   if (loading) {
@@ -39,10 +39,10 @@ const LineListItem: React.FC<LineListItemProps> = ({
   return (
     <li className="flex items-center justify-start gap-2 py-4 h-8 px-2 w-full rounded-lg hover:bg-neutral-300/30 dark:hover:bg-neutral-700/30">
       <div className="text-sm font-mono text-red-800 dark:text-neutral-400">
-        {numberOfLine}
+        {lineNumber}
       </div>
       <p className="text-sm line-clamp-1 overflow-hidden text-ellipsis text-neutral-800 dark:text-gray-200">
-        {contenu}
+        {content}
       </p>
     </li>
   );
@@ -50,7 +50,7 @@ const LineListItem: React.FC<LineListItemProps> = ({
 
 const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>(({
   title = "Generating elements for your web page",
-  lines = [],
+  processSteps = [],
   className,
   scrollDirection = "up",
   animationSpeed = "normal",
@@ -72,7 +72,7 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
 
   // Initialisation et gestion du skeleton/révélation
   useEffect(() => {
-    setRevealedLines(new Array(lines.length).fill(false));
+    setRevealedLines(new Array(processSteps.length).fill(false));
     setIsSkeletonPhase(true);
 
     const skeletonTimer = setTimeout(() => {
@@ -97,7 +97,7 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
     }, skeletonDuration);
 
     return () => clearTimeout(skeletonTimer);
-  }, [lines.length, skeletonDuration, lineRevealDelay, onAnimationEnd]);
+  }, [processSteps.length, skeletonDuration, lineRevealDelay, onAnimationEnd]);
 
   // Animation de scroll continue
   useEffect(() => {
@@ -175,11 +175,11 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
           </div>
 
           <ul ref={contentRef} className="absolute bg-transparent z-0 w-full space-y-1">
-            {lines.map((contenu, idx) => (
+            {processSteps.map((content, idx) => (
               <div key={`line-container-${idx}`} className={revealedLines[idx] ? "line-reveal" : ""}>
                 <LineListItem
-                  numberOfLine={idx + 112}
-                  contenu={contenu}
+                  lineNumber={idx + 112}
+                  content={content}
                   loading={isSkeletonPhase || !revealedLines[idx]}
                 />
               </div>

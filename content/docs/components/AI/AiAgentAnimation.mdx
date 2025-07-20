@@ -16,29 +16,25 @@ import AiAgentAnimation from "@/components/LY UI/AI/AiAgentAnimation"
 
 ## Props
 
-| Prop           | Type                         | Default     | Description                                                                 |
-|----------------|-----------------------------|-------------|-----------------------------------------------------------------------------|
-| `title`        | `string`                    | "Agent"     | The title displayed before the percentage                                   |
-| `duration`     | `number`                    | 3000        | Animation duration in milliseconds                                          |
-| `onComplete`   | `() => void`                | -           | Callback called at the end of the animation                                 |
-| `onStart`      | `() => void`                | -           | Callback called when the animation starts                                   |
-| `onStop`       | `() => void`                | -           | Callback called when the animation stops                                    |
-| `onReset`      | `() => void`                | -           | Callback called when the animation is reset                                 |
-| `rows`         | `number`                    | 3           | Number of dot rows                                                          |
-| `columns`      | `number`                    | auto        | Number of dot columns (auto-calculated if not specified)                    |
-| `dotType`      | `'round' | 'square'`        | "round"     | Shape of the dots                                                           |
-| `pauseDuration`| `number`                    | 500         | Pause duration between each cycle (ms)                                      |
-| `isRunning`    | `boolean`                   | false       | External control of the animation state                                     |
-| `className`    | `string`                    | -           | Additional CSS class                                                        |
+| Prop                    | Type                         | Default     | Description                                                                 |
+|-------------------------|-----------------------------|-------------|-----------------------------------------------------------------------------|
+| `title`                 | `string`                    | "Agent"     | The title displayed before the percentage                                   |
+| `duration`              | `number`                    | 3000        | Animation duration in milliseconds                                          |
+| `onAnimationComplete`   | `() => void`                | -           | Callback called at the end of the animation                                 |
+| `onAnimationStart`      | `() => void`                | -           | Callback called when the animation starts                                   |
+| `onAnimationStop`       | `() => void`                | -           | Callback called when the animation stops                                    |
+| `onAnimationReset`      | `() => void`                | -           | Callback called when the animation is reset                                 |
+| `rows`                  | `number`                    | 3           | Number of dot rows                                                          |
+| `columns`               | `number`                    | auto        | Number of dot columns (auto-calculated if not specified)                    |
+| `dotType`               | `'round' | 'square'`        | "round"     | Shape of the dots                                                           |
+| `pauseDuration`         | `number`                    | 500         | Pause duration between each cycle (ms)                                      |
+| `isRunning`             | `boolean`                   | false       | External control of the animation state                                     |
+| `className`             | `string`                    | -           | Additional CSS class                                                        |
 
 ## Usage Example
 
 ```tsx
 import AiAgentAnimation from "@/components/LY UI/AI/AiAgentAnimation";
 
-<AiAgentAnimation title="Loading" duration={8000} onComplete={() => alert('Done!')} />
+<AiAgentAnimation title="Loading" duration={8000} onAnimationComplete={() => alert('Done!')} />
 ```
-
-
-
-

@@ -9,16 +9,15 @@ import DotGrid from "./dotsGrid";
 interface AiAgentAnimationProps {
   title?: string;
   duration?: number;
-  onComplete?: () => void;
+  onAnimationComplete?: () => void;
   columns?: number;
   rows?: number;
   className?: string;
-  blinkDuration?: number;
   pauseDuration?: number;
   isRunning?: boolean;
-  onStart?: () => void;
-  onStop?: () => void;
-  onReset?: () => void;
+  onAnimationStart?: () => void;
+  onAnimationStop?: () => void;
+  onAnimationReset?: () => void;
   dotType?: 'round' | 'square';
 }
 
@@ -27,16 +26,15 @@ const DEFAULT_ROWS = 3;
 const AiAgentAnimation = forwardRef<HTMLDivElement, AiAgentAnimationProps>(({
   title = "Agent",
   duration = 3000,
-  onComplete,
+  onAnimationComplete,
   className,
   rows = DEFAULT_ROWS,
   columns,
-  blinkDuration = 2000,
   pauseDuration = 500,
   isRunning = false,
-  onStart,
-  onStop,
-  onReset,
+  onAnimationStart,
+  onAnimationStop,
+  onAnimationReset,
   dotType = 'round',
   ...props
 }, ref) => {
@@ -48,10 +46,10 @@ const AiAgentAnimation = forwardRef<HTMLDivElement, AiAgentAnimationProps>(({
     duration,
     pauseDuration,
     isRunning,
-    onStart,
-    onStop,
-    onReset,
-    onComplete
+    onStart: onAnimationStart,
+    onStop: onAnimationStop,
+    onReset: onAnimationReset,
+    onComplete: onAnimationComplete
   });
 
   return (

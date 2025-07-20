@@ -7,23 +7,23 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-type GeneratedAnswer = {
+type GeneratedAnswerProps = {
   className?: string;
-  GeneratedAnswer?: string;
-  hours?: string;
+  content?: string;
+  timestamp?: string;
 };
 
-const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswer>(({
-  GeneratedAnswer,
+const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
+  content,
   className,
-  hours = "00:00",
+  timestamp = "00:00",
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    if (GeneratedAnswer) {
-      navigator.clipboard.writeText(GeneratedAnswer);
+    if (content) {
+      navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     }
@@ -37,11 +37,11 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswer>(({
 
   return (
     <div ref={ref} className="flex flex-col w-full gap-2 max-w-lg" {...props}>
-      <div className={cn("min-h-72 w-full", className)}>{GeneratedAnswer}</div>
+      <div className={cn("min-h-72 w-full", className)}>{content}</div>
 
       <div className="w-full flex justify-between items-center">
         <div>
-          <span className="text-sm text-neutral-400">{hours}</span>
+          <span className="text-sm text-neutral-400">{timestamp}</span>
         </div>
 
         <div className="flex gap-2">

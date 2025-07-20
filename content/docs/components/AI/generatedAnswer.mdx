@@ -8,7 +8,7 @@ import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
 
 <Preview link="generatedAnswer" >
  <GeneratedAnswer className="mt-8 w-full"
-  GeneratedAnswer="Artificial intelligence is revolutionizing drug sales by optimizing inventory management, personalizing recommendations for patients, and facilitating fraud detection. It also enhances the customer experience through virtual assistants and accelerates the discovery of new treatments. However, its use raises important ethical and regulatory questions." />
+  content="Artificial intelligence is revolutionizing drug sales by optimizing inventory management, personalizing recommendations for patients, and facilitating fraud detection. It also enhances the customer experience through virtual assistants and accelerates the discovery of new treatments. However, its use raises important ethical and regulatory questions." />
 
 </Preview>
 
@@ -16,9 +16,9 @@ import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `GeneratedAnswer` | `string` | `undefined` | The content of the AI-generated answer |
+| `content` | `string` | `undefined` | The content of the AI-generated answer |
 | `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `hours` | `string` | `"00:00"` | Time displayed at the bottom of the answer |
+| `timestamp` | `string` | `"00:00"` | Time displayed at the bottom of the answer |
 
 ## forwardRef and ref management
 
@@ -47,8 +47,8 @@ const MyComponent = () => {
   return (
     <GeneratedAnswer
       ref={answerRef}
-      GeneratedAnswer="AI is revolutionizing drug sales by optimizing inventory management."
-      hours="12:34"
+      content="AI is revolutionizing drug sales by optimizing inventory management."
+      timestamp="12:34"
       className="w-full"
     />
   );
@@ -59,8 +59,8 @@ const MyComponent = () => {
 
 ```jsx
 <GeneratedAnswer
-  GeneratedAnswer="AI is revolutionizing drug sales by optimizing inventory management."
-  hours="12:34"
+  content="AI is revolutionizing drug sales by optimizing inventory management."
+  timestamp="12:34"
   className="w-full"
 />
 ```

@@ -9,7 +9,7 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
 <Preview link="thinkingSearchAnimation">
    <ThinkingSearchAnimation
             className="max-w-sm"
-            content={[
+            messages={[
               "Intelligent search in progress, please wait while we analyze your question and look for the best possible answer. We use advanced algorithms to understand the context and your intentions.",
               "We are searching through vast databases and reliable resources to collect the most relevant information for your request.",
               "Our system compiles and analyzes the gathered data to generate a clear, precise, and tailored answer to your question.",
@@ -35,13 +35,12 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
 
 | Prop                  | Type                              | Default     | Description                                                        |
 |-----------------------|-----------------------------------|-------------|--------------------------------------------------------------------|
-| `content`             | `string[]`                        | `[]`        | Array of text content to display in the animation                  |
+| `messages`            | `string[]`                        | `[]`        | Array of text content to display in the animation                  |
 | `className`           | `string`                          | `undefined` | Additional CSS classes for styling                                 |
 | `scrollDirection`     | `"up" \| "down"`                  | `"up"`      | Direction of the scrolling animation                               |
 | `animationSpeed`      | `"slow" \| "normal" \| "fast"`     | `"normal"`  | Speed of the animation                                             |
 | `variant`             | `"default" \| "ghost" \| "outline"`| `"default"` | Visual style variant of the component                              |
-| `step`                | `number`                          | `undefined` | Optional step index for advanced control                           |
-| `callBackAnimationEnd`| `() => void`                      | `undefined` | Callback called when the animation ends                            |
+| `onAnimationEnd`      | `() => void`                      | `undefined` | Callback called when the animation ends                            |
 
 ### Example Usage
 
@@ -49,7 +48,7 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
 import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimation";
 
 <ThinkingSearchAnimation
-  content={[
+  messages={[
     "Analyzing your question...",
     "Searching for relevant information...",
     "Compiling the best answer...",
@@ -59,7 +58,6 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
   animationSpeed="normal"
   className="max-w-md"
   variant="default"
-  step={1}
-  callBackAnimationEnd={() => console.log('Animation ended')}
+  onAnimationEnd={() => console.log('Animation ended')}
 />
 ```
