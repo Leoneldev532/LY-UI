@@ -4,7 +4,7 @@
   "homepage": "https://ly-ui.leonelyimga.com",
   "items": [
     {
-      "name": "ai-searchbar",
+      "name": "AiSearchbar",
       "type": "registry:component",
       "title": "AI Search Bar",
       "dependencies": [
@@ -34,7 +34,7 @@
       ]
     },
     {
-      "name": "tagButton",
+      "name": "TagButton",
       "type": "registry:component",
       "title": "Tag Button",
       "dependencies": [
@@ -74,7 +74,7 @@
       ]
     },
     {
-      "name": "animatedProcessList",
+      "name": "AnimatedProcessList",
       "type": "registry:component",
       "title": "Custom Animated process List",
       "dependencies": [
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "name": "particleAnimation",
+      "name": "ParticleAnimation",
       "type": "registry:component",
       "title": "Particle Animation animation ",
       "dependencies": [
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "name": "audioInteraction",
+      "name": "AudioInteraction",
       "type": "registry:component",
       "title": "audio Interaction ",
       "dependencies": [
@@ -133,7 +133,7 @@
       ]
     },
     {
-      "name": "generatedAnswer",
+      "name": "GeneratedAnswer",
       "type": "registry:component",
       "title": "generated Answer ",
       "dependencies": [
@@ -161,35 +161,7 @@
       ]
     },
     {
-      "name": "generatedAnswer",
-      "type": "registry:component",
-      "title": "generated Answer ",
-      "dependencies": [
-        "react",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "button",
-        "dropdown-menu"
-      ],
-      "description": "Displays an AI-generated answer with animation",
-      "files": [
-        {
-          "path": "components/LY UI/AI/generatedAnswer.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "components/ui/button.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/utils.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
-      "name": "thinkingSearchAnimation",
+      "name": "ThinkingSearchAnimation",
       "type": "registry:component",
       "title": " Thinking animation for intelligent search",
       "dependencies": [
@@ -222,7 +194,7 @@
       ]
     },
     {
-      "name": "resizableSeparator",
+      "name": "ResizableSeparator",
       "type": "registry:component",
       "title": "Resizable Separator",
       "dependencies": [
@@ -272,7 +244,7 @@
       ]
     },
     {
-      "name": "generatedImageCard",
+      "name": "GeneratedImageCard",
       "type": "registry:component",
       "title": "Generated Image Card",
       "registryDependencies": [
@@ -300,7 +272,7 @@
       ]
     },
     {
-      "name": "resizeExample",
+      "name": "ResizeExample",
       "type": "registry:component",
       "title": "resizable Example",
       "dependencies": [
@@ -319,7 +291,7 @@
       ]
     },
     {
-      "name": "animatedProcessList_Lovable",
+      "name": "AnimatedProcessListLovable",
       "type": "registry:component",
       "title": "animated Process List Lovable",
       "dependencies": [

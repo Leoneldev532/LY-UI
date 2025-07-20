@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "animatedProcessList",
+  "name": "AnimatedProcessList",
   "type": "registry:component",
   "title": "Custom Animated process List",
   "description": "Custom process List ",

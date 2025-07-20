@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "resizableSeparator",
+  "name": "ResizableSeparator",
   "type": "registry:component",
   "title": "Resizable Separator",
   "description": "Use it to manage space",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "ai-searchbar",
+  "name": "AiSearchbar",
   "type": "registry:component",
   "title": "AI Search Bar",
   "description": "Smart search bar",

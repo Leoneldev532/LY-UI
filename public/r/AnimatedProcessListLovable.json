@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "animatedProcessList_Lovable",
+  "name": "AnimatedProcessListLovable",
   "type": "registry:component",
   "title": "animated Process List Lovable",
   "description": " Displays an AI-generated image in a styled card",

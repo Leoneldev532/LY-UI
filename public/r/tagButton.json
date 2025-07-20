@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "tagButton",
+  "name": "TagButton",
   "type": "registry:component",
   "title": "Tag Button",
   "description": "A customizable tag button component with icon support, dropdown support, and forwardRef integration.",

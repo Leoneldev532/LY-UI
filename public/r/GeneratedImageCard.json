@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "generatedImageCard",
+  "name": "GeneratedImageCard",
   "type": "registry:component",
   "title": "Generated Image Card",
   "description": " Displays an AI-generated image in a styled card",

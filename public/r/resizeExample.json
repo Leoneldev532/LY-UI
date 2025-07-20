@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "resizeExample",
+  "name": "ResizeExample",
   "type": "registry:component",
   "title": "resizable Example",
   "description": " Displays an AI-generated image in a styled card",
