@@ -7,7 +7,9 @@
       "name": "ai-searchbar",
       "type": "registry:component",
       "title": "AI Search Bar",
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [
         "button",
         "textarea",
@@ -35,8 +37,11 @@
       "name": "tagButton",
       "type": "registry:component",
       "title": "Tag Button",
-      "dependencies": ["react", "lucide-react", "motion"],
-      "registryDependencies": ["Button","button"],
+      "dependencies": [
+        "react",
+        "lucide-react",
+        "motion"
+      ],
       "description": "A customizable tag button component with icon support, dropdown support, and forwardRef integration.",
       "files": [
         {
@@ -57,7 +62,9 @@
       "name": "stepProgressTimeline",
       "type": "registry:component",
       "title": "Step Progress Timeline V0",
-      "dependencies": ["lucide-react"],
+      "dependencies": [
+        "lucide-react"
+      ],
       "description": "Custom Step Progress Timeline inspired by @V0",
       "files": [
         {
@@ -70,7 +77,10 @@
       "name": "animatedProcessList",
       "type": "registry:component",
       "title": "Custom Animated process List",
-      "dependencies": ["lucide-react", "react"],
+      "dependencies": [
+        "lucide-react",
+        "react"
+      ],
       "description": "Custom process List ",
       "files": [
         {
@@ -83,7 +93,9 @@
       "name": "particleAnimation",
       "type": "registry:component",
       "title": "Particle Animation animation ",
-      "dependencies": ["react"],
+      "dependencies": [
+        "react"
+      ],
       "description": "Particle Animation animation ",
       "files": [
         {
@@ -96,7 +108,10 @@
       "name": "audioInteraction",
       "type": "registry:component",
       "title": "audio Interaction ",
-      "dependencies": ["react", "button"],
+      "dependencies": [
+        "react",
+        "button"
+      ],
       "description": "audio interaction",
       "files": [
         {
@@ -111,7 +126,7 @@
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
         },
-         {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
@@ -121,8 +136,14 @@
       "name": "generatedAnswer",
       "type": "registry:component",
       "title": "generated Answer ",
-      "dependencies": ["react", "lucide-react"],
-      "registryDependencies": ["button", "dropdown-menu"],
+      "dependencies": [
+        "react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu"
+      ],
       "description": "Displays an AI-generated answer with animation",
       "files": [
         {
@@ -133,7 +154,7 @@
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
         },
-           {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
@@ -143,8 +164,14 @@
       "name": "generatedAnswer",
       "type": "registry:component",
       "title": "generated Answer ",
-      "dependencies": ["react", "lucide-react"],
-      "registryDependencies": ["button", "dropdown-menu"],
+      "dependencies": [
+        "react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu"
+      ],
       "description": "Displays an AI-generated answer with animation",
       "files": [
         {
@@ -155,7 +182,7 @@
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
         },
-           {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
@@ -165,8 +192,15 @@
       "name": "thinkingSearchAnimation",
       "type": "registry:component",
       "title": " Thinking animation for intelligent search",
-      "dependencies": ["react", "lucide-react", "class-variance-authority"],
-      "registryDependencies": ["button", "dropdown-menu"],
+      "dependencies": [
+        "react",
+        "lucide-react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu"
+      ],
       "description": "Displays an AI-generated answer with animation",
       "files": [
         {
@@ -181,7 +215,7 @@
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
         },
-           {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
@@ -191,58 +225,75 @@
       "name": "resizableSeparator",
       "type": "registry:component",
       "title": "Resizable Separator",
-      "dependencies": ["react", "lucide-react", "class-variance-authority"],
+      "dependencies": [
+        "react",
+        "lucide-react",
+        "class-variance-authority"
+      ],
       "description": "Use it to manage space",
       "files": [
         {
           "path": "components/LY UI/AI/resizableSeparator.tsx",
           "type": "registry:component"
         },
-           {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
       ]
     },
-     {
+    {
       "name": "EditableQuestion",
       "type": "registry:component",
       "title": "Editable Question",
-      "registryDependencies": ["button", "textarea"],
-      "dependencies": ["react", "lucide-react", "class-variance-authority"],
+      "registryDependencies": [
+        "button",
+        "textarea"
+      ],
+      "dependencies": [
+        "react",
+        "lucide-react",
+        "class-variance-authority"
+      ],
       "description": "Use it to manage space",
       "files": [
         {
           "path": "components/LY UI/AI/editableQuestion.tsx",
           "type": "registry:component"
         },
-             {
+        {
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
         },
-           {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
       ]
     },
-     {
+    {
       "name": "generatedImageCard",
       "type": "registry:component",
       "title": "Generated Image Card",
-      "registryDependencies": ["button", "dropdown-menu"],
-      "dependencies": ["react", "lucide-react"],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu"
+      ],
+      "dependencies": [
+        "react",
+        "lucide-react"
+      ],
       "description": " Displays an AI-generated image in a styled card",
       "files": [
         {
           "path": "components/LY UI/AI/GeneratedImageCard.tsx",
           "type": "registry:component"
         },
-             {
+        {
           "path": "components/ui/button.tsx",
           "type": "registry:ui"
         },
-           {
+        {
           "path": "lib/utils.ts",
           "type": "registry:lib"
         }
@@ -252,16 +303,16 @@
       "name": "resizeExample",
       "type": "registry:component",
       "title": "resizable Example",
-      "dependencies": ["react"],
-
-      "registryDependencies": ["resizableSeparator"],
+      "dependencies": [
+        "react"
+      ],
       "description": " Displays an AI-generated image in a styled card",
       "files": [
-         {
+        {
           "path": "components/example/resizeExample.tsx",
           "type": "registry:component"
         },
-        { 
+        {
           "path": "components/LY UI/AI/resizableSeparator.tsx",
           "type": "registry:component"
         }
@@ -271,10 +322,13 @@
       "name": "animatedProcessList_Lovable",
       "type": "registry:component",
       "title": "animated Process List Lovable",
-      "dependencies": ["react","lucide-react"],
+      "dependencies": [
+        "react",
+        "lucide-react"
+      ],
       "description": " Displays an AI-generated image in a styled card",
       "files": [
-         {
+        {
           "path": "components/LY UI/AI/animatedProcessList_Lovable.tsx",
           "type": "registry:component"
         },
@@ -288,8 +342,15 @@
       "name": "AiAgentAnimation",
       "type": "registry:component",
       "title": "AI Agent Animation",
-      "dependencies": ["react", "class-variance-authority"],
-      "registryDependencies": ["button", "dropdown-menu", "textarea"],
+      "dependencies": [
+        "react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu",
+        "textarea"
+      ],
       "description": "Animated agent progress bar with customizable dots, callbacks, and control.",
       "files": [
         {
@@ -322,6 +383,5 @@
         }
       ]
     }
-
   ]
 }

@@ -12,9 +12,10 @@ const Header = () => {
     setSearchIsOpen(true);
   };
 
-  return (
-    <header className="flex h-16 py-4 flex-col w-full md:px-0 px-4  max-w-3xl justify-between   items-start ">
   
+  return (
+    <header className="flex h-16 py-8 flex-col w-full md:px-0 px-4  max-w-3xl justify-between   items-start ">
+
       <div className="flex w-full items-center justify-between">
         <Link href="/">
           <svg
@@ -48,7 +49,7 @@ const Header = () => {
         </Link>
         <button
           className="ml-4 p-2 cursor-pointer bg-neutral-100 dark:bg-neutral-700 rounded-full
-           hover:bg-gray-100 dark:hover:bg-neutral-500 
+           hover:bg-gray-100 dark:hover:bg-neutral-500
           transition-colors"
           onClick={handleOpenSearchBar}
           aria-label="Ouvrir la recherche"
@@ -80,7 +81,7 @@ const Header = () => {
           </svg>
         </button>
       </div>
-   
+
       <DefaultSearchDialog
         onOpenChange={(open) => setSearchIsOpen(open)}
         open={searchIsOpen}
