@@ -7,9 +7,6 @@
   "dependencies": [
     "react"
   ],
-  "registryDependencies": [
-    "resizableSeparator"
-  ],
   "files": [
     {
       "path": "components/example/resizeExample.tsx",
