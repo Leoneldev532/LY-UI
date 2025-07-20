@@ -5,14 +5,14 @@ import { useState, useEffect, useRef, forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
 interface LineListItemProps {
-  numberOfLine: number
-  contenu: string
+  lineNumber: number
+  content: string
   loading?: boolean
 }
 
 interface AnimatedProcessListProps {
   title?: string
-  lignes?: string[]
+  processSteps?: string[]
   className?: string
   scrollDirection?: "up" | "down"
   animationSpeed?: "slow" | "normal" | "fast"
@@ -28,16 +28,16 @@ const SkeletonItem: React.FC = () => (
   </div>
 )
 
-const LineListItem: React.FC<LineListItemProps> = ({ numberOfLine, contenu, loading = false }) => {
+const LineListItem: React.FC<LineListItemProps> = ({ lineNumber, content, loading = false }) => {
   if (loading) {
     return <SkeletonItem />
   }
 
   return (
     <li className="flex items-center justify-start gap-2 py-4 h-12 px-2 w-full rounded-lg hover:bg-neutral-300/30 dark:hover:bg-neutral-700/30">
-      <div className="text-sm font-mono text-red-800 dark:text-neutral-400 min-w-[2rem]">{numberOfLine}</div>
+      <div className="text-sm font-mono text-red-800 dark:text-neutral-400 min-w-[2rem]">{lineNumber}</div>
       <p className="text-sm line-clamp-1 overflow-hidden text-ellipsis text-neutral-800 dark:text-gray-200">
-        {contenu}
+        {content}
       </p>
     </li>
   )
@@ -45,7 +45,7 @@ const LineListItem: React.FC<LineListItemProps> = ({ numberOfLine, contenu, load
 
 const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>(({
   title = "Génération d'éléments pour votre page web",
-  lignes = [
+  processSteps = [
     "Initialisation du composant principal",
     "Configuration des styles Tailwind",
     "Création de la structure HTML",
@@ -79,7 +79,7 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
 
   // Initialisation et gestion du skeleton/révélation
   useEffect(() => {
-    setRevealedLines(new Array(lignes.length).fill(false))
+    setRevealedLines(new Array(processSteps.length).fill(false))
     setIsSkeletonPhase(true)
     setStartAnimation(false)
 
@@ -107,10 +107,10 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
     }, skeletonDuration)
 
     return () => clearTimeout(skeletonTimer)
-  }, [lignes.length, skeletonDuration, lineRevealDelay, onAnimationEnd])
+  }, [processSteps.length, skeletonDuration, lineRevealDelay, onAnimationEnd])
 
   // Dupliquer les lignes pour l'animation infinie
-  const duplicatedLines = [...lignes, ...lignes]
+  const duplicatedLines = [...processSteps, ...processSteps]
 
   return (
     <>
@@ -190,16 +190,16 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
             )}
           >
             <ul className="space-y-1 px-4">
-              {(startAnimation ? duplicatedLines : lignes).map((contenu, idx) => {
-                const originalIndex = idx % lignes.length
+              {(startAnimation ? duplicatedLines : processSteps).map((content, idx) => {
+                const originalIndex = idx % processSteps.length
                 const isRevealed = startAnimation || revealedLines[originalIndex]
 
                 return (
                   <div key={`line-container-${idx}`} className={isRevealed && !isSkeletonPhase ? "line-reveal" : ""}>
                     <LineListItem
-                      numberOfLine={originalIndex + 112}
-                      contenu={contenu}
-                      loading={isSkeletonPhase || !isRevealed}
+                      lineNumber={originalIndex + 112}
+                      content={content}
+                      loading={isSkeletonPhase}
                     />
                   </div>
                 )
@@ -209,8 +209,8 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
         </div>
       </div>
     </>
-  );
-});
+  )
+})
 
 AnimatedProcessList.displayName = 'AnimatedProcessList';
 export default AnimatedProcessList;

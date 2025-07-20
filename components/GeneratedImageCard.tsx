@@ -23,11 +23,11 @@ import {
 
 interface GeneratedImageCardProps {
   src?: string | Blob | StaticImport;
-  title?: string | null;
+  imageTitle?: string | null;
   width?: number;
   height?: number;
   className?: string;
-  hours?: string;
+  timestamp?: string;
   prompt?: string;
   onLike?: () => void;
   onDislike?: () => void;
@@ -36,11 +36,11 @@ interface GeneratedImageCardProps {
 
 const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>(({
   src = "https://via.placeholder.com/150",
-  title,
+  imageTitle,
   width = 2225,
   height = 2465,
   className,
-  hours = "00:00",
+  timestamp = "00:00",
   prompt = "",
   onLike,
   onDislike,
@@ -78,7 +78,7 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
 
   const handleDownload = async () => {
     let url = "";
-    let filename = title ?? "image";
+    let filename = imageTitle ?? "image";
 
     if (src instanceof Blob) {
       url = URL.createObjectURL(src);
@@ -127,7 +127,7 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
         )}
         <Image
           src={imageSrc}
-          alt={title ?? "Generated image"}
+          alt={imageTitle ?? "Generated image"}
           width={width}
           height={height}
           sizes="(min-width: 1351px) 416px, (min-width: 992px) calc(calc(100vw - 88px) / 3), (min-width: 768px) calc(calc(100vw - 64px) / 2), 100vw"
@@ -153,7 +153,7 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
 
       <div className="flex gap-3 justify-between w-full items-center">
         <div>
-          <span className="text-sm text-neutral-400">{hours}</span>
+          <span className="text-sm text-neutral-400">{timestamp}</span>
         </div>
 
         <div className="flex gap-2">
@@ -200,46 +200,9 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
                 <RefreshCwIcon className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className={cn(
-                "min-w-[12rem]",
-                "border-black/10 mt-1 rounded-xl dark:border-white/10",
-                "bg-neutral-100 dark:bg-neutral-900"
-              )}
-            >
-              <DropdownMenuItem
-                className="rounded-lg h-9 cursor-pointer hover:!bg-neutral-200 dark:hover:!bg-neutral-200/20 gap-2"
-                onClick={handleRegenerate}
-              >
-                Ajouter un commentaire
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="rounded-lg h-9 cursor-pointer hover:!bg-neutral-200 dark:hover:!bg-neutral-200/20 gap-2"
-                onClick={handleRegenerate}
-              >
-                Sans commentaire
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="bg-transparent dark:hover:bg-neutral-200/40 dark:bg-neutral-700/20 hover:bg-neutral-200/40 px-1.5 py-0.5 md:p-2"
-                title="Plus d'options"
-              >
-                <Ellipsis className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className={cn(
-                "min-w-[12rem]",
-                "border-black/10 mt-1 rounded-xl dark:border-white/10",
-                "bg-neutral-100 dark:bg-neutral-900"
-              )}
-            >
-              <DropdownMenuItem className="rounded-lg h-9 cursor-pointer hover:!bg-neutral-200 dark:hover:!bg-neutral-200/20 gap-2">
-                Signaler un problème
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={handleRegenerate}>
+                Régénérer l'image
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -20,7 +20,7 @@ export default function AiAgentAnimationExample() {
   const handleReset = () => {
     setIsRunning(false);
     setHasStarted(false);
-    setAnimationKey((prev) => prev + 1); 
+    setAnimationKey((prev) => prev + 1);
     console.log("Animation reset");
   };
 
@@ -47,10 +47,10 @@ export default function AiAgentAnimationExample() {
         dotType="square"
         className="w-1/2"
         isRunning={isRunning}
-        onStart={handleStart}
-        onStop={handleStop}
-        onReset={handleReset}
-        onComplete={handleComplete}
+        onAnimationStart={handleStart}
+        onAnimationStop={handleStop}
+        onAnimationReset={handleReset}
+        onAnimationComplete={handleComplete}
         rows={3}
         // columns={45}
         duration={40000}
