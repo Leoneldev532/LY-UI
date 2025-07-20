@@ -320,7 +320,7 @@
       "description": "A section for displaying code snippets with optional syntax highlighting.",
       "files": [
         {
-          "path": "components/LY UI/AI/codeSection.tsx",
+          "path": "components/LY UI/CODING/codeSection.tsx",
           "type": "registry:component"
         }
       ]
