@@ -2,10 +2,9 @@
 import { useAnimationState } from "@/components/hooks/useAnimationState";
 import { useResponsiveColumns } from "@/components/hooks/useResponsiveColumns";
 import { cn } from "@/lib/utils";
+import React, { forwardRef } from "react";
 import AnimationStatus from "./AnimationStatus";
 import DotGrid from "./dotsGrid";
-
-
 
 interface AiAgentAnimationProps {
   title?: string;
@@ -25,7 +24,7 @@ interface AiAgentAnimationProps {
 
 const DEFAULT_ROWS = 3;
 
-const AiAgentAnimation: React.FC<AiAgentAnimationProps> = ({
+const AiAgentAnimation = forwardRef<HTMLDivElement, AiAgentAnimationProps>(({
   title = "Agent",
   duration = 3000,
   onComplete,
@@ -39,9 +38,10 @@ const AiAgentAnimation: React.FC<AiAgentAnimationProps> = ({
   onStop,
   onReset,
   dotType = 'round',
-}) => {
+  ...props
+}, ref) => {
   const { computedColumns, dotsContainerRef } = useResponsiveColumns(columns);
-  
+
   const animationState = useAnimationState({
     rows,
     columns: computedColumns,
@@ -55,7 +55,11 @@ const AiAgentAnimation: React.FC<AiAgentAnimationProps> = ({
   });
 
   return (
-    <div className={cn("flex flex-col items-start justify-start px-4 gap-2 w-full", className)}>
+    <div
+      ref={ref}
+      className={cn("flex flex-col items-start justify-start px-4 gap-2 w-full", className)}
+      {...props}
+    >
       <AnimationStatus
         title={title}
         phase={animationState.phase}
@@ -63,7 +67,7 @@ const AiAgentAnimation: React.FC<AiAgentAnimationProps> = ({
         elapsedTime={animationState.elapsedTime}
         computedColumns={computedColumns}
       />
-      
+
       <DotGrid
         dotStates={animationState.dotStates}
         phase={animationState.phase}
@@ -74,6 +78,7 @@ const AiAgentAnimation: React.FC<AiAgentAnimationProps> = ({
       />
     </div>
   );
-};
+});
 
+AiAgentAnimation.displayName = "AiAgentAnimation";
 export default AiAgentAnimation;
