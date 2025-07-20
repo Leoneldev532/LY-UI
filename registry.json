@@ -311,6 +311,21 @@
       ]
     },
     {
+      "name": "CodeSection",
+      "type": "registry:component",
+      "title": "Code Section",
+      "dependencies": [
+        "react"
+      ],
+      "description": "A section for displaying code snippets with optional syntax highlighting.",
+      "files": [
+        {
+          "path": "components/LY UI/AI/codeSection.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "AiAgentAnimation",
       "type": "registry:component",
       "title": "AI Agent Animation",
