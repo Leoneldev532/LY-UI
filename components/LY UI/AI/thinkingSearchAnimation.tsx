@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import useScrollYAnimation from "@/components/hooks/useScrollYAnimation";
 
@@ -11,20 +11,26 @@ const cnUtil = typeof cn !== "undefined" ? cn : cnFallback;
 
 type ThinkingSearchAnimationProps = {
   variant?: "default" | "ghost" | "outline";
+  streamingText?: string;
   messages?: string[];
   onAnimationEnd?: () => void;
   className?: string;
   scrollDirection?: "up" | "down";
   animationSpeed?: "slow" | "normal" | "fast";
+  minParagraphLength?: number;
+  sentenceEndPattern?: RegExp;
 };
 
 const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimationProps>(({
   variant,
+  streamingText,
   messages,
   onAnimationEnd,
   className,
   scrollDirection = "up",
   animationSpeed = "normal",
+  minParagraphLength = 50,
+  sentenceEndPattern = /[.!?]\s+/g,
   ...props
 }, ref) => {
   const [animationEnded, setAnimationEnded] = useState(false);
@@ -34,6 +40,59 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
   const [contentHeight, setContentHeight] = useState(200);
   const timerRef = useRef(0);
   const measureRef = useRef<HTMLDivElement>(null);
+
+  // Process streaming text into paragraphs
+  const processedMessages = useMemo(() => {
+    if (messages && messages.length > 0) {
+      return messages;
+    }
+
+    if (!streamingText) {
+      return [];
+    }
+
+    // Split by double line breaks first (natural paragraphs)
+    let paragraphs = streamingText.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+
+    // If no natural paragraphs found, split by sentences and group them
+    if (paragraphs.length <= 1) {
+      const sentences = streamingText.split(sentenceEndPattern).filter(s => s.trim().length > 0);
+      paragraphs = [];
+
+      let currentParagraph = "";
+      for (const sentence of sentences) {
+        const trimmedSentence = sentence.trim();
+        if (!trimmedSentence) continue;
+
+        // Add sentence to current paragraph
+        currentParagraph += (currentParagraph ? " " : "") + trimmedSentence;
+
+        // If paragraph is long enough, start a new one
+        if (currentParagraph.length >= minParagraphLength) {
+          paragraphs.push(currentParagraph.trim());
+          currentParagraph = "";
+        }
+      }
+
+      // Add remaining text as final paragraph
+      if (currentParagraph.trim()) {
+        paragraphs.push(currentParagraph.trim());
+      }
+    }
+
+    // Clean up paragraphs
+    return paragraphs
+      .map(p => p.trim())
+      .filter(p => p.length > 0)
+      .map(p => {
+        // Ensure paragraphs end with proper punctuation
+        const lastChar = p.slice(-1);
+        if (!/[.!?]/.test(lastChar)) {
+          return p + (p.length > minParagraphLength ? "." : "");
+        }
+        return p;
+      });
+  }, [streamingText, messages, minParagraphLength, sentenceEndPattern]);
 
   const handleAnimationEnd = () => {
     const currentTime = timerRef.current;
@@ -46,7 +105,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    if (!animationEnded && messages && messages.length > 0) {
+    if (!animationEnded && processedMessages && processedMessages.length > 0) {
       interval = setInterval(() => {
         timerRef.current += 1;
         setTimer(timerRef.current);
@@ -55,10 +114,10 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [animationEnded, messages]);
+  }, [animationEnded, processedMessages]);
 
   useEffect(() => {
-    if (messages && messages.length > 0 && timerRef.current === 0) {
+    if (processedMessages && processedMessages.length > 0 && timerRef.current === 0) {
       console.log("Resetting states for new content");
       setTimer(0);
       timerRef.current = 0;
@@ -66,21 +125,21 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
       setAnimationEnded(false);
       setCollapsed(false);
     }
-  }, [messages]);
+  }, [processedMessages]);
 
   // Calculate content height based on actual content
   useEffect(() => {
-    if (messages && messages.length > 0 && measureRef.current) {
+    if (processedMessages && processedMessages.length > 0 && measureRef.current) {
       const measureHeight = measureRef.current.scrollHeight;
       const padding = 32; // Padding top/bottom
       const calculatedHeight = measureHeight + padding;
       const maxHeight = 400; // Maximum height during animation
       setContentHeight(Math.min(calculatedHeight, maxHeight));
     }
-  }, [messages]);
+  }, [processedMessages]);
 
   const { contentRef } = useScrollYAnimation(
-    messages || [],
+    processedMessages || [],
     scrollDirection,
     animationSpeed,
     handleAnimationEnd
@@ -133,6 +192,41 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
     }
   };
 
+  // Show loading state if no content yet
+  if (!processedMessages || processedMessages.length === 0) {
+    return (
+      <div
+        ref={ref}
+        className={cnUtil(
+          thinkingSearchAnimationVariants({ variant }),
+          "w-full max-w-xl min-w-0 overflow-hidden",
+          className
+        )}
+        {...props}
+      >
+        <div
+          className={cnUtil(
+            "text-sm p-4 flex font-semibold w-full justify-between items-center rounded-t-xl min-w-0",
+            getHeaderClasses()
+          )}
+        >
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <h5 className="whitespace-nowrap">Thinking Search</h5>
+            <span className="text-neutral-500 dark:text-neutral-400 text-xs font-normal whitespace-nowrap">
+              Waiting for content...
+            </span>
+          </div>
+        </div>
+        <div className="p-4">
+          <div className="animate-pulse">
+            <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-neutral-300 dark:bg-neutral-600 rounded w-1/2"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={ref}
@@ -152,7 +246,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
       >
         <div className="flex items-center gap-2 min-w-0 flex-1">
           <h5 className="whitespace-nowrap">Thinking Search</h5>
-          {!animationEnded && messages && messages.length > 0 && (
+          {!animationEnded && processedMessages && processedMessages.length > 0 && (
             <span className="text-neutral-500 dark:text-neutral-400 text-xs font-normal whitespace-nowrap">
               {timer}s
             </span>
@@ -223,7 +317,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
             aria-hidden="true"
           >
             <ul className="space-y-4 w-full min-w-0">
-              {messages?.map((item, index) => (
+              {processedMessages.map((item, index) => (
                 <li
                   key={index}
                   className="mb-4 text-sm leading-relaxed w-full min-w-0 break-words"
@@ -244,7 +338,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
             aria-labelledby="thinking-search-title"
           >
             <ul className={cnUtil("space-y-4 w-full min-w-0", animationEnded ? "max-h-full" : "")}>
-              {messages?.map((item, index) => (
+              {processedMessages.map((item, index) => (
                 <li
                   key={index}
                   className={cnUtil(

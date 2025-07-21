@@ -9,6 +9,7 @@ import TagButton from "@/components/LY UI/AI/tagButton";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import CodeSection from "@/components/LY UI/CODING/CodeSection";
 import PatternSVG from "../components/patternSvg";
+import ChatbotIA from "@/components/ChatbotIA";
 
 export default function HomePage() {
   // Animation state for long lines
@@ -149,7 +150,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col h-full  justify-center text-center w-full ">
       <div className="flex relative flex-col h-full gap-4 w-full justify-center items-center">
-        <div className="relative flex items-center justify-center">
+        {/* <div className="relative flex items-center justify-center">
           <svg
             className="relative left-0 top-0"
             width={300}
@@ -203,7 +204,7 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-col gap-y-3 w-full border-y border-neutral-200/20 justify-center items-center  mt-4 ">
-          <h2 className="text-2xl sm:text-3xl md:max-w-3xl max-w-lg md:text-5xl m-0 p-0 font-medium dark:text-white text-customDarkTwo text-center text-balance">
+          <h2 className="text-2xl sm:text-3xl  md:text-5xl m-0 p-0 font-medium dark:text-white text-customDarkTwo text-center text-balance">
             Unlock <span className="text-neutral-400">Free</span> Ui{" "}
             <span className="text-neutral-400">Components</span> For Your Next{" "}
             <span className="text-neutral-400">Masterpiece</span>
@@ -354,7 +355,8 @@ export default function HomePage() {
               ></path>
             </g>
           </svg>
-        </div>
+        </div> */}
+        <ChatbotIA />
       </div>
     </main>
   );
