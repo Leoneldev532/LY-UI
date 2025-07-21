@@ -6,6 +6,7 @@ import GeneratedAnswer from './LY UI/AI/generatedAnswer'
 import ThinkingSearchAnimation from './LY UI/AI/thinkingSearchAnimation'
 import GeneratedImageCard from './LY UI/AI/generatedImageCard'
 import car from "@/public/car.jpg";
+import AiAgentAnimation from './LY UI/AI/AiAgentAnimation'
 
 type QA = {
   question: string
@@ -22,6 +23,7 @@ const ChatbotIA = () => {
   const [showThinking, setShowThinking] = useState<boolean>(false)
   const [listToolsId, setListToolsId] = useState<number[]>([])
   const timeoutsRef = useRef<NodeJS.Timeout[]>([])
+  const [showAgentAnimation, setShowAgentAnimation] = useState<boolean>(false)
 
   // Nettoyage des timeouts à l'unmount
   useEffect(() => {
@@ -36,7 +38,6 @@ const ChatbotIA = () => {
     return `Réponse générée pour: "${question}"`
   }
 
-  // Affiche la réponse après un délai (ex: 2 secondes)
   const revealAnswer = (idx: number) => {
     setHistory(prev =>
       prev.map((qa, i) =>
@@ -46,10 +47,8 @@ const ChatbotIA = () => {
     setLoadingIdx(null)
   }
 
-  // Sépare la logique de soumission pour la réutiliser
   const proceedSubmit = (value: string, isImage: boolean) => {
     if (isImage) {
-      // Pour une génération d'image, on ajoute juste l'entrée avec isImage
       setHistory(prev => [
         ...prev,
         { question: value, answer: "", showAnswer: true, isImage: true }
@@ -60,7 +59,6 @@ const ChatbotIA = () => {
       setHistory(prev => {
         const idx = prev.length
         setLoadingIdx(idx)
-        // On stocke le timeout pour pouvoir le nettoyer si besoin
         const timeout = setTimeout(() => {
           revealAnswer(idx)
         }, 2000)
@@ -77,18 +75,32 @@ const ChatbotIA = () => {
   const handleSubmit = (value: string) => {
     setCurrentQuestion(value)
     const isImage = listToolsId.includes(1)
-    if (isThinkingMode || isImage) {
+    const isAgent = listToolsId.includes(4)
+    if (isAgent) {
+      setShowAgentAnimation(true)
+      setTimeout(() => {
+        setShowAgentAnimation(false)
+        if (isThinkingMode || isImage) {
+          setShowThinking(true)
+          setTimeout(() => {
+            setShowThinking(false)
+            proceedSubmit(value, isImage)
+          }, 1000)
+        } else {
+          proceedSubmit(value, isImage)
+        }
+      }, 4000)
+    } else if (isThinkingMode || isImage) {
       setShowThinking(true)
       setTimeout(() => {
         setShowThinking(false)
         proceedSubmit(value, isImage)
-      }, 1000) // 1 seconde d'animation "thinking"
+      }, 1000)
     } else {
       proceedSubmit(value, isImage)
     }
   }
 
-  // Gère la modification d'une question (retry)
   const handleRetry = (value: string) => {
     setCurrentQuestion(value)
     const isImage = listToolsId.includes(1)
@@ -105,6 +117,8 @@ const ChatbotIA = () => {
   return (
     <div className="flex w-full flex-col max-w-xl justify-center items-center">
       <div className="w-full mb-4">
+        {/* Animation Agent IA si besoin */}
+
         {history.length > 0 && (
           <div className="flex flex-col gap-4 w-full max-w-xl">
             {history.map((qa, idx) => (
@@ -153,7 +167,11 @@ const ChatbotIA = () => {
           </div>
         )}
       </div>
-
+      {showAgentAnimation && (
+        <div className="w-full mb-4">
+          <AiAgentAnimation isRunning={true} duration={2000} />
+        </div>
+      )}
 
       {showThinking && (
         <div className="w-full mb-4">

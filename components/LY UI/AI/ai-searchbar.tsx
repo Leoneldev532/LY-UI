@@ -281,6 +281,14 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
         "https://www.blogdumoderateur.com/le-chat-mistral-nouveautes-ia-concurrent-chatgpt/",
     },
     {
+      tool: "Our Agent",
+      description: "Analyze and summarize files.",
+      icon: <FileText className="w-5 h-5" />,
+      action: () => console.log("Import a file (PDF, PNG, JPG, CSV)"),
+      source:
+        "https://www.blogdumoderateur.com/le-chat-mistral-nouveautes-ia-concurrent-chatgpt/",
+    },
+    {
       tool: "Canvas Interface",
       description: "Co-create on a shared space.",
       icon: <LayoutGrid className="w-5 h-5" />,
