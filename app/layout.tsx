@@ -5,6 +5,7 @@ import { Crimson_Pro, Inter,  Lora } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -54,6 +55,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${instrument.variable} ${inter.className}`} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
+        <Toaster/>
         <RootProvider  >{children}</RootProvider>
         <Analytics />
       </body>

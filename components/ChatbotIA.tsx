@@ -115,7 +115,7 @@ const ChatbotIA = () => {
   }
 
   return (
-    <div className="flex w-full flex-col max-w-xl justify-center items-center">
+    <div className="flex w-full flex-col max-w-3xl p-4 justify-center items-center">
       <div className="w-full mb-4">
         {/* Animation Agent IA si besoin */}
 
