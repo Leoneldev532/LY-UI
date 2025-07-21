@@ -14,14 +14,15 @@ const Header = () => {
 
   
   return (
-    <header className="flex h-16 py-8 flex-col w-full md:px-0 px-4  max-w-3xl justify-between   items-start ">
+    <header className="flex h-16  flex-col w-full md:px-0 px-4 relative   border-b border-neutral-400/20 justify-between   items-start ">
 
-      <div className="flex w-full items-center justify-between">
-        <Link href="/">
+      <div className="flex w-full py-4 px-4  items-center justify-between">
+        <Link href="/" className="">
+        
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="38"
-            height="38"
+            width="30"
+            height="30"
             viewBox="0 0 39 62"
             fill="none"
           >
@@ -48,13 +49,13 @@ const Header = () => {
           </svg>
         </Link>
         <button
-          className="ml-4 p-2 cursor-pointer bg-neutral-100 dark:bg-neutral-700 rounded-full
+          className="ml-4 px-2 py-1 gap-x-2 cursor-pointer flex  bg-neutral-100 dark:bg-neutral-700 rounded-full
            hover:bg-gray-100 dark:hover:bg-neutral-500
           transition-colors"
           onClick={handleOpenSearchBar}
           aria-label="Ouvrir la recherche"
         >
-          {/* Icône loupe SVG */}
+       <span className="text-neutral-200/70"> crtl k </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -86,6 +87,8 @@ const Header = () => {
         onOpenChange={(open) => setSearchIsOpen(open)}
         open={searchIsOpen}
       />
+
+
 
 
     </header>

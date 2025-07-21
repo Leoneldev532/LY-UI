@@ -15,8 +15,9 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   // return <HomeLayout {...baseOptions}>{children}</HomeLayout>;
-  return  <div className='flex flex-col min-h-screen  items-center justify-start w-full '>   
+  return  <div className='flex flex-col min-h-screen  items-start justify-start w-full '>   
    <PatternLayout>
+    
    <Header/> 
    {children} 
    </PatternLayout>

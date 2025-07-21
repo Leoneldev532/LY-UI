@@ -10,6 +10,7 @@ import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import CodeSection from "@/components/LY UI/CODING/CodeSection";
 import PatternSVG from "../components/patternSvg";
 import ChatbotIA from "@/components/ChatbotIA";
+import { Phone } from "lucide-react";
 
 export default function HomePage() {
   // Animation state for long lines
@@ -85,8 +86,14 @@ export default function HomePage() {
               if (target) {
                 // Correction: Typage explicite et vérification de l'existence des méthodes
                 const timeline = this as unknown as gsap.core.Timeline;
-                const progress = typeof timeline.progress === "function" ? timeline.progress() : 0;
-                const totalDuration = typeof timeline.duration === "function" ? timeline.duration() : 1;
+                const progress =
+                  typeof timeline.progress === "function"
+                    ? timeline.progress()
+                    : 0;
+                const totalDuration =
+                  typeof timeline.duration === "function"
+                    ? timeline.duration()
+                    : 1;
                 const staggerDelay = index * 0.05; // Même valeur que le stagger
                 const currentTime = progress * totalDuration;
                 const elementStartTime = staggerDelay * totalDuration;
@@ -148,10 +155,10 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="flex flex-1 flex-col h-full  justify-center text-center w-full ">
-      <div className="flex relative flex-col h-full gap-4 w-full justify-center items-center">
-        {/* <div className="relative flex items-center justify-center">
-          <svg
+    <main className="flex   flex-col h-full relative justify-center  text-center w-full ">
+      <div className="flex     flex-col h-full gap-4 w-full justify-center items-center">
+        <div className="relative flex items-center justify-center">
+          <svg  
             className="relative left-0 top-0"
             width={300}
             height={300}
@@ -204,7 +211,7 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-col gap-y-3 w-full border-y border-neutral-200/20 justify-center items-center  mt-4 ">
-          <h2 className="text-2xl sm:text-3xl  md:text-5xl m-0 p-0 font-medium dark:text-white text-customDarkTwo text-center text-balance">
+          <h2 className="text-2xl sm:text-3xl max-w-xl md:text-5xl m-0 p-0 font-medium dark:text-white text-customDarkTwo text-center text-balance">
             Unlock <span className="text-neutral-400">Free</span> Ui{" "}
             <span className="text-neutral-400">Components</span> For Your Next{" "}
             <span className="text-neutral-400">Masterpiece</span>
@@ -355,9 +362,96 @@ export default function HomePage() {
               ></path>
             </g>
           </svg>
-        </div> */}
+        </div>
+
+        <div className="w-full border-y border-neutral-400/20 py-3 flex justify-center items-center my-16 ">
+        <div className="w-full flex flex-col  justify-center items-center  gap-y-2">
+          <div className="relative flex  flex-col px-4 max-w-3xl  w-full justify-start items-start ">
+            <h2 className="text-2xl m-0 inset-0 md:text-3xl">Built for the modern web.</h2>
+            <div className="flex flex-col text-left py-4 justify-start items-start ">
+              <p className="w-full text-left text-neutral-500">
+                Tailwind is unapologetically modern, and takes advantage of all
+                the latest and greatest CSS features to make the developer
+                experience as enjoyable as possible.
+              </p>
+            </div>
+          </div>
+          <div className="w-full border-y border-neutral-400/20 flex justify-center items-center">
+          
+          <div className="flex w-full md:flex-row flex-col h-[750px] lg:h-[447px] max-w-3xl px-3  bg-gray-200/10 gap-4 p-2 justify-start items-start">
+            <div
+              className="w-full md:w-1/2 flex bg-neutral-7 bg-neutral-800 border border-gray-400/10
+             p-4 rounded-xl h-full"
+            >
+              <div className="flex flex-col gap-3 justify-start items-start">
+                <div className=" w-full flex gap-x-4  justify-center items-center">
+                  <Phone strokeWidth={"1.5"} size={30} />
+                  <div className="flex flex-col w-full  justify-start items-start gap-1">
+                    <h2 className="text-xl md:text-2xl"> Ai component </h2>
+                    <p className="text-sm text-balance text-neutral-400 text-left">
+                      Tailwind is unapologetically modern, and takes advantage
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full mt-2  border border-gray-400/10
+                 h-full bg-[image:radial-gradient(var(--pattern-fg)_1px,_transparent_0)] bg-[size:10px_10px]
+                  bg-fixed [--pattern-fg:var(--color-gray-950)]/5 dark:[--pattern-fg:var(--color-white)]/10  rounded-xl  flex justify-start items-start">
+
+
+
+                </div>
+              </div>
+            </div>
+
+            <div
+                  className="w-full md:w-1/2 flex bg-neutral-7 bg-neutral-800 border border-gray-400/10
+             p-4 rounded-xl h-full"
+            >
+              <div className="flex flex-col gap-3 justify-start items-start">
+                <div className=" w-full flex gap-x-4  justify-start items-start">
+                  <Phone strokeWidth={"1.5"} size={30} />
+                  <div className="flex flex-col w-full justify-start items-start gap-2">
+                    <h2 className="text-xl md:text-2xl"> Coding component </h2>
+                    <p className="text-sm text-balance text-neutral-400 text-left">
+                      Tailwind is unapologetically modern, and takes advantage
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full mt-2 h-full flex border border-gray-400/10 bg-[image:radial-gradient(var(--pattern-fg)_1px,_transparent_0)] bg-[size:10px_10px]
+                  bg-fixed [--pattern-fg:var(--color-gray-950)]/5 dark:[--pattern-fg:var(--color-white)]/10  rounded-xl  justify-start items-start"></div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>
+
         <ChatbotIA />
       </div>
+
+
+    <div className=" absolute sm:flex hidden w-full pointer-events-none justify-center h-full items-center ">
+
+
+              <div  className="w-full  max-w-[52rem] flex items-center justify-between h-full">
+
+                <div className="w-8 h-full border-x border-neutral-400/20  bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] 
+       bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10">
+
+                </div>
+
+                <div className="w-8 h-full border-x border-neutral-400/20  bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] 
+       bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10">
+
+                </div>
+
+              </div>
+       
+  
+       </div>
+       
     </main>
   );
 }
