@@ -47,6 +47,21 @@ const LineListItem: React.FC<ProcessLine> = ({ icon, content}) => {
   )
 }
 
+/**
+ * AnimatedProcessList_Lovable component.
+ * Displays a process list with icons, animated reveal, and customizable step icons.
+ *
+ * Props:
+ * @prop title - Title displayed at the top of the component.
+ * @prop lines - Array of line items with icons and content.
+ * @prop className - Additional CSS classes for styling.
+ * @prop scrollDirection - Direction of the scrolling animation ("up" or "down").
+ * @prop animationSpeed - Speed of the animation ("slow", "normal", or "fast").
+ * @prop onAnimationEnd - Callback when the reveal animation ends.
+ * @prop skeletonDuration - Duration in milliseconds of the skeleton phase.
+ * @prop lineRevealDelay - Delay in milliseconds between each line reveal.
+ * @prop stepIcons - Custom icons for each step (optional).
+ */
 const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessList_LovableProps>(({
   title = "Spinning up preview...",
   lines,

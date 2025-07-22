@@ -1,6 +1,6 @@
 ---
 title: Animated Process List Lovable
-description: Custom animated process list with icons and lovable design
+description: Custom animated process list with icons inspired by lovable design
 full: true
 ---
 
@@ -45,12 +45,17 @@ import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessLi
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `lines` | `LineItem[]` | `[]` | Array of line items with icons and content |
-| `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
-| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+| Prop              | Type                              | Default                                   | Description                                              |
+|-------------------|-----------------------------------|-------------------------------------------|----------------------------------------------------------|
+| `title`           | `string`                          | `"Spinning up preview..."`                | Title displayed at the top of the component              |
+| `lines`           | `ProcessLine[]`                   | `[]`                                      | Array of line items with icons and content               |
+| `className`       | `string`                          | `undefined`                               | Additional CSS classes for styling                       |
+| `scrollDirection` | `"up" | "down"`                  | `"up"`                                    | Direction of the scrolling animation                     |
+| `animationSpeed`  | `"slow" | "normal" | "fast"`    | `"normal"`                                | Speed of the animation                                   |
+| `onAnimationEnd`  | `() => void`                      | `undefined`                               | Callback when the reveal animation ends                  |
+| `skeletonDuration`| `number`                          | `2000`                                    | Duration in milliseconds of the skeleton phase           |
+| `lineRevealDelay` | `number`                          | `150`                                     | Delay in milliseconds between each line reveal           |
+| `stepIcons`       | `React.ReactNode[]`               | `defaultStepIcons`                        | Custom icons for each step (optional)                    |
 
 ### LineItem
 

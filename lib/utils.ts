@@ -13,3 +13,4 @@ export const globalVariants = {
       none:"bg-none border-none",
     },
 }
+

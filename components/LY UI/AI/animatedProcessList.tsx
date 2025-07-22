@@ -48,6 +48,20 @@ const LineListItem: React.FC<LineListItemProps> = ({
   );
 };
 
+/**
+ * AnimatedProcessList component.
+ * Displays a list of process steps with animated reveal and skeleton loading.
+ *
+ * Props:
+ * @prop title - Title displayed at the top of the component.
+ * @prop processSteps - Array of process steps to display in the animated list.
+ * @prop className - Additional CSS classes for styling.
+ * @prop scrollDirection - Direction of the scrolling animation ("up" or "down").
+ * @prop animationSpeed - Speed of the animation ("slow", "normal", or "fast").
+ * @prop onAnimationEnd - Callback when the reveal animation ends.
+ * @prop skeletonDuration - Duration in milliseconds of the skeleton phase.
+ * @prop lineRevealDelay - Delay in milliseconds between each line reveal.
+ */
 const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>(({
   title = "Generating elements for your web page",
   processSteps = [],

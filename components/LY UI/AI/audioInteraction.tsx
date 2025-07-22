@@ -5,6 +5,16 @@ import { Circle, Pause, Play } from 'lucide-react';
 import ParticleAnimation, { ParticleAnimationHandle } from './particleAnimation';
 import { Button } from '@/components/ui/button';
 
+/**
+ * AudioInteraction component.
+ * Audio interaction component for AI voice interactions.
+ *
+ * Props:
+ * @prop onAudioStart - Callback when audio starts.
+ * @prop onAudioStop - Callback when audio stops.
+ * @prop onAudioPause - Callback when audio pauses.
+ * @prop onAudioResume - Callback when audio resumes.
+ */
 type AudioInteractionProps = {
   onAudioStart?: () => void;
   onAudioStop?: () => void;

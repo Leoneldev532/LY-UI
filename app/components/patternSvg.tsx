@@ -1,7 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 interface PatternSVGProps {
+  /** Show the top horizontal line. Default: true */
   showTopLine?: boolean;
+  /** Show the bottom horizontal line. Default: true */
   showBottomLine?: boolean;
 }
 

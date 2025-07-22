@@ -55,7 +55,7 @@ const Header = () => {
           onClick={handleOpenSearchBar}
           aria-label="Ouvrir la recherche"
         >
-       <span className="text-neutral-200/70"> crtl k </span>
+       <span className="text-neutral-200/70"> crtl + k </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"

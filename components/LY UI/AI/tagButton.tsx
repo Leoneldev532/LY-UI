@@ -4,13 +4,28 @@ import React, { ReactNode, forwardRef, useState, useEffect, useRef } from "react
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ChevronRight } from "lucide-react";
 
+/**
+ * TagButton component.
+ * A customizable tag button with icon support, dropdown support, and forwardRef integration.
+ *
+ * Props:
+ * @prop icon - Icon component to display.
+ * @prop title - Text content for the button.
+ * @prop variant - Visual style variant ("default", "outline", or "ghost").
+ * @prop onClick - Click handler function.
+ * @prop items - List of items for dropdown selection.
+ * @prop onItemClick - Callback when a dropdown item is selected.
+ * @prop className - Additional CSS classes.
+ */
+
 interface TagButtonProps {
-    icon?: ReactNode;
-    title: string;
-    variant: "default" | "outline" | "ghost";
-    onClick?: () => void;
-    items?: string[];
-    onItemClick?: (item: string) => void;
+  icon?: React.ReactNode;
+  title: string;
+  variant: "default" | "outline" | "ghost";
+  onClick?: () => void;
+  items?: string[];
+  onItemClick?: (item: string) => void;
+  className?: string;
 }
 
 let openButton: string | null = null;

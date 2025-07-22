@@ -6,6 +6,24 @@ import React, { forwardRef } from "react";
 import AnimationStatus from "./AnimationStatus";
 import DotGrid from "./dotsGrid";
 
+/**
+ * AiAgentAnimation component.
+ * Displays an agent's progress percentage with an animated dotted bar and exposes animation state callbacks.
+ *
+ * Props:
+ * @prop title - The title displayed before the percentage.
+ * @prop duration - Animation duration in milliseconds.
+ * @prop onAnimationComplete - Callback called at the end of the animation.
+ * @prop columns - Number of dot columns (auto-calculated if not specified).
+ * @prop rows - Number of dot rows.
+ * @prop className - Additional CSS class.
+ * @prop pauseDuration - Pause duration between each cycle (ms).
+ * @prop isRunning - External control of the animation state.
+ * @prop onAnimationStart - Callback called when the animation starts.
+ * @prop onAnimationStop - Callback called when the animation stops.
+ * @prop onAnimationReset - Callback called when the animation is reset.
+ * @prop dotType - Shape of the dots ("round" or "square").
+ */
 interface AiAgentAnimationProps {
   title?: string;
   duration?: number;

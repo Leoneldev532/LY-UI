@@ -3,6 +3,24 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import React, { useRef, useEffect, useState, RefObject, forwardRef } from "react";
 
+/**
+ * ResizableSeparator component.
+ * A resizable separator for managing layout space between elements.
+ *
+ * Props:
+ * @prop direction - Direction of the separator ("vertical" or "horizontal").
+ * @prop variant - Visual style variant of the separator ("ghost" or "outline").
+ * @prop size - Size of the separator ("small", "medium", or "large").
+ * @prop onResize - Callback when the size changes.
+ * @prop minSize - Minimum size in pixels.
+ * @prop maxSize - Maximum size in pixels.
+ * @prop className - Additional CSS classes for styling.
+ * @prop parentRef - Reference to the parent element.
+ * @prop showIndicator - Show the visual indicator.
+ * @prop animated - Enable animations.
+ * @prop zIndex - Z-index of the separator.
+ */
+
 type ResizableSeparatorDirection = "vertical" | "horizontal";
 type ResizableSeparatorVariant = "ghost" | "outline";
 type ResizableSeparatorSize = "small" | "medium" | "large";

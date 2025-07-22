@@ -1,3 +1,18 @@
+/**
+ * ThinkingSearchAnimation component.
+ * Animated thinking/searching component with scrolling text and customizable animation.
+ *
+ * Props:
+ * @prop variant - Visual style variant of the component ("default", "ghost", or "outline").
+ * @prop streamingText - Text content to animate (split into paragraphs if no messages provided).
+ * @prop messages - Array of text content to display in the animation.
+ * @prop onAnimationEnd - Callback called when the animation ends.
+ * @prop className - Additional CSS classes for styling.
+ * @prop scrollDirection - Direction of the scrolling animation ("up" or "down").
+ * @prop animationSpeed - Speed of the animation ("slow", "normal", or "fast").
+ * @prop minParagraphLength - Minimum length for auto-generated paragraphs from streamingText.
+ * @prop sentenceEndPattern - Pattern to split sentences for paragraph grouping in streamingText.
+ */
 "use client";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";

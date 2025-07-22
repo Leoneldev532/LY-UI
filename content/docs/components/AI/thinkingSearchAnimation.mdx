@@ -33,14 +33,17 @@ import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimati
 
 ## Props
 
-| Prop                  | Type                              | Default     | Description                                                        |
-|-----------------------|-----------------------------------|-------------|--------------------------------------------------------------------|
-| `messages`            | `string[]`                        | `[]`        | Array of text content to display in the animation                  |
-| `className`           | `string`                          | `undefined` | Additional CSS classes for styling                                 |
-| `scrollDirection`     | `"up" \| "down"`                  | `"up"`      | Direction of the scrolling animation                               |
-| `animationSpeed`      | `"slow" \| "normal" \| "fast"`     | `"normal"`  | Speed of the animation                                             |
-| `variant`             | `"default" \| "ghost" \| "outline"`| `"default"` | Visual style variant of the component                              |
-| `onAnimationEnd`      | `() => void`                      | `undefined` | Callback called when the animation ends                            |
+| Prop                | Type                                      | Default         | Description                                                                 |
+|---------------------|-------------------------------------------|-----------------|-----------------------------------------------------------------------------|
+| `variant`           | `"default" | "ghost" | "outline"`         | `"default"`      | Visual style variant of the component                                       |
+| `streamingText`     | `string`                                  | `undefined`     | Text content to animate (split into paragraphs if no `messages` provided)   |
+| `messages`          | `string[]`                                | `[]`            | Array of text content to display in the animation                           |
+| `onAnimationEnd`    | `() => void`                              | `undefined`     | Callback called when the animation ends                                     |
+| `className`         | `string`                                  | `undefined`     | Additional CSS classes for styling                                          |
+| `scrollDirection`   | `"up" | "down"`                          | `"up"`          | Direction of the scrolling animation                                        |
+| `animationSpeed`    | `"slow" | "normal" | "fast"`            | `"normal"`      | Speed of the animation                                                      |
+| `minParagraphLength`| `number`                                  | `50`            | Minimum length for auto-generated paragraphs from streamingText             |
+| `sentenceEndPattern`| `RegExp`                                  | `/[.!?]\s+/g`   | Pattern to split sentences for paragraph grouping in streamingText          |
 
 ### Example Usage
 

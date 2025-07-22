@@ -6,6 +6,16 @@ import { CheckIcon, Pencil, Copy, X } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
+/**
+ * EditableQuestion component.
+ * Lets users edit a question interactively for real-time customization.
+ *
+ * Props:
+ * @prop className - Additional CSS classes for styling.
+ * @prop question - The question text to display and edit.
+ * @prop onQuestionChange - Callback when the question text changes.
+ */
+
 type EditableQuestionProps = {
   className?: string;
   question?: string;
@@ -63,7 +73,7 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
     <div ref={ref} className="flex group flex-col justify-end items-end mb-4 gap-y-2" {...props}>
       <div
         className={cn(
-          "p-3 bg-neutral-200/40 max-w-lg overflow-hidden whitespace-pre-wrap break-words rounded-xl dark:border-neutral-200/20 border border-neutral-300/50 dark:bg-neutral-900 dark:text-gray-200 text-neutral-700",
+          "p-3 bg-neutral-200/40 max-w-lg overflow-hidden flex justify-start items-start whitespace-pre-wrap break-words rounded-xl dark:border-neutral-200/20 border border-neutral-300/50 dark:bg-neutral-900 dark:text-gray-200 text-neutral-700",
           className
         )}
       >
@@ -100,7 +110,7 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
             </div>
           </div>
         ) : (
-          <span>{question}</span>
+          <span className="break-words text-left">{question}</span>
         )}
       </div>
       <div className="opacity-0 group-hover:opacity-100 w-full flex gap-4 justify-end items-center transition-opacity duration-200">

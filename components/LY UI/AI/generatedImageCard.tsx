@@ -21,18 +21,47 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+/**
+ * GeneratedImageCard component.
+ * Displays an image in a styled card with interactive controls (like, dislike, copy prompt, download, regenerate).
+ *
+ * Props:
+ * @prop src - Source of the image to display. Accepts string, Blob, or StaticImport.
+ * @prop imageTitle - Title of the image.
+ * @prop width - Width of the image. Default: 2225.
+ * @prop height - Height of the image. Default: 2465.
+ * @prop className - Additional CSS classes for styling.
+ * @prop timestamp - Time displayed at the bottom of the card. Default: '00:00'.
+ * @prop prompt - The prompt associated with the image (can be copied).
+ * @prop onLike - Callback when user likes the image.
+ * @prop onDislike - Callback when user dislikes the image.
+ * @prop onRegenerate - Callback when user requests regeneration.
+ */
+// ===================== GeneratedImageCard Component =====================
+
 interface GeneratedImageCardProps {
+  /** Source of the image to display. Accepts string, Blob, or StaticImport. */
   src?: string | Blob | StaticImport;
+  /** Title of the image. */
   imageTitle?: string | null;
+  /** Width of the image. Default: 2225 */
   width?: number;
+  /** Height of the image. Default: 2465 */
   height?: number;
+  /** Additional CSS classes for styling. */
   className?: string;
+  /** Time displayed at the bottom of the card. Default: '00:00' */
   timestamp?: string;
+  /** The prompt associated with the image (can be copied). */
   prompt?: string;
+  /** Callback when user likes the image. */
   onLike?: () => void;
+  /** Callback when user dislikes the image. */
   onDislike?: () => void;
+  /** Callback when user requests regeneration. */
   onRegenerate?: () => void;
 }
+// ===================== End GeneratedImageCard Props =====================
 
 const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>(({
   src = "https://via.placeholder.com/150",

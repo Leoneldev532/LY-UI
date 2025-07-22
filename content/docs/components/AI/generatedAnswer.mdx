@@ -14,11 +14,15 @@ import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `content` | `string` | `undefined` | The content of the AI-generated answer |
-| `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `timestamp` | `string` | `"00:00"` | Time displayed at the bottom of the answer |
+| Prop             | Type                | Default     | Description                                              |
+|------------------|---------------------|-------------|----------------------------------------------------------|
+| `content`        | `string`            | `""`        | The content of the AI-generated answer                   |
+| `className`      | `string`            | `undefined` | Additional CSS classes for styling                       |
+| `timestamp`      | `string`            | `"00:00"`   | Time displayed at the bottom of the answer               |
+| `isLoading`      | `boolean`           | `false`     | Whether the answer is loading                            |
+| `LoaderComponent`| `React.ReactNode`   | `undefined` | Custom loader component to display while loading         |
+| `onEndAnimation` | `() => void`        | `undefined` | Callback when the answer animation ends                  |
+| `textSpeed`      | `number`            | `30`        | Speed of the text animation (ms per character)           |
 
 ## forwardRef and ref management
 

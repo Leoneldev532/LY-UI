@@ -1,6 +1,6 @@
 ---
 title: AI Search Bar
-description: Smart search bar with AI capabilities
+description: Smart AI-powered search bar UI component
 full: true
 ---
 
@@ -12,13 +12,18 @@ import AiSearchBar from "@/components/LY UI/AI/ai-searchbar";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style variant of the search bar |
-| `placeholder` | `string` | `"What can I do for you?"` | Placeholder text for the search bar |
-| `onSubmit` | `(value: string) => void` | `undefined` | Callback when user submits their search |
-| `onChange` | `(value: string) => void` | `undefined` | Callback when the search bar value changes |
-| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| Prop                  | Type                                                      | Default                | Description                                                        |
+|-----------------------|-----------------------------------------------------------|------------------------|--------------------------------------------------------------------|
+| `variant`             | `"default" \| "ghost" \| "outline"`                      | `"default"`           | Visual style variant of the search bar                             |
+| `placeholder`         | `string`                                                  | `"What can I do for you?"` | Placeholder text for the search bar                                 |
+| `onSubmit`            | `(value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void` | `undefined`            | Callback when user submits their search, with options              |
+| `onChange`            | `(value: string) => void`                                 | `undefined`            | Callback when the search bar value changes                         |
+| `onToolsChange`       | `(selectedTools: number[]) => void`                       | `undefined`            | Callback when the selected tools change                            |
+| `onThinkModeChange`   | `(isEnabled: boolean) => void`                            | `undefined`            | Callback when the "Think Mode" changes                            |
+| `onModelChange`       | `(modelIndex: number) => void`                            | `undefined`            | Callback when the selected model changes                           |
+| `className`           | `string`                                                  | `undefined`            | Additional CSS classes for styling                                 |
+| `submitLoading`       | `boolean`                                                 | `false`                | Show loading indicator on submit                                   |
+| `submitLoaderComponent`| `React.ReactNode`                                        | `undefined`            | Custom loader component to display during submit                   |
 
 ### Example Usage
 

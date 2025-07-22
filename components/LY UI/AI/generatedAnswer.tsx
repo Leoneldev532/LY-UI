@@ -2,11 +2,29 @@
 
 import React, { useState, useEffect, forwardRef, useCallback } from "react";
 import { CopyIcon, RefreshCwIcon, CheckIcon, Ellipsis, ThumbsUp, ThumbsDown, Check, Copy, RotateCcw, MoreHorizontal } from "lucide-react";
-
+import MarkdownPreview from '@uiw/react-markdown-preview';
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useProgressiveText } from "@/components/hooks/useProgressiveText";
+import { useProgressiveMarkdown } from "@/components/hooks/useProgressiveMarkdown";
+
+/**
+ * GeneratedAnswer component.
+ * Displays an AI-generated answer with animation and optional callbacks.
+ *
+ * Props:
+ * @prop className - Additional CSS classes for styling.
+ * @prop content - The content of the AI-generated answer.
+ * @prop timestamp - Time displayed at the bottom of the answer.
+ * @prop isLoading - Whether the answer is loading.
+ * @prop LoaderComponent - Custom loader component to display while loading.
+ * @prop onEndAnimation - Callback when the answer animation ends.
+ * @prop textSpeed - Speed of the text animation (ms per character).
+ */
 
 type GeneratedAnswerProps = {
   className?: string;
@@ -16,6 +34,7 @@ type GeneratedAnswerProps = {
   LoaderComponent?: React.ReactNode;
   onEndAnimation?: () => void;
   textSpeed?: number;
+  markdownMode?: boolean; // NEW: allow to choose markdown rendering
 };
 
 const endAnimation = (onEndAnimation?: () => void) => {
@@ -36,11 +55,17 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   LoaderComponent,
   onEndAnimation,
   textSpeed = 30,
+  markdownMode = false, 
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
 
-  const { displayedText, isWriting, isComplete } = useProgressiveText(content, isLoading, textSpeed);
+  // const { displayedText, isWriting, isComplete } = useProgressive(content, isLoading, textSpeed);
+  const { displayedHTML, isWriting, isComplete } = useProgressiveMarkdown(
+    content, 
+    isLoading, 
+    textSpeed
+  );
 
   useEffect(() => {
     if (isComplete && !isLoading) {
@@ -48,8 +73,12 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
     }
   }, [isComplete, isLoading, onEndAnimation]);
 
+  // Always copy the plain text (not rendered/markdown) version of the answer
   const handleCopy = () => {
     if (content) {
+      // Remove markdown formatting for copy
+      // Use a simple regex to strip markdown, or just copy the raw content
+      // For now, copy the raw content (plain text as written)
       navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
@@ -71,7 +100,7 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   return (
     <div
       ref={ref}
-      className={cn("flex flex-col w-full gap-2 p-2", className)}
+      className={cn("flex flex-col w-full gap-2 p-2  ", className)}
       {...props}
     >
       <div className="min-h-auto w-full flex items-start justify-start rounded-lg">
@@ -85,9 +114,16 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
             />
           )
         ) : (
-          <div className="w-full flex justify-start items-start">
+          <div className="w-full flex justify-start items-start break-words">
             <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100 leading-relaxed">
-              {displayedText}
+              {markdownMode ? (
+                    <div className="markdown-content"
+                     dangerouslySetInnerHTML={{ __html: displayedHTML }} />
+              ) : (
+
+                <div className="markdown-content"
+                dangerouslySetInnerHTML={{ __html: displayedHTML }} />
+              )}
             </div>
           </div>
         )}

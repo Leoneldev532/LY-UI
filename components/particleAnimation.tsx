@@ -21,20 +21,33 @@ interface Particle {
   isInitialAnimation: boolean; // Indique si c'est l'animation initiale (dispersion)
 }
 
-// Interface pour les props du composant
+// ===================== ParticleAnimation Component =====================
+
 interface ParticleAnimationProps {
+  /** Width of the animation canvas. */
   width?: number;
+  /** Height of the animation canvas. */
   height?: number;
+  /** Number of particles to display. */
   numParticles?: number;
+  /** Minimum radius of particles. */
   minRadius?: number;
+  /** Maximum radius of particles. */
   maxRadius?: number;
+  /** Background color of the canvas. */
   backgroundColor?: string;
+  /** Color of the particles. */
   particleColor?: string;
+  /** Color of the bright particles. */
   brightParticleColor?: string;
+  /** Show the center point. */
   showCenter?: boolean;
+  /** Show the borders of the canvas. */
   showBorders?: boolean;
+  /** Additional CSS classes for styling. */
   className?: string;
 }
+// ===================== End ParticleAnimation Props =====================
 
 // Interface pour les fonctions exposées via ref
 export interface ParticleAnimationHandle {

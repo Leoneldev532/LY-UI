@@ -19,6 +19,7 @@ import {
   Share2,
   UserPlus,
   GoalIcon,
+  X as StopIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,20 +28,36 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 
-// Ajout: Loader externe pour le bouton submit
+/**
+ * AiSearchBar component.
+ * A smart search bar with AI capabilities, supporting tool selection, model switching, and advanced prompt submission.
+ *
+ * Props:
+ * @prop variant - The visual style of the search bar ("default", "ghost", or "outline").
+ * @prop placeholder - Placeholder text for the textarea.
+ * @prop onSubmit - Callback when submitting a prompt. Receives the value and options { selectedTools, thinkMode, selectedModel }.
+ * @prop onChange - Callback when the textarea value changes.
+ * @prop onToolsChange - Callback when the selected tools change (array of indices).
+ * @prop onThinkModeChange - Callback when the think mode is toggled.
+ * @prop onModelChange - Callback when the selected model changes (index).
+ * @prop className - Additional class names for the root div.
+ * @prop submitLoading - If true, disables input and shows loading state.
+ * @prop submitLoaderComponent - Optional custom loader component for the submit button.
+ * @prop onStop - Optional callback to stop an external operation (shows a stop button when submitLoading is true).
+ */
 type AI_SearchBarProps = {
   variant?: "default" | "ghost" | "outline";
   placeholder?: string;
   onSubmit?: (value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void;
   onChange?: (value: string) => void;
-  onToolsChange?: (selectedTools: number[]) => void; // Nouveau callback pour les outils
-  onThinkModeChange?: (isEnabled: boolean) => void; // Nouveau callback pour le mode Think
-  onModelChange?: (modelIndex: number) => void; // Nouveau callback pour le modèle
+  onToolsChange?: (selectedTools: number[]) => void;
+  onThinkModeChange?: (isEnabled: boolean) => void;
+  onModelChange?: (modelIndex: number) => void;
   className?: string;
   submitLoading?: boolean;
   submitLoaderComponent?: React.ReactNode;
+  onStop?: () => void; // Ajout: callback pour stopper une opération extérieure
 };
-
 
 const AiSearchBarVariants = cva(
   "relative lg:min-w-xl max-w-3xl relative w-full rounded-xl text-neutral-900 dark:text-gray-200 inline-block text-left",
@@ -72,6 +89,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
   className,
   submitLoading = false,
   submitLoaderComponent,
+  onStop,
   ...props
 }, ref) => {
   const [value, setValue] = React.useState("");
@@ -95,7 +113,6 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
   React.useEffect(() => {
     adjustHeight();
   }, [value]);
-
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -126,7 +143,6 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
     typingTimeout.current = setTimeout(() => setIsTyping(false), 1000);
   };
 
-
   const handleCheckboxChange = (index: number, checked: boolean) => {
     const newCheckedTools = [...checkedTools];
     newCheckedTools[index] = checked;
@@ -135,13 +151,11 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
     onToolsChange?.(selectedIndices);
   };
 
-
   const handleThinkModeToggle = () => {
     const newThinkMode = !thinkMode;
     setThinkMode(newThinkMode);
     onThinkModeChange?.(newThinkMode);
   };
-
 
   const handleModelChange = (index: number) => {
     setSelectedModel(index);
@@ -334,7 +348,6 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
       ref={ref}
       className={cn(
         AiSearchBarVariants({ variant }),
-
         className
       )}
     >
@@ -397,8 +410,6 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
               >
                 <Lightbulb /> <span className="md:inline hidden">Think</span>
               </Button>
-
-
 
               <Popover>
                 <PopoverTrigger asChild>
@@ -569,6 +580,20 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* Stop button for external operation */}
+              {submitLoading && onStop && (
+                <Button
+                  onClick={onStop}
+                  variant="destructive"
+                  className="h-8 px-2 flex items-center gap-1"
+                  title="Stop"
+                  type="button"
+                >
+                  <StopIcon className="w-4 h-4" />
+                  <span className="sr-only">Stop</span>
+                </Button>
+              )}
+
               <Button
                 onClick={() => {
                   if (!submitLoading) {
@@ -589,7 +614,9 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                 )}
                 variant="default"
               >
-                <ArrowUp />
+                {submitLoading && submitLoaderComponent
+                  ? submitLoaderComponent
+                  : <ArrowUp />}
               </Button>
             </div>
           </div>
