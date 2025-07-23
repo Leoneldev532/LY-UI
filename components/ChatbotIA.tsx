@@ -59,7 +59,7 @@ async function callTogetherMistralAPI(prompt: string, signal?: AbortSignal): Pro
     return [{ type: 'text', content: message, metadata: 'markdown' }];
   };
 
-  // Fonction utilitaire pour parser et valider la réponse JSON - CORRIGÉE
+  // Fonction utilitaire pour parser et valider la réponse JSON - CORRIGÉE ----
   const parseAIResponse = (rawContent: string): LiaContentItem[] => {
     try {
       let cleaned = rawContent.trim();
