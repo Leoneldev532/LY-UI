@@ -7,7 +7,9 @@ import ThinkingSearchAnimation from './LY UI/AI/thinkingSearchAnimation'
 import GeneratedImageCard from './LY UI/AI/generatedImageCard'
 import car from "@/public/car.jpg";
 import AiAgentAnimation from './LY UI/AI/AiAgentAnimation'
-import { renderContentComponent, RenderContentItem } from './LY UI/AI/RenderContentItem';
+import { ProgressiveContentList, renderContentSequentially } from './LY UI/AI/RenderContentItem';
+
+import { z } from "zod";
 
 /**
  * Type for a single content item in the AI's answer.
@@ -20,6 +22,14 @@ type LiaContentItem = {
   content: any;
   metadata?: any;
 };
+
+// Schéma Zod précis pour la réponse attendue
+const LiaContentItemSchema = z.object({
+  type: z.string(),
+  content: z.any(),
+  metadata: z.any().optional(),
+});
+const LiaContentArraySchema = z.array(LiaContentItemSchema);
 
 /**
  * Type for a single question/answer entry in the chat history.
@@ -35,118 +45,127 @@ type QA = {
   answer: LiaContentItem[]
   showAnswer: boolean
   isImage?: boolean
-  endTime?: string 
-  isStopped?: boolean 
+  endTime?: string
+  isStopped?: boolean
 }
 
-async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<LiaContentItem[]> {
-  const apiKey = process.env.NEXT_PUBLIC_MISTRAL_API_KEY || "";
-  const endpoint = "https://api.mistral.ai/v1/chat/completions";
+// Nouvelle fonction utilisant Together AI avec Mistral - VERSION CORRIGÉE
+async function callTogetherMistralAPI(prompt: string, signal?: AbortSignal): Promise<LiaContentItem[]> {
+  const apiKey = process.env.NEXT_PUBLIC_TOGETHER_API_KEY || "";
+  const endpoint = "https://api.together.xyz/v1/chat/completions";
 
   // Fonction utilitaire pour créer une réponse d'erreur
   const createErrorResponse = (message: string): LiaContentItem[] => {
     return [{ type: 'text', content: message, metadata: 'markdown' }];
   };
 
-  // Fonction utilitaire pour nettoyer et parser la réponse JSON
+  // Fonction utilitaire pour parser et valider la réponse JSON - CORRIGÉE
   const parseAIResponse = (rawContent: string): LiaContentItem[] => {
     try {
-      // Nettoyer la réponse en supprimant les markdown code blocks si présents
       let cleaned = rawContent.trim();
-      
-      // Supprimer les blocs de code markdown
+
+      // Nettoyer les blocs de code markdown
       cleaned = cleaned.replace(/^```json\s*/, '').replace(/\s*```$/, '');
       cleaned = cleaned.replace(/^```\s*/, '').replace(/\s*```$/, '');
-      
-      // Détecter si l'IA a retourné le JSON sous forme de string dans un objet text
-      // Chercher des patterns comme [{"type": ou {"type":
-      const jsonPattern = /\[\s*\{\s*["']type["']\s*:/;
-      const hasJsonContent = jsonPattern.test(cleaned);
-      
-      if (hasJsonContent) {
-        // Extraire le JSON du contenu
-        const jsonMatch = cleaned.match(/(\[[\s\S]*\])/);
-        if (jsonMatch) {
-          cleaned = jsonMatch[1];
+
+      console.log("Contenu à parser:", cleaned);
+
+      // CORRECTION PRINCIPALE: Gérer les guillemets multiples dans le contenu
+      const parsed = JSON.parse(cleaned, (key, value) => {
+        if (typeof value === 'string') {
+          // Nettoyer les guillemets multiples au début et à la fin
+          value = value.replace(/^"+"/, '"').replace(/"+"$/, '"');
+          // Supprimer les guillemets en trop à l'intérieur du contenu
+          value = value.replace(/""""/g, '"');
+          value = value.replace(/"""/g, '"');
+          value = value.replace(/""/g, '"');
         }
-      }
-      
-      // Assurer que c'est un tableau JSON valide
-      if (!cleaned.startsWith('[')) {
-        cleaned = '[' + cleaned;
-      }
-      if (!cleaned.endsWith(']')) {
-        cleaned = cleaned + ']';
-      }
-      
-      // Fusionner les tableaux séparés s'il y en a plusieurs
-      cleaned = cleaned.replace(/\]\s*\[/g, ',');
-      
-      // Nettoyer les template literals malformés
-      cleaned = cleaned.replace(/`([^`]+)`/g, '"$1"');
-      
-      console.log("Cleaned response:", cleaned);
-      
-      const parsed = JSON.parse(cleaned);
-      
-      // Vérifier que c'est un tableau
-      if (!Array.isArray(parsed)) {
-        console.error("Response is not an array:", parsed);
-        return createErrorResponse("Réponse de l'IA mal formatée (pas un tableau)");
-      }
-      
-      // Vérifier que chaque élément a les bonnes propriétés
-      const validatedItems: LiaContentItem[] = parsed.map((item: any, index: number) => {
-        if (!item || typeof item !== 'object') {
-          console.error(`Item ${index} is not an object:`, item);
-          return { type: 'text', content: 'Élément invalide dans la réponse', metadata: 'markdown' };
-        }
-        
-        return {
-          type: item.type || 'text',
-          content: item.content || 'Contenu manquant',
-          metadata: item.metadata || 'markdown'
-        };
+        return value;
       });
-      
-      // S'assurer qu'il y a au moins un élément
-      if (validatedItems.length === 0) {
+
+      // Validation stricte avec Zod
+      const validated = LiaContentArraySchema.safeParse(parsed);
+      if (!validated.success) {
+        console.error("Zod validation failed:", validated.error);
+        return createErrorResponse("Réponse de l'IA mal formatée (schéma non respecté)");
+      }
+
+      if (validated.data.length === 0) {
         return createErrorResponse("Réponse vide de l'IA");
       }
-      
-      return validatedItems;
-      
+
+      // Post-traitement pour nettoyer le contenu des éléments
+      const cleanedData = validated.data.map(item => {
+        if (typeof item.content === 'string') {
+          // Nettoyer le contenu des guillemets multiples
+          let content = item.content;
+
+          // Supprimer les préfixes de langue mal formatés comme "javascript\n
+          content = content.replace(/^"([a-zA-Z]+)\\n/, '$1\n');
+
+          // Nettoyer les échappements de nouvelles lignes
+          content = content.replace(/\\n/g, '\n');
+          content = content.replace(/\\t/g, '\t');
+          content = content.replace(/\\"/g, '"');
+
+          // Supprimer les guillemets en trop au début et à la fin
+          if (content.startsWith('"""') && content.endsWith('"""')) {
+            content = content.slice(3, -3);
+          } else if (content.startsWith('""') && content.endsWith('""')) {
+            content = content.slice(2, -2);
+          }
+
+          return { ...item, content };
+        }
+        return item;
+      });
+
+      return cleanedData;
+
     } catch (parseError) {
       console.error("JSON parse error:", parseError);
       console.error("Raw content that failed to parse:", rawContent);
-      
-      // Essayer de détecter si c'est du JSON mal formaté dans le contenu
-      const jsonPattern = /\[\s*\{\s*["']type["']\s*:/;
-      if (jsonPattern.test(rawContent)) {
-        // C'est probablement du JSON mal formaté, essayer de le corriger
-        try {
-          const jsonMatch = rawContent.match(/(\[[\s\S]*\])/);
-          if (jsonMatch) {
-            let fixedJson = jsonMatch[1]
-              .replace(/`([^`]+)`/g, '"$1"')  // Remplacer les template literals
-              .replace(/(\w+):/g, '"$1":')    // Ajouter des guillemets aux clés
-              .replace(/'/g, '"');           // Remplacer simple quotes par double
-            
-            const parsedFixed = JSON.parse(fixedJson);
-            if (Array.isArray(parsedFixed)) {
-              return parsedFixed.map(item => ({
-                type: item.type || 'text',
-                content: item.content || 'Contenu mal formaté',
-                metadata: item.metadata || 'markdown'
-              }));
-            }
-          }
-        } catch (fixError) {
-          console.error("Failed to fix JSON:", fixError);
+
+      // Tentative de réparation plus robuste
+      try {
+        let fixedJson = rawContent.trim();
+
+        // Méthode alternative: parser manuellement chaque objet
+        const items: LiaContentItem[] = [];
+
+        // Chercher tous les objets JSON dans la réponse
+        const objectRegex = /\{\s*"type"\s*:\s*"([^"]+)"\s*,\s*"content"\s*:\s*"((?:[^"\\]|\\.)*)"\s*,?\s*"metadata"\s*:\s*"([^"]*)"\s*\}/g;
+        let match;
+
+        while ((match = objectRegex.exec(fixedJson)) !== null) {
+          const [, type, content, metadata] = match;
+
+          // Nettoyer le contenu
+          const cleanContent = content
+            .replace(/\\n/g, '\n')
+            .replace(/\\t/g, '\t')
+            .replace(/\\"/g, '"')
+            .replace(/""""/g, '"')
+            .replace(/"""/g, '"');
+
+          items.push({
+            type,
+            content: cleanContent,
+            metadata
+          });
         }
+
+        if (items.length > 0) {
+          const validated = LiaContentArraySchema.safeParse(items);
+          if (validated.success) {
+            return validated.data;
+          }
+        }
+      } catch (fixError) {
+        console.error("Failed to fix JSON:", fixError);
       }
-      
-      // En cas d'erreur de parsing, créer une réponse avec le contenu brut
+
+      // Fallback: retourner le contenu brut comme texte
       return [{
         type: 'text',
         content: rawContent || "Réponse vide de l'IA",
@@ -155,27 +174,29 @@ async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<Lia
     }
   };
 
-  const markdownInstruction = `ATTENTION : Tu dois IMPÉRATIVEMENT répondre UNIQUEMENT avec un tableau JSON au format EXACT suivant, sans aucun texte avant ou après, ni explication, ni retour à la ligne supplémentaire :
+  // Instruction pour forcer le format de réponse - AMÉLIORÉE
+  const markdownInstruction = `You are an expert in programming. Answer all questions. Respond strictly in the following JSON array format (no prose, no explanation, just the array):
 
 [
   {
-    "type": "code" | "text" | "image",
+    "type": "text|code|image|...",
     "content": "...",
-    "metadata": "JavaScript" // ou "markdown" si c'est du texte, ou "base64" si c'est une image
+    "metadata": "markdown|javascript|base64|..."
   }
 ]
 
-- Ta réponse DOIT TOUJOURS être un tableau de ce type, même s'il n'y a qu'un seul élément, et NE DOIT JAMAIS être vide.
-- Si c'est du texte, "type" = "text", "metadata" = "markdown" et "content" contient du markdown VALIDE.
-- Si c'est une image, "type" = "image", "metadata" = "base64" et "content" contient l'image encodée en base64.
-- Si c'est du code, "type" = "code", "metadata" = le langage (ex: "JavaScript"), et "content" contient le code.
-- NE FOURNIS RIEN D'AUTRE que ce tableau JSON STRICTEMENT conforme, sinon ta réponse sera rejetée.`;
+IMPORTANT:
+- If you return code, set type to "code" and metadata to the language name
+- If you return text, set type to "text" and metadata to "markdown"
+- Escape all quotes and newlines properly in the JSON
+- Use single backslash for escaping (not double)
+- Do not use triple or quadruple quotes`;
 
   const promptWithMarkdown = `${prompt}\n\n${markdownInstruction}`;
 
   try {
     const body = {
-      model: "mistral-tiny",
+      model: "mistralai/Mistral-7B-Instruct-v0.2",
       messages: [
         {
           role: "user",
@@ -183,7 +204,32 @@ async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<Lia
         },
       ],
       temperature: 0.7,
-      max_tokens: 512,
+      max_tokens: 1024, // Augmenté pour des réponses plus complètes
+      tools: [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_current_weather",
+            "description": "Get the current weather in a given location",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
     };
 
     const response = await fetch(endpoint, {
@@ -198,44 +244,29 @@ async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<Lia
 
     if (!response.ok) {
       if (response.status === 401) {
-        return createErrorResponse('Erreur : Clé API Mistral manquante ou invalide.');
+        return createErrorResponse('Erreur : Clé API Together manquante ou invalide.');
       }
-      return createErrorResponse(`Erreur API Mistral : ${response.statusText}`);
+      return createErrorResponse(`Erreur API Together : ${response.statusText}`);
     }
 
     const data = await response.json();
-    const rawContent = data.choices?.[0]?.message?.content || "";
-    
+    let rawContent = data.choices?.[0]?.message?.content || "";
+
     console.log("Raw AI response:", rawContent);
-    
+
     if (!rawContent.trim()) {
       return createErrorResponse("Réponse vide de l'IA");
     }
-    
-    // Première tentative : parser directement comme JSON
-    try {
-      const directParsed = JSON.parse(rawContent);
-      if (Array.isArray(directParsed)) {
-        const validatedItems = directParsed.map(item => ({
-          type: item.type || 'text',
-          content: item.content || 'Contenu manquant',
-          metadata: item.metadata || 'markdown'
-        }));
-        console.log("Direct JSON parse successful:", validatedItems);
-        return validatedItems;
-      }
-    } catch (e) {
-      // Continue avec le parsing complexe
-    }
-    
+
+    // Utiliser la fonction de parsing corrigée
     return parseAIResponse(rawContent);
-    
+
   } catch (fetchError) {
     console.error("Fetch error:", fetchError);
     if (signal?.aborted) {
-      return createErrorResponse("Requête annulée par l'utilisateur");
+      return [{ type: 'text', content: "Requête annulée par l'utilisateur", metadata: 'markdown' }];
     }
-    return createErrorResponse(`Erreur de connexion : ${fetchError}`);
+    return [{ type: 'text', content: `Erreur de connexion : ${fetchError}`, metadata: 'markdown' }];
   }
 }
 
@@ -269,7 +300,7 @@ const ChatbotIA = () => {
     try {
       const controller = new AbortController()
       abortControllersRef.current[idx] = controller
-      const answer = await callMistralAPI(question, controller.signal)
+      const answer = await callTogetherMistralAPI(question, controller.signal)
       console.log("Generated answer:", answer)
       delete abortControllersRef.current[idx]
       return answer
@@ -310,22 +341,22 @@ const ChatbotIA = () => {
       const currentIdx = history.length;
       setHistory(prev => [
         ...prev,
-        { 
-          question: value, 
+        {
+          question: value,
           answer: [], // Toujours initialiser answer comme tableau vide
-          showAnswer: false, 
-          isImage: false 
+          showAnswer: false,
+          isImage: false
         }
       ])
       setLoadingIdx(currentIdx)
-      
+
       const answerArr = await generateAnswer(value, currentIdx)
-      
+
       // S'assurer que answerArr est toujours un tableau valide
-      const validAnswerArr = Array.isArray(answerArr) && answerArr.length > 0 
-        ? answerArr 
+      const validAnswerArr = Array.isArray(answerArr) && answerArr.length > 0
+        ? answerArr
         : [{ type: 'text', content: 'Réponse invalide ou vide', metadata: 'markdown' }];
-        
+
       setHistory(prev =>
         prev.map((qa, i) =>
           i === currentIdx ? { ...qa, answer: validAnswerArr } : qa
@@ -385,10 +416,10 @@ const ChatbotIA = () => {
       controller.abort()
       setHistory(prev =>
         prev.map((qa, i) =>
-          i === idx ? { 
-            ...qa, 
-            isStopped: true, 
-            showAnswer: true, 
+          i === idx ? {
+            ...qa,
+            isStopped: true,
+            showAnswer: true,
             endTime: getCurrentTimeString(),
             answer: qa.answer.length > 0 ? qa.answer : [{ type: 'text', content: 'Génération interrompue', metadata: 'markdown' }]
           } : qa
@@ -410,36 +441,28 @@ const ChatbotIA = () => {
               <div key={idx} className="">
                 <EditableQuestion onQuestionChange={handleRetry} question={qa.question} />
                 <div className='max-w-full text-left'>
-                  {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer
-                    ? qa.answer.map((item: LiaContentItem, itemIdx: number) => {
-                        console.log("Rendering item:", item, "at index:", itemIdx);
-                        
-                        // Vérifier que l'item a bien la structure attendue
-                        if (!item || typeof item !== 'object' || !item.type || item.content === undefined) {
-                          console.warn(`Invalid item at index ${itemIdx}:`, item);
-                          return (
-                            <div key={`invalid-${itemIdx}`} className="p-4 border border-yellow-300 bg-yellow-50 rounded-md">
-                              <p className="text-yellow-600">Élément invalide détecté</p>
-                              <p className="text-sm text-gray-600 mt-2">
-                                Données: {JSON.stringify(item)}
-                              </p>
-                            </div>
-                          );
-                        }
+                  {/* {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
+                    renderContentSequentially(qa.answer)
+                  ) : qa.showAnswer ? (
+                    <div className="text-gray-500 italic">Aucune réponse disponible</div>
+                  ) : null} */}
+                  {/* {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
+                    <ProgressiveContentList
+                      items={qa.answer}
+                      delay={800}
+                      showLoadingIndicator={true}
+                      onComplete={() => console.log(`Question ${idx} terminée`)}
+                      className="max-w-full"
+                    />
+                  ) : qa.showAnswer ? (
+                    <div className="text-gray-500 italic">Aucune réponse disponible</div>
+                  ) : null} */}
 
-                        // Convertir l'item au format RenderContentItem et appeler la fonction correctement
-                        const renderItem: RenderContentItem = {
-                          type: item.type,
-                          content: item.content,
-                          metadata: item.metadata
-                        };
-
-                        return renderContentComponent([renderItem, itemIdx]);
-                      })
-                    : qa.showAnswer && (
-                        <div className="text-gray-500 italic">Aucune réponse disponible</div>
-                      )
-                  }
+                  {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
+                    renderContentSequentially(qa.answer, 1000) // 1 seconde entre chaque élément
+                  ) : qa.showAnswer ? (
+                    <div className="text-gray-500 italic">Aucune réponse disponible</div>
+                  ) : null}
                   <div>
                     {loadingIdx === idx && !qa.showAnswer ? (
                       <div className="flex items-center gap-2">

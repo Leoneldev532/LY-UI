@@ -7,8 +7,13 @@ import { cva } from "class-variance-authority";
 import { Code, History, Copy, Check, Download } from "lucide-react";
 import { useProgressiveText } from "@/components/hooks/useProgressiveText";
 
+// Correction principale :
+// - Le conteneur du composant et celui de l'éditeur doivent explicitement permettre l'overflow et le scroll.
+// - Le composant Editor doit être dans un conteneur qui gère la hauteur et l'overflow, et ne doit pas être limité par h-screen ou max-h-full qui peuvent casser le scroll interne.
+// - On retire les classes qui empêchent le scroll (overflow-hidden, h-screen, max-h-full) et on force overflow-auto sur le bon conteneur.
+
 const CodeSectionVariants = cva(
-  "relative lg:min-w-xl max-w-3xl relative w-full rounded-xl text-neutral-900 dark:text-gray-200 inline-block text-left",
+  "relative lg:min-w-xl max-w-3xl w-full rounded-xl text-neutral-900 dark:text-gray-200 inline-block text-left",
   {
     variants: {
       variant: {
@@ -27,21 +32,13 @@ const CodeSectionVariants = cva(
 );
 
 interface CodeSectionProps {
-  /** Height of the editor (e.g., '90vh', '300px'). Default: '90vh' */
   height?: string;
-  /** Code language for syntax highlighting. Default: 'javascript' */
   defaultLanguage?: string;
-  /** Default code to display in the editor. Default: '// some comment' */
   defaultValue?: string;
-  /** Additional CSS classes for styling. Default: '' */
   className?: string;
-  /** Allows code editing. Default: true */
   isEditable?: boolean;
-  /** Visual style of the container. Default: 'default' */
   variant?: "default" | "outline" | "ghost";
-  /** If true, disables control buttons (copy, download, etc) when a process is running */
   processLoading?: boolean;
-  /** If true, display code progressively using animation */
   progressiveMode?: boolean;
 }
 
@@ -59,8 +56,9 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
     },
     ref
   ) => {
-    // Hook texte progressif
-    const { displayedText, isWriting, isComplete } = useProgressiveText(defaultValue, processLoading, 30);
+    const { displayedText, isWriting, isComplete } = useProgressiveText(defaultValue, processLoading, 10);
+
+    console.log(isWriting, "---")
     const [copied, setCopied] = useState(false);
     const [currentValue, setCurrentValue] = useState(defaultValue);
     const codeValueRef = useRef<string>(defaultValue);
@@ -69,9 +67,6 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
       setCurrentValue(defaultValue);
       codeValueRef.current = defaultValue;
     }, [defaultValue]);
-
-    // SUPPRIMER le useEffect qui synchronise currentValue avec defaultValue en mode progressif
-    // (il n'est plus nécessaire et peut causer des conflits d'affichage)
 
     const handleEditorChange = (value: string | undefined) => {
       const newValue = value ?? "";
@@ -85,7 +80,7 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
         await navigator.clipboard.writeText(codeValueRef.current);
         setCopied(true);
         setTimeout(() => setCopied(false), 1200);
-      } catch (err) {}
+      } catch (err) { }
     };
 
     const handleDownload = () => {
@@ -106,16 +101,17 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
     return (
       <div
         className={cn(
-          "rounded-md  flex flex-col gap-y-2  overflow-hidden border",
+          "rounded-md flex flex-col gap-y-2 border",
           CodeSectionVariants({ variant }),
           className
         )}
         ref={ref}
+        style={{ minHeight: height, maxHeight: height, overflow: "hidden" }}
       >
         <div className="flex w-full justify-between p-2 items-center">
           <div
-            className="flex justify-center items-center gap-2 px-2 py-1 rounded-lg  
-              text-black    dark:text-neutral-200"
+            className="flex justify-center items-center gap-2 px-2 py-1 rounded-lg
+              text-black dark:text-neutral-200"
           >
             <Code size={15} /> <span className="text-sm">Code</span>
           </div>
@@ -171,20 +167,32 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
             </button>
           </div>
         </div>
-        <Editor
-          height={height}
-          defaultLanguage={defaultLanguage}
-          value={progressiveMode ? displayedText : currentValue}
-          theme="vs-dark"
-          options={{
-            fontSize: 14,
-            minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            readOnly: progressiveMode ? !isComplete : !isEditable,
-          }}
-          onChange={handleEditorChange}
-          className="overflow-auto h-screen max-h-full "
-        />
+
+        <div
+
+        >
+          <Editor
+            defaultLanguage={defaultLanguage}
+            value={progressiveMode ? displayedText : currentValue}
+            theme="vs-dark"
+            height={height}
+            options={{
+              fontSize: 14,
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              // readOnly: progressiveMode ? !isComplete : !isEditable,
+              wordWrap: "off", // Désactive le wrap pour forcer le scroll horizontal
+              scrollbar: {
+                vertical: "auto",
+                horizontal: "auto",
+                useShadows: false,
+                alwaysConsumeMouseWheel: false,
+              },
+            }}
+            onChange={handleEditorChange}
+            className="w-full"
+          />
+        </div>
       </div>
     );
   }
