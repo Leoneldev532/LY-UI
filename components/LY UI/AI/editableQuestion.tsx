@@ -22,7 +22,7 @@ type EditableQuestionProps = {
   onQuestionChange?: (newQuestion: string) => void;
 };
 
-const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
+const EditableQuestionBase = forwardRef<HTMLDivElement, EditableQuestionProps>(({
   className,
   question: initialQuestion,
   onQuestionChange,
@@ -33,7 +33,7 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
   const [question, setQuestion] = useState(initialQuestion || "");
   const [editingQuestion, setEditingQuestion] = useState("");
 
-  const handleCopy = async () => {
+  const handleCopy = React.useCallback(async () => {
     if (question) {
       try {
         await navigator.clipboard.writeText(question);
@@ -43,31 +43,31 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
         console.error("Failed to copy to clipboard:", error);
       }
     }
-  };
+  }, [question]);
 
-  const handleEdit = () => {
+  const handleEdit = React.useCallback(() => {
     setEditingQuestion(question);
     setIsEditing(true);
-  };
+  }, [question]);
 
-  const handleUpdate = () => {
+  const handleUpdate = React.useCallback(() => {
     setIsEditing(false);
     setQuestion(editingQuestion);
     if (onQuestionChange) onQuestionChange(editingQuestion);
-  };
+  }, [editingQuestion, onQuestionChange]);
 
-  const handleCancel = () => {
+  const handleCancel = React.useCallback(() => {
     setIsEditing(false);
     setEditingQuestion("");
-  };
+  }, []);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.ctrlKey) {
       handleUpdate();
     } else if (e.key === "Escape") {
       handleCancel();
     }
-  };
+  }, [handleUpdate, handleCancel]);
 
   return (
     <div ref={ref} className="flex group flex-col justify-end items-end mb-4 gap-y-2" {...props}>
@@ -141,6 +141,5 @@ const EditableQuestion = forwardRef<HTMLDivElement, EditableQuestionProps>(({
   );
 });
 
-EditableQuestion.displayName = "EditableQuestion";
-
-export default EditableQuestion;
+EditableQuestionBase.displayName = "EditableQuestion";
+export default React.memo(EditableQuestionBase);

@@ -35,6 +35,8 @@ type GeneratedAnswerProps = {
   onEndAnimation?: () => void;
   textSpeed?: number;
   markdownMode?: boolean; // NEW: allow to choose markdown rendering
+  onComplete?: () => void;
+  hideControls?: boolean;
 };
 
 const endAnimation = (onEndAnimation?: () => void) => {
@@ -47,7 +49,7 @@ function isGenerationFinished(isLoading?: boolean) {
   return !isLoading;
 }
 
-const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
+const GeneratedAnswerBase = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   content = "",
   className,
   timestamp = "00:00",
@@ -56,40 +58,39 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   onEndAnimation,
   textSpeed = 30,
   markdownMode = false, 
+  onComplete,
+  hideControls = false,
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
 
-  // const { displayedText, isWriting, isComplete } = useProgressive(content, isLoading, textSpeed);
   const { displayedHTML, isWriting, isComplete } = useProgressiveMarkdown(
     content, 
     isLoading, 
     textSpeed
   );
 
+  console.log(isWriting,"------------")
+
   useEffect(() => {
     if (isComplete && !isLoading) {
       endAnimation(onEndAnimation);
+      if (onComplete) onComplete();
     }
-  }, [isComplete, isLoading, onEndAnimation]);
+  }, [isComplete, isLoading, onEndAnimation, onComplete]);
 
   // Always copy the plain text (not rendered/markdown) version of the answer
-  const handleCopy = () => {
+  const handleCopy = React.useCallback(() => {
     if (content) {
-      // Remove markdown formatting for copy
-      // Use a simple regex to strip markdown, or just copy the raw content
-      // For now, copy the raw content (plain text as written)
       navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     }
-  };
+  }, [content]);
 
-  const handleLike = () => { };
-
-  const handleDisLike = () => { };
-
-  const handleRegenerate = () => { };
+  const handleLike = React.useCallback(() => {}, []);
+  const handleDisLike = React.useCallback(() => {}, []);
+  const handleRegenerate = React.useCallback(() => {}, []);
 
   const showActionsBar = isGenerationFinished(isLoading) && isComplete;
 
@@ -129,7 +130,7 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
         )}
       </div>
 
-      {showActionsBar && (
+      {showActionsBar && !hideControls && (
         <div className="w-full flex justify-between items-center">
           <div>
             <span className="text-sm text-neutral-400">{timestamp}</span>
@@ -222,4 +223,5 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   );
 });
 
-export default GeneratedAnswer
+GeneratedAnswerBase.displayName = "GeneratedAnswer";
+export default React.memo(GeneratedAnswerBase);

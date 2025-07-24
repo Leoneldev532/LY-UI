@@ -63,7 +63,7 @@ interface GeneratedImageCardProps {
 }
 // ===================== End GeneratedImageCard Props =====================
 
-const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>(({
+const GeneratedImageCardBase = forwardRef<HTMLDivElement, GeneratedImageCardProps>(({
   src = "https://via.placeholder.com/150",
   imageTitle,
   width = 2225,
@@ -91,7 +91,7 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
     }
   }, [src]);
 
-  const handleCopy = async () => {
+  const handleCopy = React.useCallback(async () => {
     try {
       if (prompt && prompt.trim() !== "") {
         await navigator.clipboard.writeText(prompt);
@@ -103,9 +103,9 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
     } catch (e) {
       console.log("An error occurred while copying to clipboard:", e);
     }
-  };
+  }, [prompt]);
 
-  const handleDownload = async () => {
+  const handleDownload = React.useCallback(async () => {
     let url = "";
     let filename = imageTitle ?? "image";
 
@@ -128,19 +128,11 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
     if (src instanceof Blob) {
       URL.revokeObjectURL(url);
     }
-  };
+  }, [src, imageTitle]);
 
-  const handleLike = () => {
-    onLike?.();
-  };
-
-  const handleDisLike = () => {
-    onDislike?.();
-  };
-
-  const handleRegenerate = () => {
-    onRegenerate?.();
-  };
+  const handleLike = React.useCallback(() => { onLike?.(); }, [onLike]);
+  const handleDisLike = React.useCallback(() => { onDislike?.(); }, [onDislike]);
+  const handleRegenerate = React.useCallback(() => { onRegenerate?.(); }, [onRegenerate]);
 
   return (
     <div ref={ref} className={cn("flex flex-col gap-y-2", className)} {...props}>
@@ -278,5 +270,5 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
   );
 });
 
-GeneratedImageCard.displayName = 'GeneratedImageCard';
-export default GeneratedImageCard;
+GeneratedImageCardBase.displayName = 'GeneratedImageCard';
+export default React.memo(GeneratedImageCardBase);
