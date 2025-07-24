@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import Image from "next/image";
 import {
   CheckIcon,
@@ -36,6 +36,7 @@ import {
  * @prop onLike - Callback when user likes the image.
  * @prop onDislike - Callback when user dislikes the image.
  * @prop onRegenerate - Callback when user requests regeneration.
+ * @prop onComplete - Callback when the image is fully loaded and displayed.
  */
 // ===================== GeneratedImageCard Component =====================
 
@@ -60,6 +61,8 @@ interface GeneratedImageCardProps {
   onDislike?: () => void;
   /** Callback when user requests regeneration. */
   onRegenerate?: () => void;
+  /** Callback when the image is fully loaded and displayed. */
+  onComplete?: () => void;
 }
 // ===================== End GeneratedImageCard Props =====================
 
@@ -74,22 +77,50 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
   onLike,
   onDislike,
   onRegenerate,
+  onComplete,
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hovered, setHovered] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | StaticImport>("");
+  const blobUrlRef = useRef<string | null>(null);
 
+  // Pour éviter d'appeler onComplete plusieurs fois
+  const [completed, setCompleted] = useState(false);
+
+  // Gestion correcte du blob pour Next/Image
   useEffect(() => {
+    // Nettoie l'ancien blobUrl si existant
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = null;
+    }
+
     if (src instanceof Blob) {
       const url = URL.createObjectURL(src);
       setImageSrc(url);
-      return () => URL.revokeObjectURL(url);
+      blobUrlRef.current = url;
     } else {
-      setImageSrc(src);
+      setImageSrc(src as string | StaticImport);
     }
+
+    // Cleanup on unmount
+    return () => {
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
+    };
   }, [src]);
+
+  // Appelle onComplete quand l'image est chargée et visible
+  useEffect(() => {
+    if (!loading && !completed && typeof onComplete === "function") {
+      setCompleted(true);
+      onComplete();
+    }
+  }, [loading, completed, onComplete]);
 
   const handleCopy = async () => {
     try {
@@ -110,7 +141,8 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
     let filename = imageTitle ?? "image";
 
     if (src instanceof Blob) {
-      url = URL.createObjectURL(src);
+      // Utilise le blobUrl déjà généré pour l'image affichée
+      url = blobUrlRef.current || URL.createObjectURL(src);
       filename = filename + ".png";
     } else if (typeof src === "string") {
       url = src;
@@ -125,9 +157,8 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
     link.click();
     document.body.removeChild(link);
 
-    if (src instanceof Blob) {
-      URL.revokeObjectURL(url);
-    }
+    // Ne pas révoquer le blobUrl ici, sinon Next/Image perd la source
+    // Le cleanup est géré dans useEffect cleanup
   };
 
   const handleLike = () => {
@@ -154,6 +185,7 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
             <span className="animate-spin rounded-full border-2 border-neutral-300 border-t-transparent h-8 w-8" />
           </div>
         )}
+        {/* Si src est un Blob, imageSrc est un blobUrl, sinon string ou StaticImport */}
         <Image
           src={imageSrc}
           alt={imageTitle ?? "Generated image"}

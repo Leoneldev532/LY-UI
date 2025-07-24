@@ -40,6 +40,7 @@ interface CodeSectionProps {
   variant?: "default" | "outline" | "ghost";
   processLoading?: boolean;
   progressiveMode?: boolean;
+  onComplete?: () => void; // Ajout du onComplete
 }
 
 const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
@@ -53,12 +54,12 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
       variant = "default",
       processLoading = false,
       progressiveMode = false,
+      onComplete, // Ajout du onComplete
     },
     ref
   ) => {
     const { displayedText, isWriting, isComplete } = useProgressiveText(defaultValue, processLoading, 10);
 
-    console.log(isWriting, "---")
     const [copied, setCopied] = useState(false);
     const [currentValue, setCurrentValue] = useState(defaultValue);
     const codeValueRef = useRef<string>(defaultValue);
@@ -67,6 +68,13 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
       setCurrentValue(defaultValue);
       codeValueRef.current = defaultValue;
     }, [defaultValue]);
+
+    // Appel du onComplete quand l'écriture progressive est terminée
+    useEffect(() => {
+      if (progressiveMode && isComplete && typeof onComplete === "function") {
+        onComplete();
+      }
+    }, [progressiveMode, isComplete, onComplete]);
 
     const handleEditorChange = (value: string | undefined) => {
       const newValue = value ?? "";
@@ -168,9 +176,7 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
           </div>
         </div>
 
-        <div
-
-        >
+        <div>
           <Editor
             defaultLanguage={defaultLanguage}
             value={progressiveMode ? displayedText : currentValue}

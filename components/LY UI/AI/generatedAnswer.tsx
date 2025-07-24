@@ -23,7 +23,9 @@ import { useProgressiveMarkdown } from "@/components/hooks/useProgressiveMarkdow
  * @prop isLoading - Whether the answer is loading.
  * @prop LoaderComponent - Custom loader component to display while loading.
  * @prop onEndAnimation - Callback when the answer animation ends.
+ * @prop onComplete - Callback when the answer animation ends (EXTERNE).
  * @prop textSpeed - Speed of the text animation (ms per character).
+ * @prop hideControls - Hide the controls/actions bar if true.
  */
 
 type GeneratedAnswerProps = {
@@ -33,8 +35,10 @@ type GeneratedAnswerProps = {
   isLoading?: boolean;
   LoaderComponent?: React.ReactNode;
   onEndAnimation?: () => void;
+  onComplete?: () => void; // Ajouté pour callback externe
   textSpeed?: number;
   markdownMode?: boolean; // NEW: allow to choose markdown rendering
+  hideControls?: boolean; // NEW: allow to hide controls/actions bar
 };
 
 const endAnimation = (onEndAnimation?: () => void) => {
@@ -54,24 +58,36 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   isLoading = false,
   LoaderComponent,
   onEndAnimation,
+  onComplete, // Ajouté pour callback externe
   textSpeed = 30,
-  markdownMode = false, 
+  markdownMode = false,
+  hideControls = false, // NEW: default to false
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
+  const [hasCalledComplete, setHasCalledComplete] = useState(false);
 
   // const { displayedText, isWriting, isComplete } = useProgressive(content, isLoading, textSpeed);
   const { displayedHTML, isWriting, isComplete } = useProgressiveMarkdown(
-    content, 
-    isLoading, 
+    content,
+    isLoading,
     textSpeed
   );
 
+  // Appelle le callback interne et EXTERNE une seule fois à la fin de l'animation
   useEffect(() => {
-    if (isComplete && !isLoading) {
+    if (isComplete && !isLoading && !hasCalledComplete) {
       endAnimation(onEndAnimation);
+      if (typeof onComplete === "function") {
+        onComplete();
+      }
+      setHasCalledComplete(true);
     }
-  }, [isComplete, isLoading, onEndAnimation]);
+    // Si on relance une génération, on reset le flag
+    if (!isComplete || isLoading) {
+      setHasCalledComplete(false);
+    }
+  }, [isComplete, isLoading, onEndAnimation, onComplete, hasCalledComplete]);
 
   // Always copy the plain text (not rendered/markdown) version of the answer
   const handleCopy = () => {
@@ -91,11 +107,14 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
 
   const handleRegenerate = () => { };
 
-  const showActionsBar = isGenerationFinished(isLoading) && isComplete;
+  const showActionsBar = isGenerationFinished(isLoading) && isComplete && !hideControls;
 
   const handleAnimationEnd = useCallback(() => {
     endAnimation(onEndAnimation);
-  }, [onEndAnimation]);
+    if (typeof onComplete === "function") {
+      onComplete();
+    }
+  }, [onEndAnimation, onComplete]);
 
   return (
     <div
@@ -117,12 +136,12 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
           <div className="w-full flex justify-start items-start break-words">
             <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100 leading-relaxed">
               {markdownMode ? (
-                    <div className="markdown-content"
-                     dangerouslySetInnerHTML={{ __html: displayedHTML }} />
+                <div className="markdown-content"
+                  dangerouslySetInnerHTML={{ __html: displayedHTML }} />
               ) : (
 
                 <div className="markdown-content"
-                dangerouslySetInnerHTML={{ __html: displayedHTML }} />
+                  dangerouslySetInnerHTML={{ __html: displayedHTML }} />
               )}
             </div>
           </div>

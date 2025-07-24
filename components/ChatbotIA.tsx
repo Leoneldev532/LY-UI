@@ -7,7 +7,7 @@ import ThinkingSearchAnimation from './LY UI/AI/thinkingSearchAnimation'
 import GeneratedImageCard from './LY UI/AI/generatedImageCard'
 import car from "@/public/car.jpg";
 import AiAgentAnimation from './LY UI/AI/AiAgentAnimation'
-import { ProgressiveContentList, renderContentSequentially } from './LY UI/AI/RenderContentItem';
+import { renderContentSequentially } from './LY UI/AI/RenderContentItem';
 
 import { z } from "zod";
 
@@ -56,6 +56,7 @@ async function callTogetherMistralAPI(prompt: string, signal?: AbortSignal): Pro
 
   // Fonction utilitaire pour créer une réponse d'erreur
   const createErrorResponse = (message: string): LiaContentItem[] => {
+
     return [{ type: 'text', content: message, metadata: 'markdown' }];
   };
 
@@ -196,7 +197,7 @@ IMPORTANT:
 
   try {
     const body = {
-      model: "mistralai/Mistral-7B-Instruct-v0.2",
+      model: "moonshotai/Kimi-K2-Instruct",
       messages: [
         {
           role: "user",
@@ -241,7 +242,7 @@ IMPORTANT:
       body: JSON.stringify(body),
       signal,
     });
-
+    console.log(response, "----")
     if (!response.ok) {
       if (response.status === 401) {
         return createErrorResponse('Erreur : Clé API Together manquante ou invalide.');
@@ -459,7 +460,7 @@ const ChatbotIA = () => {
                   ) : null} */}
 
                   {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
-                    renderContentSequentially(qa.answer, 1000) // 1 seconde entre chaque élément
+                    renderContentSequentially(qa.answer, { useSafeMode: false })
                   ) : qa.showAnswer ? (
                     <div className="text-gray-500 italic">Aucune réponse disponible</div>
                   ) : null}
