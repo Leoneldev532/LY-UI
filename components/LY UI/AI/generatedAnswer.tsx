@@ -23,7 +23,9 @@ import { useProgressiveMarkdown } from "@/components/hooks/useProgressiveMarkdow
  * @prop isLoading - Whether the answer is loading.
  * @prop LoaderComponent - Custom loader component to display while loading.
  * @prop onEndAnimation - Callback when the answer animation ends.
+ * @prop onComplete - Callback when the answer animation ends (EXTERNE).
  * @prop textSpeed - Speed of the text animation (ms per character).
+ * @prop hideControls - Hide the controls/actions bar if true.
  */
 
 type GeneratedAnswerProps = {
@@ -33,10 +35,10 @@ type GeneratedAnswerProps = {
   isLoading?: boolean;
   LoaderComponent?: React.ReactNode;
   onEndAnimation?: () => void;
+  onComplete?: () => void; // Ajouté pour callback externe
   textSpeed?: number;
   markdownMode?: boolean; // NEW: allow to choose markdown rendering
-  onComplete?: () => void;
-  hideControls?: boolean;
+  hideControls?: boolean; // NEW: allow to hide controls/actions bar
 };
 
 const endAnimation = (onEndAnimation?: () => void) => {
@@ -49,54 +51,70 @@ function isGenerationFinished(isLoading?: boolean) {
   return !isLoading;
 }
 
-const GeneratedAnswerBase = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
+const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   content = "",
   className,
   timestamp = "00:00",
   isLoading = false,
   LoaderComponent,
   onEndAnimation,
+  onComplete, // Ajouté pour callback externe
   textSpeed = 30,
-  markdownMode = false, 
-  onComplete,
-  hideControls = false,
+  markdownMode = false,
+  hideControls = false, // NEW: default to false
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
+  const [hasCalledComplete, setHasCalledComplete] = useState(false);
 
+  // const { displayedText, isWriting, isComplete } = useProgressive(content, isLoading, textSpeed);
   const { displayedHTML, isWriting, isComplete } = useProgressiveMarkdown(
-    content, 
-    isLoading, 
+    content,
+    isLoading,
     textSpeed
   );
 
-  console.log(isWriting,"------------")
-
+  // Appelle le callback interne et EXTERNE une seule fois à la fin de l'animation
   useEffect(() => {
-    if (isComplete && !isLoading) {
+    if (isComplete && !isLoading && !hasCalledComplete) {
       endAnimation(onEndAnimation);
-      if (onComplete) onComplete();
+      if (typeof onComplete === "function") {
+        onComplete();
+      }
+      setHasCalledComplete(true);
     }
-  }, [isComplete, isLoading, onEndAnimation, onComplete]);
+    // Si on relance une génération, on reset le flag
+    if (!isComplete || isLoading) {
+      setHasCalledComplete(false);
+    }
+  }, [isComplete, isLoading, onEndAnimation, onComplete, hasCalledComplete]);
 
   // Always copy the plain text (not rendered/markdown) version of the answer
-  const handleCopy = React.useCallback(() => {
+  const handleCopy = () => {
     if (content) {
+      // Remove markdown formatting for copy
+      // Use a simple regex to strip markdown, or just copy the raw content
+      // For now, copy the raw content (plain text as written)
       navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     }
-  }, [content]);
+  };
 
-  const handleLike = React.useCallback(() => {}, []);
-  const handleDisLike = React.useCallback(() => {}, []);
-  const handleRegenerate = React.useCallback(() => {}, []);
+  const handleLike = () => { };
 
-  const showActionsBar = isGenerationFinished(isLoading) && isComplete;
+  const handleDisLike = () => { };
+
+  const handleRegenerate = () => { };
+
+  const showActionsBar = isGenerationFinished(isLoading) && isComplete && !hideControls;
 
   const handleAnimationEnd = useCallback(() => {
     endAnimation(onEndAnimation);
-  }, [onEndAnimation]);
+    if (typeof onComplete === "function") {
+      onComplete();
+    }
+  }, [onEndAnimation, onComplete]);
 
   return (
     <div
@@ -118,19 +136,19 @@ const GeneratedAnswerBase = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
           <div className="w-full flex justify-start items-start break-words">
             <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100 leading-relaxed">
               {markdownMode ? (
-                    <div className="markdown-content"
-                     dangerouslySetInnerHTML={{ __html: displayedHTML }} />
+                <div className="markdown-content"
+                  dangerouslySetInnerHTML={{ __html: displayedHTML }} />
               ) : (
 
                 <div className="markdown-content"
-                dangerouslySetInnerHTML={{ __html: displayedHTML }} />
+                  dangerouslySetInnerHTML={{ __html: displayedHTML }} />
               )}
             </div>
           </div>
         )}
       </div>
 
-      {showActionsBar && !hideControls && (
+      {showActionsBar && (
         <div className="w-full flex justify-between items-center">
           <div>
             <span className="text-sm text-neutral-400">{timestamp}</span>
@@ -223,5 +241,4 @@ const GeneratedAnswerBase = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   );
 });
 
-GeneratedAnswerBase.displayName = "GeneratedAnswer";
-export default React.memo(GeneratedAnswerBase);
+export default GeneratedAnswer

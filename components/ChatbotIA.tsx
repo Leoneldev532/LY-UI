@@ -7,8 +7,14 @@ import ThinkingSearchAnimation from './LY UI/AI/thinkingSearchAnimation'
 import GeneratedImageCard from './LY UI/AI/generatedImageCard'
 import car from "@/public/car.jpg";
 import AiAgentAnimation from './LY UI/AI/AiAgentAnimation'
+<<<<<<< HEAD
 import { renderContentComponent, RenderContentItem } from './LY UI/AI/RenderContentItem';
 import UnifiedContent from './LY UI/AI/UnifiedContent'
+=======
+import { renderContentSequentially } from './LY UI/AI/RenderContentItem';
+
+import { z } from "zod";
+>>>>>>> c4a44a0de1fc5bdd0a64f068d3b247d392b9a792
 
 /**
  * Type for a single content item in the AI's answer.
@@ -46,10 +52,15 @@ async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<Lia
 
   // Fonction utilitaire pour créer une réponse d'erreur
   const createErrorResponse = (message: string): LiaContentItem[] => {
+
     return [{ type: 'text', content: message, metadata: 'markdown' }];
   };
 
+<<<<<<< HEAD
   // Fonction utilitaire pour nettoyer et parser la réponse JSON
+=======
+  // Fonction utilitaire pour parser et valider la réponse JSON - CORRIGÉE ----
+>>>>>>> c4a44a0de1fc5bdd0a64f068d3b247d392b9a792
   const parseAIResponse = (rawContent: string): LiaContentItem[] => {
     try {
       // Nettoyer la réponse en supprimant les markdown code blocks si présents
@@ -175,7 +186,11 @@ async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<Lia
 
   try {
     const body = {
+<<<<<<< HEAD
       model: "mistral-tiny",
+=======
+      model: "moonshotai/Kimi-K2-Instruct",
+>>>>>>> c4a44a0de1fc5bdd0a64f068d3b247d392b9a792
       messages: [
         {
           role: "user",
@@ -195,7 +210,7 @@ async function callMistralAPI(prompt: string, signal?: AbortSignal): Promise<Lia
       body: JSON.stringify(body),
       signal,
     });
-
+    console.log(response, "----")
     if (!response.ok) {
       if (response.status === 401) {
         return createErrorResponse('Erreur : Clé API Mistral manquante ou invalide.');
@@ -410,12 +425,37 @@ const ChatbotIA = () => {
               <div key={idx} className="">
                 <EditableQuestion onQuestionChange={handleRetry} question={qa.question} />
                 <div className='max-w-full text-left'>
+<<<<<<< HEAD
                   {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer
                     ? renderContentComponent({ items: qa.answer })
                     : qa.showAnswer && (
                         <div className="text-gray-500 italic">Aucune réponse disponible</div>
                       )
                   }
+=======
+                  {/* {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
+                    renderContentSequentially(qa.answer)
+                  ) : qa.showAnswer ? (
+                    <div className="text-gray-500 italic">Aucune réponse disponible</div>
+                  ) : null} */}
+                  {/* {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
+                    <ProgressiveContentList
+                      items={qa.answer}
+                      delay={800}
+                      showLoadingIndicator={true}
+                      onComplete={() => console.log(`Question ${idx} terminée`)}
+                      className="max-w-full"
+                    />
+                  ) : qa.showAnswer ? (
+                    <div className="text-gray-500 italic">Aucune réponse disponible</div>
+                  ) : null} */}
+
+                  {Array.isArray(qa.answer) && qa.answer.length > 0 && qa.showAnswer ? (
+                    renderContentSequentially(qa.answer, { useSafeMode: false })
+                  ) : qa.showAnswer ? (
+                    <div className="text-gray-500 italic">Aucune réponse disponible</div>
+                  ) : null}
+>>>>>>> c4a44a0de1fc5bdd0a64f068d3b247d392b9a792
                   <div>
                     {loadingIdx === idx && !qa.showAnswer ? (
                       <div className="flex items-center gap-2">
