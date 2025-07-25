@@ -455,8 +455,8 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-col w-full justify-center items-center gap-x-4">
-          <div className="flex max-w-3xl px-4 flex-col justify-start items-start w-full">
-            <h2 className="text-3xl text-left">Test Our AI Chatbot</h2>
+          <div className="flex max-w-3xl flex-col justify-start items-start w-full">
+            <h2 className="text-3xl px-4 text-left">Test Our AI Chatbot</h2>
           </div>
           <ChatbotIA />
         </div>

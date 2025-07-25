@@ -12,61 +12,23 @@ import AudioInteraction from "@/components/LY UI/AI/audioInteraction";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `onAudioStart` | `() => void` | `undefined` | Callback when audio starts |
-| `onAudioStop` | `() => void` | `undefined` | Callback when audio stops |
-| `onAudioPause` | `() => void` | `undefined` | Callback when audio pauses |
-| `onAudioResume` | `() => void` | `undefined` | Callback when audio resumes |
+| Prop           | Type         | Default     | Description                                 |
+|----------------|--------------|-------------|---------------------------------------------|
+| `onAudioStart` | `() => void` | `undefined` | Callback when audio starts                  |
+| `onAudioStop`  | `() => void` | `undefined` | Callback when audio stops                   |
+| `onAudioPause` | `() => void` | `undefined` | Callback when audio pauses                  |
+| `onAudioResume`| `() => void` | `undefined` | Callback when audio resumes                 |
+
+## Interactive Behaviors
+
+- **Particle Animation**: Visual animation synchronized with audio state (play, pause, stop).
+- **Elapsed Time**: Displays elapsed time in MM:SS format during playback.
+- **Accessible Controls**: Play, pause, and stop buttons are fully accessible and keyboard navigable.
+- **Timer Management**: Internal timer tracks elapsed time and resets on stop.
+- **Focus**: Supports programmatic focus via ref (forwardRef).
 
 ## forwardRef and ref management
 
 The AudioInteraction component uses forwardRef to pass references to the underlying div element. This allows you to access the audio container directly for imperative operations like controlling playback or measuring dimensions.
 
-```tsx
-import { useRef } from 'react';
-import AudioInteraction from "@/components/LY UI/AI/audioInteraction";
-
-const MyComponent = () => {
-  const audioRef = useRef<HTMLDivElement>(null);
-
-  const getAudioDimensions = () => {
-    if (audioRef.current) {
-      return {
-        width: audioRef.current.offsetWidth,
-        height: audioRef.current.offsetHeight
-      };
-    }
-    return { width: 0, height: 0 };
-  };
-
-  const scrollToAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <AudioInteraction
-      ref={audioRef}
-      onAudioStart={() => console.log("Audio started")}
-      onAudioStop={() => console.log("Audio stopped")}
-      onAudioPause={() => console.log("Audio paused")}
-      onAudioResume={() => console.log("Audio resumed")}
-    />
-  );
-};
-```
-
-### Example Usage
-
-```jsx
-import AudioInteraction from "@/components/LY UI/AI/audioInteraction";
-
-<AudioInteraction
-  onAudioStart={() => console.log("Audio started")}
-  onAudioStop={() => console.log("Audio stopped")}
-  onAudioPause={() => console.log("Audio paused")}
-  onAudioResume={() => console.log("Audio resumed")}
-/>
 ```

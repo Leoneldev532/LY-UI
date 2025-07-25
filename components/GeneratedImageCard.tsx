@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef, ReactNode } from "react";
 import Image from "next/image";
 import {
   CheckIcon,
@@ -32,6 +32,7 @@ interface GeneratedImageCardProps {
   onLike?: () => void;
   onDislike?: () => void;
   onRegenerate?: () => void;
+  loadingComponent?: ReactNode;
 }
 
 const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>(({
@@ -45,6 +46,7 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
   onLike,
   onDislike,
   onRegenerate,
+  loadingComponent,
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
@@ -120,11 +122,15 @@ const GeneratedImageCard = forwardRef<HTMLDivElement, GeneratedImageCardProps>((
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        {loading && (
+        
+        {loading && !loadingComponent && (
           <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 z-10">
             <span className="animate-spin rounded-full border-2 border-neutral-300 border-t-transparent h-8 w-8" />
           </div>
         )}
+
+        {loading && loadingComponent}
+
         <Image
           src={imageSrc}
           alt={imageTitle ?? "Generated image"}

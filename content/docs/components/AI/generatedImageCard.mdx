@@ -30,17 +30,33 @@ import car from "@/public/car.jpg";
 />
 ```
 
+## Interactive Controls
+
+- **Download**: Hover the image to reveal a download button (top-right). Downloads the image (supports Blob and string src).
+- **Copy Prompt**: Copies the prompt to clipboard. Shows a check icon as feedback when copied.
+- **Like/Dislike**: Triggers the respective callbacks when clicked.
+- **Regenerate**: Dropdown menu to trigger regeneration via callback.
+- **Loading State**: Shows a spinner while the image is loading.
+- **Hover State**: Download button only appears on hover and when not loading.
+- **Blob Support**: If `src` is a Blob, it is converted to an object URL and revoked on unmount.
+
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `src` | `string | Blob | StaticImport` | `"https://via.placeholder.com/150"` | Source of the image to display |
-| `imageTitle` | `string | null` | `undefined` | Title of the image |
-| `width` | `number` | `2225` | Width of the image |
-| `height` | `number` | `2465` | Height of the image |
-| `className` | `string` | `undefined` | Additional CSS classes for styling |
-| `timestamp` | `string` | `"00:00"` | Time displayed at the bottom of the card |
-| `prompt` | `string` | `""` | The prompt associated with the image (can be copied) |
-| `onLike` | `() => void` | `undefined` | Callback when user likes the image |
-| `onDislike` | `() => void` | `undefined` | Callback when user dislikes the image |
-| `onRegenerate` | `() => void` | `undefined` | Callback when user requests regeneration |
+| Prop         | Type                                 | Default                          | Description                                                        |
+|--------------|--------------------------------------|----------------------------------|--------------------------------------------------------------------|
+| `src`        | `string \| Blob \| StaticImport`     | `"https://via.placeholder.com/150"` | Source of the image to display. Supports string URL, Blob, or StaticImport. |
+| `imageTitle` | `string \| null`                    | `undefined`                      | Title of the image (used for alt and download filename).           |
+| `width`      | `number`                             | `2225`                           | Width of the image (in px).                                        |
+| `height`     | `number`                             | `2465`                           | Height of the image (in px).                                       |
+| `className`  | `string`                             | `undefined`                      | Additional CSS classes for styling.                                |
+| `timestamp`  | `string`                             | `"00:00"`                       | Time displayed at the bottom of the card.                          |
+| `prompt`     | `string`                             | `""`                            | The prompt associated with the image (can be copied).              |
+| `onLike`     | `() => void`                         | `undefined`                      | Callback when user likes the image.                                |
+| `onDislike`  | `() => void`                         | `undefined`                      | Callback when user dislikes the image.                             |
+| `onRegenerate`| `() => void`                        | `undefined`                      | Callback when user requests regeneration.                          |
+
+## Notes
+- The component manages its own loading, hover, and copied states internally.
+- The download button is only visible on hover and when the image is loaded.
+- The prompt copy button is disabled if no prompt is provided.
+- The component is fully accessible and keyboard navigable.

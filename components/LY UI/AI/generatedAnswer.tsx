@@ -1,32 +1,11 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect, forwardRef, useCallback } from "react";
-import { CopyIcon, RefreshCwIcon, CheckIcon, Ellipsis, ThumbsUp, ThumbsDown, Check, Copy, RotateCcw, MoreHorizontal } from "lucide-react";
-import MarkdownPreview from '@uiw/react-markdown-preview';
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
+import { Copy, Check, RotateCcw, MoreHorizontal, ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useProgressiveText } from "@/components/hooks/useProgressiveText";
 import { useProgressiveMarkdown } from "@/components/hooks/useProgressiveMarkdown";
-
-/**
- * GeneratedAnswer component.
- * Displays an AI-generated answer with animation and optional callbacks.
- *
- * Props:
- * @prop className - Additional CSS classes for styling.
- * @prop content - The content of the AI-generated answer.
- * @prop timestamp - Time displayed at the bottom of the answer.
- * @prop isLoading - Whether the answer is loading.
- * @prop LoaderComponent - Custom loader component to display while loading.
- * @prop onEndAnimation - Callback when the answer animation ends.
- * @prop onComplete - Callback when the answer animation ends (EXTERNE).
- * @prop textSpeed - Speed of the text animation (ms per character).
- * @prop hideControls - Hide the controls/actions bar if true.
- */
 
 type GeneratedAnswerProps = {
   className?: string;
@@ -35,10 +14,10 @@ type GeneratedAnswerProps = {
   isLoading?: boolean;
   LoaderComponent?: React.ReactNode;
   onEndAnimation?: () => void;
-  onComplete?: () => void; // Ajouté pour callback externe
+  onComplete?: () => void;
   textSpeed?: number;
-  markdownMode?: boolean; // NEW: allow to choose markdown rendering
-  hideControls?: boolean; // NEW: allow to hide controls/actions bar
+  markdownMode?: boolean;
+  hideControls?: boolean;
 };
 
 const endAnimation = (onEndAnimation?: () => void) => {
@@ -58,56 +37,44 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   isLoading = false,
   LoaderComponent,
   onEndAnimation,
-  onComplete, // Ajouté pour callback externe
+  onComplete,
   textSpeed = 30,
   markdownMode = false,
-  hideControls = false, // NEW: default to false
+  hideControls = false,
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
   const [hasCalledComplete, setHasCalledComplete] = useState(false);
 
-  // const { displayedText, isWriting, isComplete } = useProgressive(content, isLoading, textSpeed);
   const { displayedHTML, isWriting, isComplete } = useProgressiveMarkdown(
     content,
     isLoading,
     textSpeed
   );
 
-  // Appelle le callback interne et EXTERNE une seule fois à la fin de l'animation
   useEffect(() => {
     if (isComplete && !isLoading && !hasCalledComplete) {
       endAnimation(onEndAnimation);
       if (typeof onComplete === "function") {
-        onComplete();
+        onComplete(); // Appel crucial
       }
       setHasCalledComplete(true);
     }
-    // Si on relance une génération, on reset le flag
-    if (!isComplete || isLoading) {
-      setHasCalledComplete(false);
-    }
   }, [isComplete, isLoading, onEndAnimation, onComplete, hasCalledComplete]);
 
-  // Always copy the plain text (not rendered/markdown) version of the answer
   const handleCopy = () => {
     if (content) {
-      // Remove markdown formatting for copy
-      // Use a simple regex to strip markdown, or just copy the raw content
-      // For now, copy the raw content (plain text as written)
       navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     }
   };
 
-  const handleLike = () => { };
+  const handleLike = () => {};
+  const handleDisLike = () => {};
+  const handleRegenerate = () => {};
 
-  const handleDisLike = () => { };
-
-  const handleRegenerate = () => { };
-
-  const showActionsBar = isGenerationFinished(isLoading) && isComplete && !hideControls;
+  const showActionsBar = !hideControls 
 
   const handleAnimationEnd = useCallback(() => {
     endAnimation(onEndAnimation);
@@ -119,10 +86,10 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   return (
     <div
       ref={ref}
-      className={cn("flex flex-col w-full gap-2 p-2  ", className)}
+      className={cn("flex flex-col w-full text-left gap-2 ", className)}
       {...props}
     >
-      <div className="min-h-auto w-full flex items-start justify-start rounded-lg">
+      <div className="min-h-auto w-full  text-left  flex items-start justify-start rounded-lg">
         {isLoading ? (
           LoaderComponent ? (
             LoaderComponent
@@ -133,16 +100,12 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
             />
           )
         ) : (
-          <div className="w-full flex justify-start items-start break-words">
-            <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100 leading-relaxed">
-              {markdownMode ? (
-                <div className="markdown-content"
-                  dangerouslySetInnerHTML={{ __html: displayedHTML }} />
-              ) : (
-
-                <div className="markdown-content"
-                  dangerouslySetInnerHTML={{ __html: displayedHTML }} />
-              )}
+          <div className="w-full flex  text-left  justify-start items-start break-words">
+            <div className="whitespace-pre-wrap  text-gray-900 dark:text-gray-100 leading-relaxed">
+              <div
+                className="markdown-content"
+                dangerouslySetInnerHTML={{ __html: displayedHTML }}
+              />
             </div>
           </div>
         )}
@@ -241,4 +204,4 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   );
 });
 
-export default GeneratedAnswer
+export default GeneratedAnswer;

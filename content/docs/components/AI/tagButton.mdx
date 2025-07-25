@@ -12,8 +12,6 @@ import TagButton from "@/components/LY UI/AI/tagButton"
   variant="default"
   items={["UI", "UX", "Frontend", "Backend", "Design"]}
 />
-
-
 </Preview>
 
 ## Props
@@ -28,13 +26,13 @@ import TagButton from "@/components/LY UI/AI/tagButton"
 | `onItemClick`| `(item: string) => void`               | -           | Callback when a dropdown item is selected   |
 | `className`  | `string`                               | -           | Additional CSS classes                      |
 
-## Dropdown Behavior
+## Dropdown & Focus Behavior
 
-When the `items` prop is provided, clicking the TagButton opens a dropdown menu with the provided items. Selecting an item will call the `onItemClick` callback (if provided) and close the dropdown. Only one TagButton dropdown can be open at a time.
-
-If no `items` are provided, the button acts as a regular button and triggers `onClick` if set.
+- **Dropdown**: If `items` is provided, clicking the button opens a dropdown menu. Only one TagButton dropdown can be open at a time (global management).
+- **Animation**: Dropdown uses motion for smooth appearance/disappearance.
+- **Focus**: The component supports programmatic focus via ref (forwardRef).
+- **Keyboard Accessibility**: Fully keyboard accessible for all controls.
 
 ## forwardRef and ref management
 
-The TagButton component uses `forwardRef` to pass references to the underlying button element.
-This allows you to access the button directly for imperative operations like focusing or programmatic clicks.
+The TagButton component uses `forwardRef` to pass references to the underlying button element. This allows you to access the button directly for imperative operations like focusing or programmatic clicks.

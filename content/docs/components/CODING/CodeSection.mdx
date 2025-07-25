@@ -2,6 +2,7 @@
 title: CodeSection
 description: A code display and editing component with copy, download, and customization options.
 component: true
+full: true
 ---
 import CodeSection from "@/components/LY UI/CODING/CodeSection"
 
@@ -13,18 +14,32 @@ import CodeSection from "@/components/LY UI/CODING/CodeSection"
 
 `CodeSection` is a React component for displaying and editing code with a modern interface based on Monaco Editor.
 
- It provides buttons to copy the code, download it, and customize the appearance.
+It provides buttons to copy the code, download it, and customize the appearance.
 
 ## Props
 
 | Prop              | Type      | Default         | Description                                              |
 |-------------------|-----------|-----------------|----------------------------------------------------------|
 | `height`          | `string`  | "90vh"          | Height of the editor                                     |
+| `maxHeight`       | `string`  | "80vh"          | Maximum height of the editor                             |
+| `minHeight`       | `string`  | "200px"         | Minimum height of the editor                             |
 | `defaultLanguage` | `string`  | "javascript"    | Code language (for syntax highlighting)                  |
 | `defaultValue`    | `string`  | "// some comment" | Default displayed code                                 |
 | `className`       | `string`  | ""              | Additional CSS classes                                   |
 | `isEditable`      | `boolean` | `true`           | Allows code editing                                      |
 | `variant`         | `"default" \| "outline" \| "ghost"` | "default" | Visual style of the container                            |
+| `processLoading`  | `boolean` | `false`          | Shows a loading/progressive writing effect               |
+| `progressiveMode` | `boolean` | `false`          | Enables progressive code writing animation               |
+| `onComplete`      | `() => void` | `undefined`     | Callback when progressive writing is complete            |
+| `autoHeight`      | `boolean` | `false`          | Automatically adjusts editor height to content           |
+
+## Interactive Behaviors
+
+- **Monaco Editor**: Full-featured code editor with syntax highlighting and editing.
+- **Copy/Download Buttons**: Copy code to clipboard or download as file, with visual feedback.
+- **Progressive Writing**: Optionally animates code appearance (progressiveMode/processLoading).
+- **AutoHeight**: Editor can auto-resize to fit content if `autoHeight` is enabled.
+- **Accessibility**: Fully keyboard accessible and screen-reader friendly.
 
 ## Usage Example
 
@@ -34,5 +49,6 @@ import CodeSection from "@/components/LY UI/CODING/CodeSection"
   defaultLanguage="python"
   defaultValue={`def hello():\n    print('Hello, World!')`}
   variant="outline"
+  autoHeight={true}
 />
 ``` 
