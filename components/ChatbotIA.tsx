@@ -50,8 +50,8 @@ const ChatbotIA = () => {
     isThinking: boolean
   ): string {
 
-let instruction = `### RÈGLE ABSOLUE - NE JAMAIS VIOLER ###
-[VOTRE RÉPONSE DOIT ÊTRE UN TABLEAU JSON PUR SANS AUCUN CARACTÈRE AVANT/APRÈS. 
+    let instruction = `### RÈGLE ABSOLUE - NE JAMAIS VIOLER ###
+[VOTRE RÉPONSE DOIT ÊTRE UN TABLEAU JSON PUR SANS AUCUN CARACTÈRE AVANT/APRÈS.
 TOUTE DÉVIATION RENDRA LA RÉPONSE INUTILISABLE. CONFIRMEZ INTERIEUREMENT "OK_JSON".]
 
 ## FORMAT OBLIGATOIRE - COPIEZ EXACTEMENT ##
@@ -64,7 +64,7 @@ TOUTE DÉVIATION RENDRA LA RÉPONSE INUTILISABLE. CONFIRMEZ INTERIEUREMENT "OK_J
 ]
 
 ### DIRECTIVES NON-NÉGOCIABLES ###
-1. [ TOUJOURS ] COMMENCER DIRECTEMENT PAR [ 
+1. [ TOUJOURS ] COMMENCER DIRECTEMENT PAR [
 2. [ TOUJOURS ] TERMINER PAR ]
 3. Types VALIDES UNIQUEMENT : "text", "code", "image"
 4. Pour "text" : metadata = "markdown" [ SANS EXCEPTION ]
@@ -78,12 +78,12 @@ TOUTE DÉVIATION RENDRA LA RÉPONSE INUTILISABLE. CONFIRMEZ INTERIEUREMENT "OK_J
 12. [ TOUJOURS ] TIENT COMPTE DES RÈGLES PRÉCÉDENTES
 13. [ TOUJOURS ] TIENT COMPTE DES RÈGLES PRÉCÉDENTES
 14. [TOUJOURS] POUR TOUTES DEMANDES TRADUIT D'ABORD ANGLAIS AVANT DE FAIRE LA RECHERCHE PUIS TU RETOURNE EN LA LANGUE DU CLIENT
-15. [ TOUJOURS ] TU DOIS TOUJOURS EXPLIQUER CE QUE TU FAIS ET POURQUOI TU FAIS CA 
+15. [ TOUJOURS ] TU DOIS TOUJOURS EXPLIQUER CE QUE TU FAIS ET POURQUOI TU FAIS CA
 16. [TOUJOURS] TIENT COMPTE DU NOMBRE DE TEXTE QUE TU PEUX GENERER A L'AVANCE POUR EVITER L'ERREUR DE TOKEN ET DES REPONSE NON TERMINE
 17. [TOUJOURS] TIENT COMPTE DU NOMBRE DE TEXTE QUE TU PEUX GENERER A L'AVANCE POUR EVITER L'ERREUR DE TOKEN ET DES REPONSE NON TERMINE
 18. [TOUJOURS] TIENT COMPTE DU NOMBRE DE TEXTE QUE TU PEUX GENERER A L'AVANCE POUR EVITER L'ERREUR DE TOKEN ET DES REPONSE NON TERMINE DANS LE CAS DES IMAGES EN URL
-19. [TOUJOURS] PREND DES IMAGES LIBRES DE DROIT ET VRAIMENT EXISTANTES ET NE PREND PAS DES IMAGES CHEZ placekitten et des sites inaccessibles 
-20. [TOUJOURS] POUR LES IMAGES GENERE DES IMAGES AVEC LES LIENS PRESENTS EN LIGNES 
+19. [TOUJOURS] PREND DES IMAGES LIBRES DE DROIT ET VRAIMENT EXISTANTES ET NE PREND PAS DES IMAGES CHEZ placekitten et des sites inaccessibles
+20. [TOUJOURS] POUR LES IMAGES GENERE DES IMAGES AVEC LES LIENS PRESENTS EN LIGNES
 21. [TOUJOURS] PREND DES IMAGES SUR LES SITES RECENTS (5 DERNIERES ANNEES)
 22. [TOUJOURS] TA SOURCE PRINCIPALE POUR LES IMAGES C EST LE SITE D IMAGE unsplash.com , pexels.com , pixabay.com
 23. [ TOUJOURS ] TIENT COMPTE DES RÈGLES PRÉCÉDENTES
@@ -91,27 +91,27 @@ TOUTE DÉVIATION RENDRA LA RÉPONSE INUTILISABLE. CONFIRMEZ INTERIEUREMENT "OK_J
 ### SANCTIONS ###
 VIOLATION = ERREUR CRITIQUE + ARRÊT IMMÉDIAT DU PROCESSUS`;
 
-// Ajout des modes
-if (isImage) {
-  instruction += `\n\n### 🎨 MODE IMAGE (RÈGLES RENFORCÉES) ###
+    // Ajout des modes
+    if (isImage) {
+      instruction += `\n\n### 🎨 MODE IMAGE (RÈGLES RENFORCÉES) ###
 - [ TOUJOURS ] Utiliser type: "image" ET metadata: "url"
 - [ INTERDIT ] Tout autre format pour les images`;
-- "[TOUJOURS] TIENT COMPTE DU NOMBRE DE TEXTE QUE TU PEUX GENERER A L AVANCE POUR EVITER L'ERREUR DE TOKEN ET DES REPONSE NON TERMINE "
-}
+      - "[TOUJOURS] TIENT COMPTE DU NOMBRE DE TEXTE QUE TU PEUX GENERER A L AVANCE POUR EVITER L'ERREUR DE TOKEN ET DES REPONSE NON TERMINE "
+    }
 
-if (isAgent) {
-  instruction += `\n\n### 🤖 MODE AGENT (CONTRAINTES STRICTES) ###
+    if (isAgent) {
+      instruction += `\n\n### 🤖 MODE AGENT (CONTRAINTES STRICTES) ###
 - [ OBLIGATOIRE ] Raisonnement en 3 étapes minimum
 - [ AUTORISÉ ] Multiples éléments MAIS [ INTERDIT ] texte hors JSON`;
-}
+    }
 
-if (isThinking) {
-  instruction += `\n\n### � MODE RÉFLEXION (DANS LE JSON UNIQUEMENT) ###
+    if (isThinking) {
+      instruction += `\n\n### � MODE RÉFLEXION (DANS LE JSON UNIQUEMENT) ###
 - [ TOUJOURS ] Afficher les étapes dans content (type:"text")
 - [ INTERDIT ] Explications hors structure JSON`;
-}
+    }
 
-instruction += `\n\n### EXEMPLES VALIDES (COPIEZ LA STRUCTURE) ###
+    instruction += `\n\n### EXEMPLES VALIDES (COPIEZ LA STRUCTURE) ###
 
 ✅ Correct (simple):
 [{"type":"text","content":"Bonjour","metadata":"markdown"}]
@@ -131,9 +131,9 @@ instruction += `\n\n### EXEMPLES VALIDES (COPIEZ LA STRUCTURE) ###
 /* Commentaire */ [ ... ]
 `;
 
-return instruction;
+    return instruction;
   }
-  
+
 
   async function callTogetherMistralAPI(
     prompt: string,
@@ -165,7 +165,7 @@ return instruction;
       const body = {
         // model: "moonshotai/Kimi-K2-Instruct",
         model: "deepseek-ai/DeepSeek-V3",
-        // model: "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+        // model: "meta-llama/Llama-3.3-70B-Instcruct-Turbo-Free",
         messages: [
           {
             role: "system",
@@ -200,7 +200,7 @@ return instruction;
         signal: signal,
       });
 
-     
+
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -212,7 +212,7 @@ return instruction;
       const data = await response.json();
       const rawContent = data.choices?.[0]?.message?.content || ""?.trim();
 
-      
+
       if (!rawContent.trim()) {
         throw new Error("Réponse vide de l'IA");
       }
@@ -247,10 +247,10 @@ return instruction;
         signal: controller.signal,
       });
 
-      
-      const answerArr: LiaContentItem[] =JSON.parse(answer as unknown as string) as LiaContentItem[];
 
-  
+      const answerArr: LiaContentItem[] = JSON.parse(answer as unknown as string) as LiaContentItem[];
+
+
       const validationResult = LiaContentArraySchema.safeParse(answerArr);
 
       delete abortControllersRef.current[idx];
@@ -282,7 +282,7 @@ return instruction;
     });
   }
 
- 
+
 
   const proceedSubmit = async (
     value: string,
@@ -346,12 +346,12 @@ return instruction;
         prev.map((qa, i) =>
           i === currentIdx
             ? {
-                ...qa,
-                answer: answerArr,
-                showAnswer: true,
-                endTime: getCurrentTimeString(),
-                status: "completed",
-              }
+              ...qa,
+              answer: answerArr,
+              showAnswer: true,
+              endTime: getCurrentTimeString(),
+              status: "completed",
+            }
             : qa
         )
       );
@@ -398,8 +398,8 @@ return instruction;
           <div key={idx} className="">
             <EditableQuestion question={qa.question} />
             {Array.isArray(qa.answer) &&
-            qa.answer.length > 0 &&
-            qa.showAnswer ? (
+              qa.answer.length > 0 &&
+              qa.showAnswer ? (
               renderContentSequentially(qa.answer, { useSafeMode: true })
             ) : qa.showAnswer ? (
               <div className="text-gray-500 italic">

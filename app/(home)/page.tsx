@@ -107,7 +107,7 @@ export default function HomePage() {
                   Math.min(
                     1,
                     (currentTime - elementStartTime) /
-                      (totalDuration - elementStartTime)
+                    (totalDuration - elementStartTime)
                   )
                 );
 
@@ -276,7 +276,7 @@ export default function HomePage() {
                 >
                   <div className="flex flex-col gap-3 justify-start items-start">
                     <div className="w-full flex gap-x-4 justify-center items-center">
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="97"
                         height="69"
@@ -385,7 +385,7 @@ export default function HomePage() {
                   <div className="flex flex-col gap-3 justify-start items-start">
                     <div className="w-full flex gap-x-4 justify-start items-start">
 
-                    <svg
+                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="112"
                         height="72"
@@ -430,7 +430,7 @@ export default function HomePage() {
                         </defs>
                       </svg>
 
-                 
+
                       <div className="flex flex-col w-full justify-start items-start gap-2">
                         <h2 className="text-xl md:text-2xl">Code Components</h2>
                         <p className="text-sm text-balance text-neutral-400 text-left">

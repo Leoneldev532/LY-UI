@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { marked } from 'marked';
 
 export const useProgressiveMarkdown = (
-  markdownText: string, 
-  isLoading: boolean, 
+  markdownText: string,
+  isLoading: boolean,
   speed: number = 100
 ) => {
   const [displayedText, setDisplayedText] = useState<string>("");

@@ -36,14 +36,14 @@ const defaultStepIcons = [
   <Star key="star" className="w-5 h-5 text-amber-600 dark:text-amber-400" />,
 ]
 
-const LineListItem: React.FC<ProcessLine> = ({ icon, content}) => {
+const LineListItem: React.FC<ProcessLine> = ({ icon, content }) => {
   return (
-    <li className="flex items-center justify-start gap-2 py-4 h-12 px-2 w-full rounded-lg">
+    <div className="flex items-center justify-start gap-2 py-4 h-12 px-2 w-full rounded-lg">
       <span className="min-w-[2rem] flex items-center justify-center">{icon}</span>
       <p className="text-sm line-clamp-1 overflow-hidden text-ellipsis text-neutral-800 dark:text-gray-200">
         {content}
       </p>
-    </li>
+    </div>
   )
 }
 
@@ -86,9 +86,9 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
   ]
   const normalizedLines: ProcessLine[] = (lines && lines.length > 0
     ? lines.map((line, idx) => ({
-        icon: line.icon ?? icons[idx % icons.length],
-        content: line.content,
-      }))
+      icon: line.icon ?? icons[idx % icons.length],
+      content: line.content,
+    }))
     : defaultLines
   )
 
@@ -192,8 +192,8 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
         </div>
 
         <div className="relative w-full max-w-xl h-72 overflow-hidden ">
-       
-     
+
+
           <div className="pointer-events-none absolute inset-0 z-10">
             <div
               className="
@@ -230,8 +230,8 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
             className={cn(
               "absolute top-0 left-0 w-full",
               startAnimation &&
-                !isSkeletonPhase &&
-                (scrollDirection === "up" ? "scroll-animation-up" : "scroll-animation-down"),
+              !isSkeletonPhase &&
+              (scrollDirection === "up" ? "scroll-animation-up" : "scroll-animation-down"),
             )}
           >
             <ul className="space-y-1 px-4 flex flex-col w-full justify-center items-center h-full">

@@ -22,7 +22,10 @@ import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
 | `isLoading`      | `boolean`           | `false`     | Whether the answer is loading                            |
 | `LoaderComponent`| `React.ReactNode`   | `undefined` | Custom loader component to display while loading         |
 | `onEndAnimation` | `() => void`        | `undefined` | Callback when the answer animation ends                  |
+| `onComplete`     | `() => void`        | `undefined` | Callback when the answer is fully displayed              |
 | `textSpeed`      | `number`            | `30`        | Speed of the text animation (ms per character)           |
+| `markdownMode`   | `boolean`           | `false`     | If true, renders the content as markdown                 |
+| `hideControls`   | `boolean`           | `false`     | Hide the action buttons (like, dislike, copy, etc.)      |
 
 ## forwardRef and ref management
 
@@ -51,7 +54,9 @@ const MyComponent = () => {
   return (
     <GeneratedAnswer
       ref={answerRef}
-      hideControls={true} 
+      hideControls={true}
+      markdownMode={true}
+      onComplete={() => console.log('Answer fully displayed!')}
       content="AI is revolutionizing drug sales by optimizing inventory management."
       timestamp="12:34"
       className="w-full"
@@ -67,5 +72,8 @@ const MyComponent = () => {
   content="AI is revolutionizing drug sales by optimizing inventory management."
   timestamp="12:34"
   className="w-full"
+  markdownMode={true}
+  onComplete={() => alert('Answer done!')}
+  hideControls={true}
 />
 ```

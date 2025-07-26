@@ -27,6 +27,8 @@ import car from "@/public/car.jpg";
   height={400}
   prompt="A blue bird on a branch"
   timestamp="10:00"
+  onComplete={() => console.log('Image loaded!')}
+  hideControls={true}
 />
 ```
 
@@ -54,9 +56,13 @@ import car from "@/public/car.jpg";
 | `onLike`     | `() => void`                         | `undefined`                      | Callback when user likes the image.                                |
 | `onDislike`  | `() => void`                         | `undefined`                      | Callback when user dislikes the image.                             |
 | `onRegenerate`| `() => void`                        | `undefined`                      | Callback when user requests regeneration.                          |
+| `onComplete`  | `() => void`                        | `undefined`                      | Callback when the image is fully loaded and displayed.             |
+| `hideControls`| `boolean`                           | `false`                          | Hide the action buttons (like, dislike, copy, download, etc.).     |
 
 ## Notes
 - The component manages its own loading, hover, and copied states internally.
 - The download button is only visible on hover and when the image is loaded.
 - The prompt copy button is disabled if no prompt is provided.
 - The component is fully accessible and keyboard navigable.
+- **`onComplete`**: Callback called when the image is fully loaded and displayed.
+- **`hideControls`**: If true, hides all action buttons (like, dislike, copy, download, etc.).
