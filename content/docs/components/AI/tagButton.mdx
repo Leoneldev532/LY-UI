@@ -1,38 +1,132 @@
 ---
-title: TagButton
-description: A customizable tag button component with icon support, dropdown support, and forwardRef integration.
-component: true
+title: "Tag Button"
+description: "Composant de bouton tag avec sélection multiple et gestion d'état"
 ---
-import { CheckCircle } from "lucide-react"
-import TagButton from "@/components/LY UI/AI/tagButton"
 
-<Preview link="tagButton" >
+# Tag Button
+
+Un composant de bouton tag permettant la sélection multiple avec gestion d'état et animations fluides.
+
+## Utilisation
+
+```tsx
+import { TagButton } from '@/components/LY UI/AI/tagButton'
+
+export default function TagExample() {
+  return (
 <TagButton
-  title="Choose a tag"
-  variant="default"
-  items={["UI", "UX", "Frontend", "Backend", "Design"]}
+      label="React"
+      isSelected={false}
+      onToggle={(selected) => {
+        console.log('Tag sélectionné:', selected)
+      }}
 />
-</Preview>
+  )
+}
+```
 
 ## Props
 
-| Prop         | Type                                   | Default     | Description                                 |
-|--------------|----------------------------------------|-------------|---------------------------------------------|
-| `icon`       | `ReactNode`                            | -           | Icon component to display                   |
-| `title`      | `string`                               | -           | Text content for the button                 |
-| `variant`    | `"default" \| "outline" \| "ghost"` | `"default"` | Visual style variant                        |
-| `onClick`    | `() => void`                           | -           | Click handler function                      |
-| `items`      | `string[]`                             | `[]`        | List of items for dropdown selection        |
-| `onItemClick`| `(item: string) => void`               | -           | Callback when a dropdown item is selected   |
-| `className`  | `string`                               | -           | Additional CSS classes                      |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | Texte du tag |
+| `isSelected` | `boolean` | `false` | État de sélection du tag |
+| `onToggle` | `(selected: boolean) => void` | - | Callback lors du changement d'état |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `disabled` | `boolean` | `false` | Désactive le tag |
+| `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Variante visuelle |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Taille du tag |
 
-## Dropdown & Focus Behavior
+## Variantes
 
-- **Dropdown**: If `items` is provided, clicking the button opens a dropdown menu. Only one TagButton dropdown can be open at a time (global management).
-- **Animation**: Dropdown uses motion for smooth appearance/disappearance.
-- **Focus**: The component supports programmatic focus via ref (forwardRef).
-- **Keyboard Accessibility**: Fully keyboard accessible for all controls.
+- **default** : Style par défaut avec fond coloré
+- **outline** : Contour avec fond transparent
+- **ghost** : Style minimal sans bordure
 
-## forwardRef and ref management
+## Exemples
 
-The TagButton component uses `forwardRef` to pass references to the underlying button element. This allows you to access the button directly for imperative operations like focusing or programmatic clicks.
+### Tag simple
+
+```tsx
+<TagButton
+  label="JavaScript"
+  isSelected={true}
+  onToggle={(selected) => {
+    setSelectedTags(prev => 
+      selected 
+        ? [...prev, "JavaScript"]
+        : prev.filter(tag => tag !== "JavaScript")
+    )
+  }}
+/>
+```
+
+### Groupe de tags
+
+```tsx
+const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+const tags = ["React", "Vue", "Angular", "Svelte"]
+
+<div className="flex flex-wrap gap-2">
+  {tags.map(tag => (
+    <TagButton
+      key={tag}
+      label={tag}
+      isSelected={selectedTags.includes(tag)}
+      onToggle={(selected) => {
+        if (selected) {
+          setSelectedTags(prev => [...prev, tag])
+        } else {
+          setSelectedTags(prev => prev.filter(t => t !== tag))
+        }
+      }}
+    />
+  ))}
+</div>
+```
+
+### Tags avec variantes
+
+```tsx
+<TagButton
+  label="Premium"
+  variant="outline"
+  size="lg"
+  isSelected={true}
+  onToggle={(selected) => {
+    setPremiumSelected(selected)
+  }}
+  className="border-2 border-gold-500 text-gold-700"
+/>
+```
+
+### Tags désactivés
+
+```tsx
+<TagButton
+  label="Indisponible"
+  isSelected={false}
+  disabled={true}
+  variant="ghost"
+  className="opacity-50 cursor-not-allowed"
+/>
+```
+
+### Tags avec icônes
+
+```tsx
+import { Star, Heart } from 'lucide-react'
+
+<TagButton
+  label={
+    <div className="flex items-center gap-1">
+      <Star className="w-4 h-4" />
+      Favori
+    </div>
+  }
+  isSelected={isFavorite}
+  onToggle={setIsFavorite}
+  variant="outline"
+/>
+```

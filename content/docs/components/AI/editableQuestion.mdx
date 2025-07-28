@@ -1,42 +1,102 @@
 ---
-title: Editable Question
-description: This component lets you edit a question interactively for easy real-time customization
-full: true
+title: "Editable Question"
+description: "Composant de question éditable avec interface intuitive et validation"
 ---
 
-import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
+# Editable Question
 
-<Preview link="editableQuestion">
-<EditableQuestion className="mt-8 w-full" question="What is the impact of AI on drug sales?" />
-</Preview>
+Un composant de question éditable permettant aux utilisateurs de modifier et valider leurs questions avec une interface intuitive.
+
+## Utilisation
+
+```tsx
+import { EditableQuestion } from '@/components/LY UI/AI/editableQuestion'
+
+export default function QuestionExample() {
+  return (
+    <EditableQuestion
+      initialQuestion="Comment créer un composant React ?"
+      onQuestionChange={(newQuestion) => {
+        console.log('Question modifiée:', newQuestion)
+      }}
+      onQuestionSubmit={(finalQuestion) => {
+        console.log('Question soumise:', finalQuestion)
+      }}
+    />
+  )
+}
+```
 
 ## Props
 
-| Prop               | Type                | Default     | Description                                              |
-|--------------------|---------------------|-------------|----------------------------------------------------------|
-| `className`        | `string`            | `undefined` | Additional CSS classes for styling                       |
-| `question`         | `string`            | `""`        | The question text to display and edit                    |
-| `onQuestionChange` | `(string) => void`  | `undefined` | Callback when the question text changes                  |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `initialQuestion` | `string` | `""` | Question initiale à afficher |
+| `onQuestionChange` | `(question: string) => void` | - | Callback lors de la modification |
+| `onQuestionSubmit` | `(question: string) => void` | - | Callback lors de la soumission |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `placeholder` | `string` | `"Posez votre question..."` | Texte d'aide |
+| `maxLength` | `number` | `500` | Longueur maximale de la question |
+| `isEditing` | `boolean` | `false` | Contrôle externe du mode édition |
 
-## Interactive Behaviors
+## États
 
-- **Copy Button**: Copies the question to clipboard. Shows a check icon as feedback when copied.
-- **Inline Editing**: Click the edit icon to edit. Validate with Ctrl+Enter, cancel with Escape.
-- **Keyboard Accessibility**: Fully keyboard accessible (tab, enter, escape, etc).
-- **Focus**: Supports programmatic focus via ref (forwardRef).
+- **view** : Affichage en lecture seule
+- **editing** : Mode édition actif
+- **validating** : Validation en cours
+- **submitting** : Soumission en cours
 
-## forwardRef and ref management
+## Fonctionnalités
 
-The EditableQuestion component uses forwardRef to pass references to the underlying div element. This allows you to access the question container directly for imperative operations like focusing or measuring.
+- **Édition inline** : Modification directe du texte
+- **Validation** : Vérification de la longueur et du contenu
+- **Auto-sauvegarde** : Sauvegarde automatique des modifications
+- **Historique** : Possibilité d'annuler les modifications
+- **Accessibilité** : Support complet des lecteurs d'écran
 
-### Example Usage
+## Exemples
 
-```jsx
-import EditableQuestion from "@/components/LY UI/AI/editableQuestion";
+### Question simple
+
+```tsx
+<EditableQuestion
+  initialQuestion="Qu'est-ce que React ?"
+  onQuestionSubmit={(question) => {
+    // Envoyer la question à l'IA
+    sendToAI(question)
+  }}
+/>
+```
+
+### Avec validation personnalisée
+
+```tsx
+<EditableQuestion
+  initialQuestion=""
+  placeholder="Décrivez votre problème..."
+  maxLength={1000}
+  onQuestionChange={(question) => {
+    // Validation personnalisée
+    if (question.length < 10) {
+      setError("La question doit contenir au moins 10 caractères")
+    } else {
+      setError(null)
+    }
+  }}
+/>
+```
+
+### Contrôle externe
+
+```tsx
+const [isEditing, setIsEditing] = useState(false)
 
 <EditableQuestion
-  question="What is the impact of AI on drug sales?"
-  className="w-full"
-  onQuestionChange={(value) => console.log("Question changed:", value)}
+  initialQuestion="Question par défaut"
+  isEditing={isEditing}
+  onQuestionSubmit={(question) => {
+    setIsEditing(false)
+    handleQuestionSubmit(question)
+  }}
 />
 ```

@@ -133,6 +133,7 @@ const ItemWrapper: React.FC<ItemWrapperProps> = React.memo(({
         return (
           <div key={key} className={wrapperClasses}>
             <CodeSection
+            maxHeight="400"
               autoHeight={true}
               progressiveMode={true}
               onComplete={handleItemComplete}

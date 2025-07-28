@@ -1,49 +1,62 @@
 ---
-title: AI Search Bar
-description: Smart AI-powered search bar UI component
-doc: true
-full: true
+title: "AI Searchbar"
+description: "Composant de barre de recherche intelligente avec animations et interactions avancées"
 ---
 
-import AiSearchBar from "@/components/LY UI/AI/ai-searchbar";
+# AI Searchbar
 
-<Preview link="ai-searchbar">
-  <AiSearchBar className="max-w-lg dark:bg-neutral-700" />
-</Preview>
+Un composant de barre de recherche intelligente avec des animations fluides et des interactions avancées.
+
+## Utilisation
+
+```tsx
+import { AiSearchbar } from '@/components/LY UI/AI/ai-searchbar'
+
+export default function SearchExample() {
+  return (
+    <AiSearchbar
+      placeholder="Rechercher..."
+      onSearch={(query) => console.log(query)}
+    />
+  )
+}
+```
 
 ## Props
 
-| Prop                    | Type                                                                 | Default                | Description                                                        |
-|-------------------------|----------------------------------------------------------------------|------------------------|--------------------------------------------------------------------|
-| `variant`               | `"default" \| "ghost" \| "outline"`                                 | `"default"`           | Visual style variant of the search bar                             |
-| `placeholder`           | `string`                                                             | `"What can I do for you?"` | Placeholder text for the search bar                                 |
-| `onSubmit`              | `(value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void` | `undefined`            | Callback when user submits their search, with options              |
-| `onChange`              | `(value: string) => void`                                            | `undefined`            | Callback when the search bar value changes                         |
-| `onToolsChange`         | `(selectedTools: number[]) => void`                                  | `undefined`            | Callback when the selected tools change                            |
-| `onThinkModeChange`     | `(isEnabled: boolean) => void`                                       | `undefined`            | Callback when the "Think Mode" changes                            |
-| `onModelChange`         | `(modelIndex: number) => void`                                       | `undefined`            | Callback when the selected model changes                           |
-| `className`             | `string`                                                             | `undefined`            | Additional CSS classes for styling                                 |
-| `submitLoading`         | `boolean`                                                            | `false`                | Show loading indicator on submit                                   |
-| `submitLoaderComponent` | `React.ReactNode`                                                    | `undefined`            | Custom loader component to display during submit                   |
-| `onStop`                | `() => void`                                                         | `undefined`            | Callback to stop an external operation (shows a stop button when submitLoading is true) |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `placeholder` | `string` | `"Rechercher..."` | Texte d'aide dans la barre de recherche |
+| `onSearch` | `(query: string) => void` | - | Fonction appelée lors de la recherche |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `disabled` | `boolean` | `false` | Désactive la barre de recherche |
 
-## Interactive Behaviors
+## Fonctionnalités
 
-- **Tool Selection**: Users can select multiple tools to enhance the search (e.g., code, image, web search).
-- **Model Switching**: Supports switching between different AI models.
-- **Think Mode**: Activates a special mode for more thoughtful responses.
-- **Loading State**: Shows a loader or a custom loader component during async operations.
-- **Stop Button**: If `onStop` is provided and `submitLoading` is true, a stop button appears to allow users to cancel the operation.
-- **Keyboard Accessibility**: Fully keyboard accessible for all controls.
+- **Animation fluide** : Transitions douces lors de la saisie
+- **Interaction intelligente** : Réponse visuelle aux actions utilisateur
+- **Accessibilité** : Support complet des lecteurs d'écran
+- **Responsive** : S'adapte à toutes les tailles d'écran
 
-### Example Usage
+## Exemples
 
-```jsx
-<AiSearchBar
-  variant="default"
-  placeholder="What can I do for you?"
-  onSubmit={value => console.log(value)}
-  onChange={value => console.log(value)}
-  onStop={() => alert('Stopped!')}
+### Recherche avec callback
+
+```tsx
+<AiSearchbar
+  placeholder="Rechercher des produits..."
+  onSearch={(query) => {
+    // Logique de recherche
+    searchProducts(query)
+  }}
+/>
+```
+
+### Barre de recherche désactivée
+
+```tsx
+<AiSearchbar
+  placeholder="Recherche temporairement indisponible"
+  disabled={true}
 />
 ```

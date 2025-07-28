@@ -30,20 +30,22 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 /**
  * AiSearchBar component.
- * A smart search bar with AI capabilities, supporting tool selection, model switching, and advanced prompt submission.
+ * Barre de recherche intelligente avec capacités IA, sélection d'outils, changement de modèle, soumission avancée et gestion du bouton stop/thème.
  *
  * Props:
- * @prop variant - The visual style of the search bar ("default", "ghost", or "outline").
- * @prop placeholder - Placeholder text for the textarea.
- * @prop onSubmit - Callback when submitting a prompt. Receives the value and options { selectedTools, thinkMode, selectedModel }.
- * @prop onChange - Callback when the textarea value changes.
- * @prop onToolsChange - Callback when the selected tools change (array of indices).
- * @prop onThinkModeChange - Callback when the think mode is toggled.
- * @prop onModelChange - Callback when the selected model changes (index).
- * @prop className - Additional class names for the root div.
- * @prop submitLoading - If true, disables input and shows loading state.
- * @prop submitLoaderComponent - Optional custom loader component for the submit button.
- * @prop onStop - Optional callback to stop an external operation (shows a stop button when submitLoading is true).
+ * @prop variant - Style visuel de la barre ("default", "ghost", "outline").
+ * @prop placeholder - Texte d'aide pour la zone de saisie.
+ * @prop onSubmit - Callback lors de la soumission (value, { selectedTools, thinkMode, selectedModel }).
+ * @prop onChange - Callback lors du changement de texte.
+ * @prop onToolsChange - Callback lors du changement d'outils sélectionnés (indices).
+ * @prop onThinkModeChange - Callback lors du changement du mode "think".
+ * @prop onModelChange - Callback lors du changement de modèle (index).
+ * @prop className - Classes CSS supplémentaires.
+ * @prop submitLoading - Si true, désactive la saisie et affiche l'état de chargement.
+ * @prop submitLoaderComponent - Loader personnalisé pour le bouton de soumission.
+ * @prop onStop - Callback pour stopper une opération extérieure (affiche le bouton stop si submitLoading est true).
+ * @prop isStopped - (nouveau) Booléen pour signaler à l'extérieur si l'opération a été stoppée.
+ * @prop onStoppedChange - (nouveau) Callback appelé quand l'utilisateur clique sur stop (permet de notifier l'extérieur).
  */
 type AI_SearchBarProps = {
   variant?: "default" | "ghost" | "outline";
@@ -56,7 +58,9 @@ type AI_SearchBarProps = {
   className?: string;
   submitLoading?: boolean;
   submitLoaderComponent?: React.ReactNode;
-  onStop?: () => void; // Ajout: callback pour stopper une opération extérieure
+  onStop?: () => void;
+  isStopped?: boolean; // Ajout: signal extérieur si l'opération a été stoppée
+  onStoppedChange?: (stopped: boolean) => void; // Ajout: callback pour notifier l'extérieur
 };
 
 const AiSearchBarVariants = cva(
@@ -90,6 +94,8 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
   submitLoading = false,
   submitLoaderComponent,
   onStop,
+  isStopped = false,
+  onStoppedChange,
   ...props
 }, ref) => {
   const [value, setValue] = React.useState("");
@@ -102,6 +108,11 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
     false,
     false,
   ]);
+  // Etat local pour le stop si non contrôlé de l'extérieur
+  const [localStopped, setLocalStopped] = React.useState(false);
+
+  // Si la prop isStopped est contrôlée de l'extérieur, on l'utilise, sinon on utilise l'état local
+  const stopped = typeof isStopped === "boolean" ? isStopped : localStopped;
 
   const adjustHeight = () => {
     if (textareaRef.current) {
@@ -117,7 +128,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!submitLoading) {
+      if (!submitLoading && !stopped) {
         const selectedToolsIndices = checkedTools.map((isChecked, i) => isChecked ? i : -1).filter(i => i !== -1);
         onSubmit?.(value, {
           selectedTools: selectedToolsIndices,
@@ -161,6 +172,20 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
     setSelectedModel(index);
     onModelChange?.(index);
   };
+
+  // Gestion du bouton stop
+  const handleStop = () => {
+    if (onStop) onStop();
+    if (onStoppedChange) onStoppedChange(true);
+    setLocalStopped(true);
+  };
+
+  // Permet à l'extérieur de réinitialiser le stop
+  React.useEffect(() => {
+    if (typeof isStopped === "boolean" && !isStopped) {
+      setLocalStopped(false);
+    }
+  }, [isStopped]);
 
   const modelList = [
     {
@@ -296,7 +321,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
     },
     {
       tool: "Our Agent",
-      description: "Analyze and summarize files.",
+      description: "Your personal AI agent.",
       icon: <FileText className="w-5 h-5" />,
       action: () => console.log("Import a file (PDF, PNG, JPG, CSV)"),
       source:
@@ -364,13 +389,13 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
             ref={textareaRef}
             onKeyDown={handleKeyDown}
             onChange={handleChange}
-            disabled={submitLoading}
+            disabled={submitLoading || stopped}
           />
           <div className="flex justify-between p-4 items-center w-full">
             <div className="w-auto flex justify-start items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="h-8 px-2" disabled={submitLoading}>
+                  <Button variant="outline" className="h-8 px-2" disabled={submitLoading || stopped}>
                     <Plus height={24} width={24} />
                   </Button>
                 </DropdownMenuTrigger>
@@ -403,9 +428,9 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                 variant={thinkMode ? "default" : "outline"}
                 className={cn(
                   "h-8 border-neutral-500",
-                  thinkMode ? "bg-blue-500 text-white hover:bg-blue-600" : ""
+                  thinkMode ? "dark:bg-neutral-500 text-white bg-neutral-500 dark:hover:bg-neutral-600" : ""
                 )}
-                disabled={submitLoading}
+                disabled={submitLoading || stopped}
                 onClick={handleThinkModeToggle}
               >
                 <Lightbulb /> <span className="md:inline hidden">Think</span>
@@ -413,7 +438,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="h-8 border-neutral-500" disabled={submitLoading}>
+                  <Button variant="outline" className="h-8 border-neutral-500" disabled={submitLoading || stopped}>
                     <LayoutGrid />{" "}
                     <span className="md:inline hidden">Tools</span>
                   </Button>
@@ -439,7 +464,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                             key={index}
                             className="flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer w-full hover:bg-neutral-200 dark:hover:bg-neutral-200/20"
                             onClick={() => {
-                              if (submitLoading) return;
+                              if (submitLoading || stopped) return;
                               if (index < 5) {
                                 handleCheckboxChange(
                                   index,
@@ -471,7 +496,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                                   )
                                 }
                                 className="ml-1 border border-neutral-400 dark:border-neutral-600 h-6 w-6"
-                                disabled={submitLoading}
+                                disabled={submitLoading || stopped}
                               />
                             )}
                           </div>
@@ -491,7 +516,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                               key={actualIndex}
                               className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-200/20 cursor-pointer w-full"
                               onClick={() => {
-                                if (submitLoading) return;
+                                if (submitLoading || stopped) return;
                                 if (actualIndex < 5) {
                                   handleCheckboxChange(
                                     actualIndex,
@@ -523,7 +548,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                                     )
                                   }
                                   className="ml-1"
-                                  disabled={submitLoading}
+                                  disabled={submitLoading || stopped}
                                 />
                               )}
                             </div>
@@ -544,7 +569,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                      rounded-md dark:text-white hover:bg-neutral-200
                      dark:hover:bg-white/10
                      focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-black"
-                    disabled={submitLoading}
+                    disabled={submitLoading || stopped}
                   >
                     <div className="flex items-center gap-1">
                       {modelList[selectedModel].icon}
@@ -564,7 +589,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                     <DropdownMenuItem
                       key={index}
                       onSelect={() => {
-                        if (!submitLoading) handleModelChange(index);
+                        if (!submitLoading && !stopped) handleModelChange(index);
                       }}
                       className="flex hover:!bg-neutral-200 dark:hover:!bg-neutral-200/20 items-center justify-between gap-2"
                     >
@@ -581,10 +606,10 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
               </DropdownMenu>
 
               {/* Stop button for external operation */}
-              {submitLoading && onStop && (
+              {submitLoading && onStop && !stopped && (
                 <Button
-                  onClick={onStop}
-                  variant="destructive"
+                  onClick={handleStop}
+                  variant="ghost"
                   className="h-8 px-2 flex items-center gap-1"
                   title="Stop"
                   type="button"
@@ -596,7 +621,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
 
               <Button
                 onClick={() => {
-                  if (!submitLoading) {
+                  if (!submitLoading && !stopped) {
                     const selectedToolsIndices = checkedTools.map((isChecked, i) => isChecked ? i : -1).filter(i => i !== -1);
                     onSubmit?.(value, {
                       selectedTools: selectedToolsIndices,
@@ -606,11 +631,11 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                     setValue("");
                   }
                 }}
-                disabled={!isFilled || submitLoading}
+                disabled={!isFilled || submitLoading || stopped}
                 className={cn(
                   "h-8 px-2 transition-opacity duration-300 ease",
-                  isFilled && !submitLoading ? "opacity-100" : "opacity-50",
-                  submitLoading ? "cursor-not-allowed" : ""
+                  isFilled && !submitLoading && !stopped ? "opacity-100" : "opacity-50",
+                  submitLoading || stopped ? "cursor-not-allowed" : ""
                 )}
                 variant="default"
               >

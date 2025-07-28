@@ -26,9 +26,7 @@ const endAnimation = (onEndAnimation?: () => void) => {
   }
 };
 
-function isGenerationFinished(isLoading?: boolean) {
-  return !isLoading;
-}
+
 
 const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   content = "",
@@ -56,7 +54,7 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
     if (isComplete && !isLoading && !hasCalledComplete) {
       endAnimation(onEndAnimation);
       if (typeof onComplete === "function") {
-        onComplete(); // Appel crucial
+        onComplete();
       }
       setHasCalledComplete(true);
     }
@@ -72,7 +70,6 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
 
   const handleLike = () => {};
   const handleDisLike = () => {};
-  const handleRegenerate = () => {};
 
   const showActionsBar = !hideControls 
 

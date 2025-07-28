@@ -1,68 +1,91 @@
 ---
-title: Animated Process List
-description: Custom animated process list with scrolling text and skeleton loading
-full: true
+title: "Animated Process List"
+description: "Liste de processus avec animations séquentielles et indicateurs de progression"
 ---
 
-import AnimatedProcessList from "@/components/LY UI/AI/animatedProcessList";
+# Animated Process List
 
-<Preview link="animatedProcessList" >
- <AnimatedProcessList
-            className="h-72"
-            animationSpeed={"slow"}
-            processSteps={[
-              "We review your question to understand its context and intent.",
-              "We search trusted databases and resources to find relevant information.",
-              "We compile the collected data to generate a clear and concise answer.",
-              "We validate the answer to ensure its relevance and reliability.",
-              "Your personalized answer is ready to be displayed.",
-              "We suggest additional avenues or resources to further explore the topic.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "Your feedback helps us improve the quality of future answers.",
-              "We review your question to understand its context and intent.",
-              "We search trusted databases and resources to find relevant information.",
-              "We compile the collected data to generate a clear and concise answer.",
-              "We validate the answer to ensure its relevance and reliability.",
-              "Your personalized answer is ready to be displayed.",
-              "We review your question to understand its context and intent.",
-              "We search trusted databases and resources to find relevant information.",
-              "We compile the collected data to generate a clear and concise answer.",
-              "We validate the answer to ensure its relevance and reliability.",
-              "Your personalized answer is ready to be displayed.",
-            ]}
+Un composant de liste de processus avec des animations séquentielles et des indicateurs de progression visuels.
 
-          />
+## Utilisation
 
-</Preview>
+```tsx
+import { AnimatedProcessList } from '@/components/LY UI/AI/animatedProcessList'
+
+const processes = [
+  { id: 1, title: "Analyse des données", status: "completed" },
+  { id: 2, title: "Traitement IA", status: "active" },
+  { id: 3, title: "Génération de réponse", status: "pending" }
+]
+
+export default function ProcessExample() {
+  return (
+    <AnimatedProcessList
+      processes={processes}
+      isActive={true}
+      className="space-y-4"
+    />
+  )
+}
+```
 
 ## Props
 
-| Prop              | Type                              | Default                                   | Description                                              |
-|-------------------|-----------------------------------|-------------------------------------------|----------------------------------------------------------|
-| `title`           | `string`                          | `"Generating elements for your web page"` | Title displayed at the top of the component              |
-| `processSteps`    | `string[]`                        | `[]`                                      | Array of process steps to display in the animated list    |
-| `className`       | `string`                          | `undefined`                               | Additional CSS classes for styling                       |
-| `scrollDirection` | `"up" | "down"`                  | `"up"`                                    | Direction of the scrolling animation                     |
-| `animationSpeed`  | `"slow" | "normal" | "fast"`    | `"normal"`                                | Speed of the animation                                   |
-| `onAnimationEnd`  | `() => void`                      | `undefined`                               | Callback when the reveal animation ends                  |
-| `skeletonDuration`| `number`                          | `2000`                                    | Duration in milliseconds of the skeleton phase           |
-| `lineRevealDelay` | `number`                          | `150`                                     | Delay in milliseconds between each line reveal           |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `processes` | `ProcessItem[]` | `[]` | Liste des processus à afficher |
+| `isActive` | `boolean` | `false` | Active les animations |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `animationSpeed` | `number` | `1000` | Vitesse des animations en ms |
+| `showProgress` | `boolean` | `true` | Affiche les barres de progression |
 
-### Example Usage
+## Types
 
-```jsx
+```tsx
+interface ProcessItem {
+  id: number | string
+  title: string
+  status: 'pending' | 'active' | 'completed' | 'error'
+  description?: string
+  progress?: number // 0-100
+}
+```
+
+## États des processus
+
+- **pending** : En attente, animation de pulsation
+- **active** : En cours, animation active
+- **completed** : Terminé, indicateur de succès
+- **error** : Erreur, indicateur d'erreur
+
+## Exemples
+
+### Liste avec progression
+
+```tsx
+const processes = [
+  { id: 1, title: "Initialisation", status: "completed", progress: 100 },
+  { id: 2, title: "Analyse", status: "active", progress: 65 },
+  { id: 3, title: "Finalisation", status: "pending", progress: 0 }
+]
+
 <AnimatedProcessList
-  title="Generating elements for your web page"
-  processSteps={["Initializing main component", "Configuring Tailwind styles", "Creating HTML structure"]}
-  animationSpeed="normal"
-  scrollDirection="up"
+  processes={processes}
+  isActive={true}
+  animationSpeed={800}
+/>
+```
+
+### Liste simple
+
+```tsx
+<AnimatedProcessList
+  processes={[
+    { id: 1, title: "Étape 1", status: "completed" },
+    { id: 2, title: "Étape 2", status: "active" },
+    { id: 3, title: "Étape 3", status: "pending" }
+  ]}
+  isActive={true}
+  showProgress={false}
 />
 ```

@@ -1,40 +1,71 @@
 ---
-title: Ai Agent Animation
-description: An animation component displaying an agent's work percentage with an animated dotted bar.
-component: true
+title: "AI Agent Animation"
+description: "Composant d'animation pour agent IA avec transitions fluides"
 ---
-import AiAgentAnimationExample from "@/components/example/AiAgentAnimationExample"
-import AiAgentAnimation from "@/components/LY UI/AI/AiAgentAnimation"
 
-<Preview link="AiAgentAnimation">
-  <AiAgentAnimationExample />
-</Preview>
+# AI Agent Animation
 
-## Description
+Un composant d'animation spécialement conçu pour les agents IA avec des transitions fluides et des états visuels dynamiques.
 
-`AiAgentAnimation` displays a monospace title with the agent's progress percentage, as well as a horizontal bar of dots (round or square) that fills up from 0 to 100%. The animation can be controlled (start, stop, reset) and exposes several callbacks to track its state.
+## Utilisation
+
+```tsx
+import { AiAgentAnimation } from '@/components/LY UI/AI/AiAgentAnimation'
+
+export default function AgentExample() {
+  return (
+    <AiAgentAnimation
+      isActive={true}
+      status="thinking"
+      className="w-16 h-16"
+    />
+  )
+}
+```
 
 ## Props
 
-| Prop                  | Type                         | Default     | Description                                                                 |
-|-----------------------|------------------------------|-------------|-----------------------------------------------------------------------------|
-| `title`               | `string`                     | `"Agent"`   | The title displayed before the percentage                                   |
-| `duration`            | `number`                     | `3000`      | Animation duration in milliseconds                                          |
-| `onAnimationComplete` | `() => void`                 | `undefined` | Callback called at the end of the animation                                 |
-| `columns`             | `number`                     | `undefined` | Number of dot columns (auto-calculated if not specified)                    |
-| `rows`                | `number`                     | `3`         | Number of dot rows                                                          |
-| `className`           | `string`                     | `undefined` | Additional CSS class                                                        |
-| `pauseDuration`       | `number`                     | `500`       | Pause duration between each cycle (ms)                                      |
-| `isRunning`           | `boolean`                    | `false`     | External control of the animation state                                     |
-| `onAnimationStart`    | `() => void`                 | `undefined` | Callback called when the animation starts                                   |
-| `onAnimationStop`     | `() => void`                 | `undefined` | Callback called when the animation stops                                    |
-| `onAnimationReset`    | `() => void`                 | `undefined` | Callback called when the animation is reset                                 |
-| `dotType`             | `'round' | 'square'`         | `"round"`   | Shape of the dots                                                           |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `isActive` | `boolean` | `false` | Active l'animation de l'agent |
+| `status` | `"idle" \| "thinking" \| "speaking" \| "listening"` | `"idle"` | État actuel de l'agent |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Taille de l'animation |
 
-## Usage Example
+## États de l'agent
+
+- **idle** : Agent en attente, animation minimale
+- **thinking** : Agent en train de réfléchir, animation de pulsation
+- **speaking** : Agent en train de parler, animation de parole
+- **listening** : Agent en train d'écouter, animation d'écoute
+
+## Exemples
+
+### Agent en train de réfléchir
 
 ```tsx
-import AiAgentAnimation from "@/components/LY UI/AI/AiAgentAnimation";
+<AiAgentAnimation
+  isActive={true}
+  status="thinking"
+  size="lg"
+/>
+```
 
-<AiAgentAnimation title="Loading" duration={8000} onAnimationComplete={() => alert('Done!')} />
+### Agent en mode écoute
+
+```tsx
+<AiAgentAnimation
+  isActive={true}
+  status="listening"
+  className="w-12 h-12"
+/>
+```
+
+### Agent inactif
+
+```tsx
+<AiAgentAnimation
+  isActive={false}
+  status="idle"
+/>
 ```

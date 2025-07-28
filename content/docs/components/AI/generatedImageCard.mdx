@@ -1,68 +1,118 @@
 ---
-title: Generated Image Card
-description: Displays an image in a styled card with interactive controls (like, dislike, copy prompt, download, regenerate). Does not generate images by itself.
-full: true
+title: "Generated Image Card"
+description: "Composant de carte d'image générée par IA avec options de téléchargement et partage"
 ---
 
-import GeneratedImageCard from "@/components/LY UI/AI/generatedImageCard";
-import car from "@/public/car.jpg";
+# Generated Image Card
 
-<Preview link="GeneratedImageCard">
-  <GeneratedImageCard
-    timestamp="00:00"
-    prompt="generate bird image"
-    className="max-w-lg w-full h-[447px] "
-    src={car}
-    imageTitle="AI Generated Image"
-  />
-</Preview>
+Un composant de carte d'image générée par IA avec options de téléchargement, partage et gestion des métadonnées.
 
-### Example Usage
+## Utilisation
 
-```jsx
-<GeneratedImageCard
-  src="https://via.placeholder.com/150"
-  imageTitle="AI Generated Image"
-  width={400}
-  height={400}
-  prompt="A blue bird on a branch"
-  timestamp="10:00"
-  onComplete={() => console.log('Image loaded!')}
-  hideControls={true}
-/>
+```tsx
+import { GeneratedImageCard } from '@/components/LY UI/AI/generatedImageCard'
+
+export default function ImageExample() {
+  return (
+    <GeneratedImageCard
+      imageUrl="https://example.com/generated-image.jpg"
+      prompt="Un chat dans un jardin fleuri"
+      onDownload={(url) => {
+        console.log('Téléchargement:', url)
+      }}
+    />
+  )
+}
 ```
-
-## Interactive Controls
-
-- **Download**: Hover the image to reveal a download button (top-right). Downloads the image (supports Blob and string src).
-- **Copy Prompt**: Copies the prompt to clipboard. Shows a check icon as feedback when copied.
-- **Like/Dislike**: Triggers the respective callbacks when clicked.
-- **Regenerate**: Dropdown menu to trigger regeneration via callback.
-- **Loading State**: Shows a spinner while the image is loading.
-- **Hover State**: Download button only appears on hover and when not loading.
-- **Blob Support**: If `src` is a Blob, it is converted to an object URL and revoked on unmount.
 
 ## Props
 
-| Prop         | Type                                 | Default                          | Description                                                        |
-|--------------|--------------------------------------|----------------------------------|--------------------------------------------------------------------|
-| `src`        | `string \| Blob \| StaticImport`     | `"https://via.placeholder.com/150"` | Source of the image to display. Supports string URL, Blob, or StaticImport. |
-| `imageTitle` | `string \| null`                    | `undefined`                      | Title of the image (used for alt and download filename).           |
-| `width`      | `number`                             | `2225`                           | Width of the image (in px).                                        |
-| `height`     | `number`                             | `2465`                           | Height of the image (in px).                                       |
-| `className`  | `string`                             | `undefined`                      | Additional CSS classes for styling.                                |
-| `timestamp`  | `string`                             | `"00:00"`                       | Time displayed at the bottom of the card.                          |
-| `prompt`     | `string`                             | `""`                            | The prompt associated with the image (can be copied).              |
-| `onLike`     | `() => void`                         | `undefined`                      | Callback when user likes the image.                                |
-| `onDislike`  | `() => void`                         | `undefined`                      | Callback when user dislikes the image.                             |
-| `onRegenerate`| `() => void`                        | `undefined`                      | Callback when user requests regeneration.                          |
-| `onComplete`  | `() => void`                        | `undefined`                      | Callback when the image is fully loaded and displayed.             |
-| `hideControls`| `boolean`                           | `false`                          | Hide the action buttons (like, dislike, copy, download, etc.).     |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `imageUrl` | `string` | - | URL de l'image générée |
+| `prompt` | `string` | `""` | Prompt utilisé pour générer l'image |
+| `onDownload` | `(url: string) => void` | - | Callback lors du téléchargement |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `showPrompt` | `boolean` | `true` | Affiche le prompt utilisé |
+| `showDownloadButton` | `boolean` | `true` | Affiche le bouton de téléchargement |
+| `showShareButton` | `boolean` | `true` | Affiche le bouton de partage |
+| `metadata` | `ImageMetadata` | - | Métadonnées de l'image |
 
-## Notes
-- The component manages its own loading, hover, and copied states internally.
-- The download button is only visible on hover and when the image is loaded.
-- The prompt copy button is disabled if no prompt is provided.
-- The component is fully accessible and keyboard navigable.
-- **`onComplete`**: Callback called when the image is fully loaded and displayed.
-- **`hideControls`**: If true, hides all action buttons (like, dislike, copy, download, etc.).
+## Types
+
+```tsx
+interface ImageMetadata {
+  model?: string
+  size?: string
+  quality?: string
+  timestamp?: string
+  seed?: number
+}
+```
+
+## Fonctionnalités
+
+- **Affichage d'image** : Rendu optimisé avec lazy loading
+- **Téléchargement** : Bouton de téléchargement direct
+- **Partage** : Options de partage sur les réseaux sociaux
+- **Métadonnées** : Affichage des informations de génération
+- **Responsive** : S'adapte à toutes les tailles d'écran
+
+## Exemples
+
+### Image simple
+
+```tsx
+<GeneratedImageCard
+  imageUrl="https://api.example.com/images/cat-garden.jpg"
+  prompt="Un chat orange dans un jardin avec des fleurs"
+/>
+```
+
+### Avec métadonnées
+
+```tsx
+<GeneratedImageCard
+  imageUrl="https://api.example.com/images/landscape.jpg"
+  prompt="Paysage de montagne au coucher du soleil"
+  metadata={{
+    model: "DALL-E 3",
+    size: "1024x1024",
+    quality: "high",
+    timestamp: "2024-01-15T10:30:00Z"
+  }}
+  onDownload={(url) => {
+    // Logique de téléchargement personnalisée
+    downloadImage(url, "paysage-montagne.jpg")
+  }}
+/>
+```
+
+### Sans boutons
+
+```tsx
+<GeneratedImageCard
+  imageUrl="https://api.example.com/images/abstract.jpg"
+  prompt="Formes abstraites colorées"
+  showDownloadButton={false}
+  showShareButton={false}
+  className="max-w-sm"
+/>
+```
+
+### Avec gestion d'erreur
+
+```tsx
+<GeneratedImageCard
+  imageUrl="https://api.example.com/images/portrait.jpg"
+  prompt="Portrait d'une femme dans un style renaissance"
+  onDownload={(url) => {
+    try {
+      downloadImage(url)
+      toast.success('Image téléchargée !')
+    } catch (error) {
+      toast.error('Erreur lors du téléchargement')
+    }
+  }}
+/>
+```

@@ -1,50 +1,130 @@
 ---
-title: Resizable Separator
-description: A resizable separator component for managing layout space
-full: true
+title: "Resizable Separator"
+description: "Composant de séparateur redimensionnable pour diviser l'espace entre deux panneaux"
 ---
 
-import ResizableSeparatorExample from "@/components/example/resizeExample";
+# Resizable Separator
 
-<Preview link="resizeExample">
-  <ResizableSeparatorExample />
-</Preview>
+Un composant de séparateur redimensionnable permettant de diviser l'espace entre deux panneaux avec une interface intuitive.
 
-### Example Usage
+## Utilisation
 
-```jsx
-<ResizableSeparator
-  direction="vertical"
-  variant="ghost"
-  size="medium"
-  onResize={size => console.log(size)}
-  minSize={100}
-  maxSize={600}
-  parentRef={myRef}
-  showIndicator={true}
-  animated={true}
-  zIndex={20}
-/>
+```tsx
+import { ResizableSeparator } from '@/components/LY UI/AI/resizableSeparator'
+
+export default function SeparatorExample() {
+  return (
+    <div className="flex h-96">
+      <div className="flex-1 bg-gray-100 p-4">
+        Panneau gauche
+      </div>
+      <ResizableSeparator
+        onResize={(newWidth) => {
+          console.log('Nouvelle largeur:', newWidth)
+        }}
+      />
+      <div className="flex-1 bg-gray-200 p-4">
+        Panneau droit
+      </div>
+    </div>
+  )
+}
 ```
+
 ## Props
 
-| Prop            | Type                                 | Default         | Description                                              |
-|-----------------|--------------------------------------|-----------------|----------------------------------------------------------|
-| `direction`     | `"vertical" | "horizontal"`          | `"vertical"`    | Direction of the resizable separator                     |
-| `variant`       | `"ghost" | "outline"`                | `"ghost"`       | Visual style variant of the separator                    |
-| `size`          | `"small" | "medium" | "large"`        | `"medium"`      | Size of the separator                                    |
-| `onResize`      | `(size: number) => void`              | `undefined`     | Callback when the size changes                           |
-| `minSize`       | `number`                              | `100`           | Minimum size in pixels                                   |
-| `maxSize`       | `number`                              | `600`           | Maximum size in pixels                                   |
-| `className`     | `string`                              | `undefined`     | Additional CSS classes for styling                       |
-| `parentRef`     | `React.RefObject<HTMLElement>`         | `undefined`     | Reference to the parent element                          |
-| `showIndicator` | `boolean`                             | `false`         | Show the visual indicator                                |
-| `animated`      | `boolean`                             | `true`          | Enable animations                                        |
-| `zIndex`        | `number`                              | `20`            | Z-index of the separator                                 |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `onResize` | `(width: number) => void` | - | Callback lors du redimensionnement |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `minWidth` | `number` | `100` | Largeur minimale en pixels |
+| `maxWidth` | `number` | - | Largeur maximale en pixels |
+| `defaultWidth` | `number` | `50` | Largeur par défaut en pourcentage |
+| `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction du redimensionnement |
 
-## Interactive Behaviors
+## Fonctionnalités
 
-- **Drag & Drop**: Users can drag the separator to resize the layout (vertical or horizontal).
-- **Visual Indicator**: Optionally shows a visual indicator for the separator.
-- **Animations**: Animations can be enabled or disabled via the `animated` prop.
-- **Accessibility**: Fully keyboard accessible and supports focus management.
+- **Redimensionnement fluide** : Glisser-déposer intuitif
+- **Contraintes** : Largeurs minimale et maximale configurables
+- **Orientations** : Support horizontal et vertical
+- **Accessibilité** : Support complet des lecteurs d'écran
+- **Responsive** : S'adapte aux différentes tailles d'écran
+
+## Exemples
+
+### Séparateur horizontal simple
+
+```tsx
+<div className="flex h-64">
+  <div className="bg-blue-100 p-4">
+    Contenu gauche
+  </div>
+  <ResizableSeparator
+    onResize={(width) => setLeftPanelWidth(width)}
+    minWidth={150}
+    maxWidth={400}
+  />
+  <div className="bg-green-100 p-4">
+    Contenu droit
+  </div>
+</div>
+```
+
+### Séparateur vertical
+
+```tsx
+<div className="flex h-96">
+  <div className="bg-gray-100 p-4">
+    Panneau supérieur
+  </div>
+  <ResizableSeparator
+    direction="vertical"
+    onResize={(height) => setTopPanelHeight(height)}
+    minWidth={100}
+    maxWidth={300}
+  />
+  <div className="bg-gray-200 p-4">
+    Panneau inférieur
+  </div>
+</div>
+```
+
+### Avec contraintes personnalisées
+
+```tsx
+<ResizableSeparator
+  onResize={(width) => {
+    // Mise à jour de l'état
+    setPanelWidth(width)
+    // Sauvegarde dans localStorage
+    localStorage.setItem('panelWidth', width.toString())
+  }}
+  minWidth={200}
+  maxWidth={800}
+  defaultWidth={30}
+  className="bg-gray-300 hover:bg-gray-400"
+/>
+```
+
+### Gestion d'état
+
+```tsx
+const [leftWidth, setLeftWidth] = useState(300)
+
+<div className="flex h-80">
+  <div 
+    className="bg-blue-50 p-4"
+    style={{ width: `${leftWidth}px` }}
+  >
+    Panneau avec largeur fixe
+  </div>
+  <ResizableSeparator
+    onResize={setLeftWidth}
+    minWidth={150}
+    maxWidth={600}
+  />
+  <div className="flex-1 bg-green-50 p-4">
+    Panneau flexible
+  </div>
+</div>
+```

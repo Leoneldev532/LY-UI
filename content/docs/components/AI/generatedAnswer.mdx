@@ -1,79 +1,102 @@
 ---
-title: Generated Answer
-description: Displays an AI-generated answer with animation
-full: true
+title: "Generated Answer"
+description: "Composant d'affichage de réponses générées par IA avec formatage et animations"
 ---
 
-import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
+# Generated Answer
 
-<Preview link="generatedAnswer" >
- <GeneratedAnswer textSpeed="10"  className="mt-8 w-full max-w-xl"
-  content="Artificial intelligence is revolutionizing drug sales by optimizing inventory management, personalizing recommendations for patients, and facilitating fraud detection. It also enhances the customer experience through virtual assistants and accelerates the discovery of new treatments. However, its use raises important ethical and regulatory questions." />
+Un composant d'affichage de réponses générées par IA avec formatage automatique, animations de progression et support du markdown.
 
-</Preview>
+## Utilisation
+
+```tsx
+import { GeneratedAnswer } from '@/components/LY UI/AI/generatedAnswer'
+
+export default function AnswerExample() {
+  return (
+    <GeneratedAnswer
+      content="Voici votre réponse générée par l'IA..."
+      isGenerating={false}
+      onCopy={(text) => {
+        console.log('Réponse copiée:', text)
+      }}
+    />
+  )
+}
+```
 
 ## Props
 
-| Prop             | Type                | Default     | Description                                              |
-|------------------|---------------------|-------------|----------------------------------------------------------|
-| `content`        | `string`            | `""`        | The content of the AI-generated answer                   |
-| `className`      | `string`            | `undefined` | Additional CSS classes for styling                       |
-| `timestamp`      | `string`            | `"00:00"`   | Time displayed at the bottom of the answer               |
-| `isLoading`      | `boolean`           | `false`     | Whether the answer is loading                            |
-| `LoaderComponent`| `React.ReactNode`   | `undefined` | Custom loader component to display while loading         |
-| `onEndAnimation` | `() => void`        | `undefined` | Callback when the answer animation ends                  |
-| `onComplete`     | `() => void`        | `undefined` | Callback when the answer is fully displayed              |
-| `textSpeed`      | `number`            | `30`        | Speed of the text animation (ms per character)           |
-| `markdownMode`   | `boolean`           | `false`     | If true, renders the content as markdown                 |
-| `hideControls`   | `boolean`           | `false`     | Hide the action buttons (like, dislike, copy, etc.)      |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `content` | `string` | `""` | Contenu de la réponse à afficher |
+| `isGenerating` | `boolean` | `false` | Indique si la réponse est en cours de génération |
+| `onCopy` | `(text: string) => void` | - | Callback lors de la copie |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `showCopyButton` | `boolean` | `true` | Affiche le bouton de copie |
+| `autoScroll` | `boolean` | `true` | Défilement automatique pendant la génération |
+| `markdown` | `boolean` | `true` | Active le formatage markdown |
 
-## forwardRef and ref management
+## Fonctionnalités
 
-The GeneratedAnswer component uses forwardRef to pass references to the underlying div element. This allows you to access the answer container directly for imperative operations like scrolling or measuring.
+- **Formatage markdown** : Support complet du markdown avec syntax highlighting
+- **Animation de progression** : Affichage progressif du texte
+- **Copie facile** : Bouton de copie avec feedback visuel
+- **Défilement automatique** : Suit automatiquement le contenu en cours de génération
+- **Responsive** : S'adapte à toutes les tailles d'écran
+
+## Exemples
+
+### Réponse simple
 
 ```tsx
-import { useRef } from 'react';
-import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
-
-const MyComponent = () => {
-  const answerRef = useRef<HTMLDivElement>(null);
-
-  const scrollToTop = () => {
-    if (answerRef.current) {
-      answerRef.current.scrollTop = 0;
-    }
-  };
-
-  const getAnswerHeight = () => {
-    if (answerRef.current) {
-      return answerRef.current.offsetHeight;
-    }
-    return 0;
-  };
-
-  return (
-    <GeneratedAnswer
-      ref={answerRef}
-      hideControls={true}
-      markdownMode={true}
-      onComplete={() => console.log('Answer fully displayed!')}
-      content="AI is revolutionizing drug sales by optimizing inventory management."
-      timestamp="12:34"
-      className="w-full"
-    />
-  );
-};
+<GeneratedAnswer
+  content="React est une bibliothèque JavaScript pour créer des interfaces utilisateur."
+  isGenerating={false}
+/>
 ```
 
-### Example Usage
+### Réponse en cours de génération
 
-```jsx
+```tsx
 <GeneratedAnswer
-  content="AI is revolutionizing drug sales by optimizing inventory management."
-  timestamp="12:34"
-  className="w-full"
-  markdownMode={true}
-  onComplete={() => alert('Answer done!')}
-  hideControls={true}
+  content="Voici les étapes pour créer un composant React..."
+  isGenerating={true}
+  onCopy={(text) => {
+    navigator.clipboard.writeText(text)
+    toast.success('Réponse copiée !')
+  }}
+/>
+```
+
+### Avec markdown personnalisé
+
+```tsx
+<GeneratedAnswer
+  content={`
+# Titre principal
+
+Voici une **réponse** avec du *formatage* markdown.
+
+\`\`\`javascript
+const component = () => {
+  return <div>Hello World</div>
+}
+\`\`\`
+  `}
+  isGenerating={false}
+  markdown={true}
+  showCopyButton={true}
+/>
+```
+
+### Sans bouton de copie
+
+```tsx
+<GeneratedAnswer
+  content="Réponse sans possibilité de copie"
+  isGenerating={false}
+  showCopyButton={false}
+  className="border rounded-lg p-4"
 />
 ```

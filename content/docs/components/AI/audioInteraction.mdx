@@ -1,34 +1,98 @@
 ---
-title: Audio Interaction
-description: Audio interaction component for AI voice interactions
-full: true
+title: "Audio Interaction"
+description: "Composant d'interaction audio avec enregistrement et reconnaissance vocale"
 ---
 
-import AudioInteraction from "@/components/LY UI/AI/audioInteraction";
+# Audio Interaction
 
-<Preview link="audioInteraction">
-<AudioInteraction />
-</Preview>
+Un composant d'interaction audio permettant l'enregistrement de voix et la reconnaissance vocale avec des animations visuelles.
+
+## Utilisation
+
+```tsx
+import { AudioInteraction } from '@/components/LY UI/AI/audioInteraction'
+
+export default function AudioExample() {
+  return (
+    <AudioInteraction
+      onRecordingComplete={(audioBlob) => {
+        console.log('Audio enregistré:', audioBlob)
+      }}
+      onTranscription={(text) => {
+        console.log('Transcription:', text)
+      }}
+    />
+  )
+}
+```
 
 ## Props
 
-| Prop           | Type         | Default     | Description                                 |
-|----------------|--------------|-------------|---------------------------------------------|
-| `onAudioStart` | `() => void` | `undefined` | Callback when audio starts                  |
-| `onAudioStop`  | `() => void` | `undefined` | Callback when audio stops                   |
-| `onAudioPause` | `() => void` | `undefined` | Callback when audio pauses                  |
-| `onAudioResume`| `() => void` | `undefined` | Callback when audio resumes                 |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `onRecordingComplete` | `(audioBlob: Blob) => void` | - | Callback appelé quand l'enregistrement est terminé |
+| `onTranscription` | `(text: string) => void` | - | Callback appelé avec la transcription du texte |
+| `className` | `string` | - | Classes CSS supplémentaires |
+| `isRecording` | `boolean` | `false` | Contrôle externe de l'état d'enregistrement |
+| `autoTranscribe` | `boolean` | `true` | Transcription automatique après enregistrement |
+| `maxDuration` | `number` | `30000` | Durée maximale d'enregistrement en ms |
 
-## Interactive Behaviors
+## États
 
-- **Particle Animation**: Visual animation synchronized with audio state (play, pause, stop).
-- **Elapsed Time**: Displays elapsed time in MM:SS format during playback.
-- **Accessible Controls**: Play, pause, and stop buttons are fully accessible and keyboard navigable.
-- **Timer Management**: Internal timer tracks elapsed time and resets on stop.
-- **Focus**: Supports programmatic focus via ref (forwardRef).
+- **idle** : Prêt à enregistrer
+- **recording** : En cours d'enregistrement
+- **processing** : Traitement de l'audio
+- **transcribing** : Transcription en cours
 
-## forwardRef and ref management
+## Fonctionnalités
 
-The AudioInteraction component uses forwardRef to pass references to the underlying div element. This allows you to access the audio container directly for imperative operations like controlling playback or measuring dimensions.
+- **Enregistrement audio** : Capture audio via le microphone
+- **Visualisation** : Animations visuelles pendant l'enregistrement
+- **Transcription** : Reconnaissance vocale automatique
+- **Contrôle de durée** : Limite la durée d'enregistrement
+- **Accessibilité** : Support complet des lecteurs d'écran
 
+## Exemples
+
+### Enregistrement simple
+
+```tsx
+<AudioInteraction
+  onRecordingComplete={(blob) => {
+    // Sauvegarder l'audio
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'enregistrement.wav'
+    a.click()
+  }}
+/>
+```
+
+### Avec transcription personnalisée
+
+```tsx
+<AudioInteraction
+  onTranscription={(text) => {
+    // Traitement personnalisé de la transcription
+    setTranscribedText(text)
+    sendToAI(text)
+  }}
+  autoTranscribe={true}
+  maxDuration={60000} // 1 minute
+/>
+```
+
+### Contrôle externe
+
+```tsx
+const [isRecording, setIsRecording] = useState(false)
+
+<AudioInteraction
+  isRecording={isRecording}
+  onRecordingComplete={(blob) => {
+    setIsRecording(false)
+    handleAudioComplete(blob)
+  }}
+/>
 ```
