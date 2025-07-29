@@ -1,78 +1,96 @@
 ---
-title: Step Progress Timeline v0
-description: Custom step progress timeline inspired by @V0, with external and internal control, auto-scroll, and customizable speed.
-full: true
+title: "Step Progress Timeline"
+description: "Step progress timeline component with sequential animations"
 ---
 
-import StepProgressTimeline from "@/components/LY UI/AI/stepProgressTimeline";
+import StepProgressTimeline from '@/components/LY UI/AI/stepProgressTimeline'
 
-<Preview link="StepProgressTimeline" >
-<StepProgressTimeline
-  externalStart={true}
-  steps={[
-    {
-      step: 1,
-      stepName: "Question analysis",
-      duration: 2000,
-      status: "waiting...",
-    },
-    {
-      step: 2,
-      stepName: "Searching for reliable sources",
-      duration: 2500,
-      status: "waiting...",
-    },
-    {
-      step: 3,
-      stepName: "Generating the answer",
-      duration: 3000,
-      status: "waiting...",
-    },
-    {
-      step: 4,
-      stepName: "Validation & display",
-      duration: 2000,
-      status: "waiting...",
-    },
-  ]}
-/>
-
+<Preview link="stepProgressTimeline">
+  <StepProgressTimeline 
+    steps={[
+      { step: 1, stepName: "Data Analysis", duration: 2000, status: "waiting..." },
+      { step: 2, stepName: "AI Processing", duration: 3000, status: "waiting..." },
+      { step: 3, stepName: "Response Generation", duration: 2500, status: "waiting..." },
+      { step: 4, stepName: "Finalization", duration: 1500, status: "waiting..." }
+    ]}
+    externalStart={true}
+    externalStop={false}
+    scrollSpeed="normal"
+    className="w-full max-w-md"
+  />
 </Preview>
 
-## Props
 
-| Prop                  | Type                                   | Default     | Description                                                        |
-|-----------------------|----------------------------------------|-------------|--------------------------------------------------------------------|
-| `steps`               | `StepProps[]`                          | `[...]`     | Array of steps to display in the timeline                          |
-| `onGenerationStart`   | `() => void`                           | `undefined` | Callback when generation starts                                    |
-| `onGenerationComplete`| `() => void`                           | `undefined` | Callback when generation is complete                               |
-| `onGenerationStop`    | `() => void`                           | `undefined` | Callback when generation stops                                     |
-| `externalStop`        | `boolean`                              | `false`     | External control to stop generation                                |
-| `externalStart`       | `boolean`                              | `false`     | External control to start generation                               |
-| `className`           | `string`                               | `undefined` | Additional CSS classes for styling                                 |
-| `scrollSpeed`         | `"fast" \| "normal" \| "slow"`         | `"normal"`  | Speed of the scroll animation                                      |
+## Example
 
-### StepProps
+```tsx
+import { StepProgressTimeline } from '@/components/LY UI/AI/stepProgressTimeline'
 
-| Prop         | Type                                         | Default     | Description                                                        |
-|--------------|----------------------------------------------|-------------|--------------------------------------------------------------------|
-| `step`       | `number`                                     | `undefined` | Step number                                                        |
-| `stepName`   | `string`                                     | `undefined` | Step name to display                                               |
-| `duration`   | `number`                                     | `undefined` | Duration in milliseconds for the step                              |
-| `status`     | `"waiting..." \| "generating..." \| "completed"`| `"waiting..."`| Current status of the step                                         |
+export default function TimelineExample() {
+  const steps = [
+    { step: 1, stepName: "Initialization", duration: 2000, status: "waiting..." },
+    { step: 2, stepName: "Analysis", duration: 3000, status: "waiting..." },
+    { step: 3, stepName: "Processing", duration: 2500, status: "waiting..." },
+    { step: 4, stepName: "Finalization", duration: 1500, status: "waiting..." }
+  ]
 
-### Example Usage
+  const handleGenerationStart = () => {
+    console.log('Generation started')
+  }
 
-```jsx
-<StepProgressTimeline
-  steps={[
-    { step: 1, stepName: "Analysis", duration: 2000, status: "waiting..." },
-    { step: 2, stepName: "Research", duration: 2500, status: "waiting..." },
-    { step: 3, stepName: "Generation", duration: 3000, status: "waiting..." },
-    { step: 4, stepName: "Validation", duration: 2000, status: "waiting..." },
-  ]}
-  externalStart={true}
-  className="w-full"
-  scrollSpeed="fast"
-/>
+  const handleGenerationComplete = () => {
+    console.log('Generation completed')
+  }
+
+  const handleGenerationStop = () => {
+    console.log('Generation stopped')
+  }
+
+  return (
+    <StepProgressTimeline
+      steps={steps}
+      onGenerationStart={handleGenerationStart}
+      onGenerationComplete={handleGenerationComplete}
+      onGenerationStop={handleGenerationStop}
+      externalStart={true}
+      externalStop={false}
+      scrollSpeed="normal"
+      className="w-full max-w-md"
+    />
+  )
+}
 ```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `steps` | `StepProps[]` | - | Array of steps to display (required) |
+| `onGenerationStart` | `() => void` | - | Callback called when generation starts |
+| `onGenerationComplete` | `() => void` | - | Callback called when generation completes |
+| `onGenerationStop` | `() => void` | - | Callback called when generation stops |
+| `externalStop` | `boolean` | `false` | External control to stop generation |
+| `externalStart` | `boolean` | `false` | External control to start generation |
+| `className` | `string` | - | Additional CSS classes |
+| `scrollSpeed` | `"fast" \| "normal" \| "slow"` | `"normal"` | Timeline scroll speed |
+
+## Types
+
+```tsx
+type StepProps = {
+  step?: number;
+  stepName?: string;
+  duration?: number;
+  status: "waiting..." | "generating..." | "completed";
+};
+```
+
+## Features
+
+- **Sequential animations** : Automatic progression from one step to another
+- **Status indicators** : Visual display of each step's state
+- **External controls** : Ability to start/stop from outside
+- **Complete callbacks** : Notifications for all generation events
+- **Configurable timing** : Customizable duration for each step
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support

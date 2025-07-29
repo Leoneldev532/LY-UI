@@ -1,62 +1,77 @@
 ---
 title: "AI Searchbar"
-description: "Composant de barre de recherche intelligente avec animations et interactions avancées"
+description: "Intelligent search bar component with animations and advanced interactions"
 ---
+
+import AiSearchBar from '@/components/LY UI/AI/ai-searchbar'
+
+<Preview link="ai-searchbar">
+  <AiSearchBar 
+    placeholder="What can I help you with today?"
+    submitLoading={false}
+  />
+</Preview>
 
 # AI Searchbar
 
-Un composant de barre de recherche intelligente avec des animations fluides et des interactions avancées.
+An intelligent search bar component with smooth animations and advanced interactions, including tool selection, model switching, and loading state management.
 
-## Utilisation
+## Example
 
 ```tsx
 import { AiSearchbar } from '@/components/LY UI/AI/ai-searchbar'
 
 export default function SearchExample() {
+  const handleSubmit = (value: string, options: { 
+    selectedTools: number[], 
+    thinkMode: boolean, 
+    selectedModel: number 
+  }) => {
+    console.log('Search value:', value)
+    console.log('Selected tools:', options.selectedTools)
+    console.log('Think mode:', options.thinkMode)
+    console.log('Selected model:', options.selectedModel)
+  }
+
   return (
     <AiSearchbar
-      placeholder="Rechercher..."
-      onSearch={(query) => console.log(query)}
+      placeholder="What can I do for you?"
+      onSubmit={handleSubmit}
+      onChange={(value) => console.log('Input changed:', value)}
+      onToolsChange={(tools) => console.log('Tools changed:', tools)}
+      onThinkModeChange={(enabled) => console.log('Think mode:', enabled)}
+      onModelChange={(modelIndex) => console.log('Model changed:', modelIndex)}
+      submitLoading={false}
+      onStop={() => console.log('Stop requested')}
     />
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `placeholder` | `string` | `"Rechercher..."` | Texte d'aide dans la barre de recherche |
-| `onSearch` | `(query: string) => void` | - | Fonction appelée lors de la recherche |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `disabled` | `boolean` | `false` | Désactive la barre de recherche |
+| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style of the search bar |
+| `placeholder` | `string` | `"What can I do for you?"` | Help text in the input field |
+| `onSubmit` | `(value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void` | - | Callback called on submission |
+| `onChange` | `(value: string) => void` | - | Callback called on text change |
+| `onToolsChange` | `(selectedTools: number[]) => void` | - | Callback called when selected tools change |
+| `onThinkModeChange` | `(isEnabled: boolean) => void` | - | Callback called when "think" mode changes |
+| `onModelChange` | `(modelIndex: number) => void` | - | Callback called when model changes |
+| `className` | `string` | - | Additional CSS classes |
+| `submitLoading` | `boolean` | `false` | If true, disables input and shows loading state |
+| `submitLoaderComponent` | `React.ReactNode` | - | Custom loader for submit button |
+| `onStop` | `() => void` | - | Callback to stop external operation |
+| `isStopped` | `boolean` | `false` | Boolean to signal if operation was stopped |
+| `onStoppedChange` | `(stopped: boolean) => void` | - | Callback called when user clicks stop |
 
-## Fonctionnalités
+## Features
 
-- **Animation fluide** : Transitions douces lors de la saisie
-- **Interaction intelligente** : Réponse visuelle aux actions utilisateur
-- **Accessibilité** : Support complet des lecteurs d'écran
-- **Responsive** : S'adapte à toutes les tailles d'écran
-
-## Exemples
-
-### Recherche avec callback
-
-```tsx
-<AiSearchbar
-  placeholder="Rechercher des produits..."
-  onSearch={(query) => {
-    // Logique de recherche
-    searchProducts(query)
-  }}
-/>
-```
-
-### Barre de recherche désactivée
-
-```tsx
-<AiSearchbar
-  placeholder="Recherche temporairement indisponible"
-  disabled={true}
-/>
-```
+- **Smooth animation** : Smooth transitions during input
+- **Tool selection** : Interface to select available AI tools
+- **Model switching** : Selection between different AI models (GPT-4, Claude-3, etc.)
+- **Think mode** : Activation of advanced thinking mode
+- **State management** : Support for loading and stop states
+- **Accessibility** : Complete screen reader support
+- **Responsive** : Adapts to all screen sizes

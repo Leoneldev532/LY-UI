@@ -1,151 +1,354 @@
 import { useState, useCallback } from "react";
-
 import { useAnswerGeneration } from "./useAnswerGeneration";
 import { useAnimationControl } from "./useAnimationControl";
 import { useAbortController } from "./useAbortController";
 import { useTimeUtils } from "./useTimeUtils";
-import { QA, ToolsConfig } from "../utils";
+import { AnimationExecutor, QA, ToolsConfig } from "../utils";
+
+interface ChatState {
+  currentQuestion: string;
+  history: QA[];
+  loadingIdx: number | null;
+  isThinkingMode: boolean;
+  listToolsId: number[];
+}
+
+interface AnimationConfig {
+  showAgent: boolean;
+  showThinking: boolean;
+  agentDuration: number;
+  thinkingDuration: number;
+}
+
+const TOOL_CONFIG = {
+  TOOLS: {
+    IMAGE: 1,
+    AGENT: 4,
+  },
+  ANIMATIONS: {
+    AGENT_DURATION: 1200,
+    THINKING_DURATION: 800,
+  },
+  STATUSES: {
+    PENDING: "pending" as const,
+    GENERATING: "generating" as const,
+    GENERATED: "generated" as const,
+    STOPPED: "stopped" as const,
+  },
+} as const;
+
+const createToolsConfig = (toolIds: number[], isThinkingMode: boolean): ToolsConfig => ({
+  isImage: toolIds.includes(TOOL_CONFIG.TOOLS.IMAGE),
+  isAgent: toolIds.includes(TOOL_CONFIG.TOOLS.AGENT),
+  isThinking: isThinkingMode,
+});
+
+const createAnimationConfig = (toolsConfig: ToolsConfig): AnimationConfig => ({
+  showAgent: toolsConfig.isAgent,
+  showThinking: toolsConfig.isThinking || toolsConfig.isImage,
+  agentDuration: TOOL_CONFIG.ANIMATIONS.AGENT_DURATION,
+  thinkingDuration: TOOL_CONFIG.ANIMATIONS.THINKING_DURATION,
+});
+
+const createImageEntry = (
+  question: string,
+  toolsConfig: ToolsConfig,
+  startTime: string,
+  endTime: string
+): QA => ({
+  question,
+  answer: [{
+    type: "image",
+    content: "Image générée (simulation)",
+    metadata: "url",
+  }],
+  showAnswer: true,
+  isImage: true,
+  isAgent: toolsConfig.isAgent,
+  isThinking: toolsConfig.isThinking,
+  startTime,
+  endTime,
+  status: TOOL_CONFIG.STATUSES.GENERATED,
+});
+
+const createPendingEntry = (
+  question: string,
+  toolsConfig: ToolsConfig,
+  startTime: string
+): QA => ({
+  question,
+  answer: [],
+  showAnswer: false,
+  isImage: toolsConfig.isImage,
+  isAgent: toolsConfig.isAgent,
+  isThinking: toolsConfig.isThinking,
+  startTime,
+  status: TOOL_CONFIG.STATUSES.PENDING,
+  isStopped: false,
+});
+
+const addEntryToHistory = (history: QA[], entry: QA): QA[] => [...history, entry];
+
+const updateHistoryStatus = (
+  history: QA[],
+  newStatus: QA['status'],
+  endTime: string
+): QA[] =>
+  history.map(qa => {
+    const isPending = qa.status === TOOL_CONFIG.STATUSES.PENDING ||
+      qa.status === TOOL_CONFIG.STATUSES.GENERATING;
+
+    return isPending ? {
+      ...qa,
+      status: newStatus,
+      showAnswer: true,
+      endTime,
+    } : qa;
+  });
+
+const executeAgentAnimation: AnimationExecutor = (animationControl, onComplete) => {
+  animationControl.setShowAgentAnimation(true);
+
+  // Don't set a timeout - let the animation run until the request completes
+  // The animation will be stopped when the request finishes
+  onComplete().finally(() => {
+    animationControl.setShowAgentAnimation(false);
+  });
+};
+
+const executeThinkingAnimation: AnimationExecutor = (animationControl, onComplete) => {
+  animationControl.setShowThinking(true);
+
+  const timeout = setTimeout(async () => {
+    animationControl.setShowThinking(false);
+    await onComplete();
+  }, TOOL_CONFIG.ANIMATIONS.THINKING_DURATION);
+
+  (window as any).thinkingTimeout = timeout;
+};
+
+const executeSequentialAnimation: AnimationExecutor = (animationControl, onComplete) => {
+  executeAgentAnimation(animationControl, async () => {
+    executeThinkingAnimation(animationControl, onComplete);
+  });
+};
+
+const getAnimationExecutor = (config: AnimationConfig): AnimationExecutor | null => {
+  if (config.showAgent && config.showThinking) {
+    return executeSequentialAnimation;
+  } else if (config.showAgent) {
+    return executeAgentAnimation;
+  } else if (config.showThinking) {
+    return executeThinkingAnimation;
+  }
+
+  return null;
+};
+
+const useChatState = () => {
+  const [state, setState] = useState<ChatState>({
+    currentQuestion: "",
+    history: [],
+    loadingIdx: null,
+    isThinkingMode: false,
+    listToolsId: [],
+  });
+
+  const updateState = useCallback(<K extends keyof ChatState>(
+    key: K,
+    value: ChatState[K] | ((prev: ChatState[K]) => ChatState[K])
+  ) => {
+    setState(prev => ({
+      ...prev,
+      [key]: typeof value === 'function' ? (value as Function)(prev[key]) : value,
+    }));
+  }, []);
+
+  return { state, setState, updateState };
+};
+
+const useSubmissionHandlers = (
+  state: ChatState,
+  setState: React.Dispatch<React.SetStateAction<ChatState>>,
+  generateAnswer: ReturnType<typeof useAnswerGeneration>['generateAnswer'],
+  getCurrentTimeString: () => string
+) => {
+  const handleImageSubmission = useCallback((
+    question: string,
+    toolsConfig: ToolsConfig
+  ) => {
+    const startTime = getCurrentTimeString();
+    const endTime = getCurrentTimeString();
+    const imageEntry = createImageEntry(question, toolsConfig, startTime, endTime);
+
+    setState(prev => ({
+      ...prev,
+      history: addEntryToHistory(prev.history, imageEntry),
+      loadingIdx: null,
+    }));
+  }, [getCurrentTimeString, setState]);
+
+  const handleTextSubmission = useCallback(async (
+    question: string,
+    toolsConfig: ToolsConfig
+  ) => {
+    const currentIdx = state.history.length;
+    const startTime = getCurrentTimeString();
+    const pendingEntry = createPendingEntry(question, toolsConfig, startTime);
+
+    setState(prev => ({
+      ...prev,
+      history: addEntryToHistory(prev.history, pendingEntry),
+      loadingIdx: currentIdx,
+    }));
+
+    try {
+      await generateAnswer(question, currentIdx, toolsConfig);
+    } catch (error) {
+      console.error("Erreur lors de la génération:", error);
+      const endTime = getCurrentTimeString();
+      setState(prev => ({
+        ...prev,
+        history: updateHistoryStatus(prev.history, TOOL_CONFIG.STATUSES.STOPPED, endTime),
+      }));
+    }
+  }, [state.history.length, getCurrentTimeString, generateAnswer, setState]);
+
+  const executeSubmission = useCallback(async (
+    question: string,
+    toolsConfig: ToolsConfig
+  ) => {
+    if (toolsConfig.isImage) {
+      handleImageSubmission(question, toolsConfig);
+    } else {
+      await handleTextSubmission(question, toolsConfig);
+    }
+  }, [handleImageSubmission, handleTextSubmission]);
+
+  return { executeSubmission };
+};
 
 export const useChatbotLogic = () => {
-  const [currentQuestion, setCurrentQuestion] = useState<string>("");
-  const [history, setHistory] = useState<QA[]>([]);
-  const [loadingIdx, setLoadingIdx] = useState<number | null>(null);
-  const [isThinkingMode, setIsThinkingMode] = useState<boolean>(false);
-  const [listToolsId, setListToolsId] = useState<number[]>([]);
+  // Centralized state with custom hook
+  const { state, setState, updateState } = useChatState();
 
-  const { generateAnswer } = useAnswerGeneration(setHistory, setLoadingIdx);
-  const {
-    showThinking,
-    setShowThinking,
-    showAgentAnimation,
-    setShowAgentAnimation,
-    clearTimeouts,
-  } = useAnimationControl();
+  // Dependency Inversion: depends on abstractions (hooks)
+  const animationControl = useAnimationControl();
   const { abortAllControllers } = useAbortController();
   const { getCurrentTimeString } = useTimeUtils();
 
-  const proceedSubmit = useCallback(async (
-    value: string,
+  // --- FIX: Provide correct updater for useAnswerGeneration ---
+
+  // Instead of passing a function that takes (updateFn: (prev: QA[]) => QA[]),
+  // we pass a function that matches Dispatch<SetStateAction<QA[]>>.
+  // This means: (value: QA[] | ((prev: QA[]) => QA[])) => void
+
+  // We'll use setState to update only the history property.
+  const historyUpdater = useCallback(
+    (value: QA[] | ((prev: QA[]) => QA[])) => {
+      setState(prev => ({
+        ...prev,
+        history: typeof value === "function" ? (value as (prev: QA[]) => QA[])(prev.history) : value,
+      }));
+    },
+    [setState]
+  );
+
+  const loadingUpdater = useCallback(
+    (value: number | null | ((prev: number | null) => number | null)) => {
+      setState(prev => ({ 
+        ...prev, 
+        loadingIdx: typeof value === 'function' ? value(prev.loadingIdx) : value 
+      }));
+    },
+    [setState]
+  );
+
+  const { generateAnswer } = useAnswerGeneration(historyUpdater, loadingUpdater);
+
+  // Submission handlers with custom hook
+  const { executeSubmission } = useSubmissionHandlers(
+    state,
+    setState,
+    generateAnswer,
+    getCurrentTimeString
+  );
+
+  const executeWithAnimation = useCallback(async (
+    question: string,
     toolsConfig: ToolsConfig
   ) => {
-    const { isImage, isAgent, isThinking } = toolsConfig;
-    const currentIdx = history.length;
-    const startTime = getCurrentTimeString();
+    const animationConfig = createAnimationConfig(toolsConfig);
+    const animationExecutor = getAnimationExecutor(animationConfig);
 
-    if (isImage) {
-      setHistory((prev) => [
-        ...prev,
-        {
-          question: value,
-          answer: [
-            {
-              type: "image",
-              content: "Image générée (simulation)",
-              metadata: "url",
-            },
-          ],
-          showAnswer: true,
-          isImage: true,
-          isAgent,
-          isThinking,
-          startTime,
-          endTime: getCurrentTimeString(),
-          status: "generated",
-        },
-      ]);
-      setLoadingIdx(null);
+    const submitAction = () => executeSubmission(question, toolsConfig);
+
+    if (animationExecutor) {
+      animationExecutor(animationControl, submitAction);
     } else {
-      setHistory((prev) => [
-        ...prev,
-        {
-          question: value,
-          answer: [],
-          showAnswer: false,
-          isImage,
-          isAgent,
-          isThinking,
-          startTime,
-          status: "pending",
-          isStopped: false,
-        },
-      ]);
-      setLoadingIdx(currentIdx);
-
-      try {
-        const answerArr = await generateAnswer(value, currentIdx, {
-          isImage,
-          isAgent,
-          isThinking,
-        });
-
-        // Additional logic handled in generateAnswer
-      } catch (error) {
-        console.log("Erreur dans proceedSubmit:", error);
-      }
+      await submitAction();
     }
-  }, [history, generateAnswer, getCurrentTimeString, setHistory, setLoadingIdx]);
+  }, [executeSubmission, animationControl]);
 
   const handleSubmit = useCallback(async (value: string) => {
-    const isImage = listToolsId.includes(1);
-    const isAgent = listToolsId.includes(4);
-    const isThinking = isThinkingMode;
-    const toolsConfig = { isImage, isAgent, isThinking };
-
-    if (isAgent) {
-      setShowAgentAnimation(true);
-      const agentTimeout = setTimeout(async () => {
-        setShowAgentAnimation(false);
-        if (isThinking || isImage) {
-          setShowThinking(true);
-          const thinkingTimeout = setTimeout(async () => {
-            setShowThinking(false);
-            await proceedSubmit(value, toolsConfig);
-          }, 800);
-          (window as any).thinkingTimeout = thinkingTimeout;
-        } else {
-          await proceedSubmit(value, toolsConfig);
-        }
-      }, 1200);
-      (window as any).agentTimeout = agentTimeout;
-    } else if (isThinking || isImage) {
-      setShowThinking(true);
-      const thinkingTimeout = setTimeout(async () => {
-        setShowThinking(false);
-        await proceedSubmit(value, toolsConfig);
-      }, 800);
-      (window as any).thinkingTimeout = thinkingTimeout;
-    } else {
-      await proceedSubmit(value, toolsConfig);
-    }
-  }, [listToolsId, isThinkingMode, proceedSubmit, setShowAgentAnimation, setShowThinking]);
+    const toolsConfig = createToolsConfig(state.listToolsId, state.isThinkingMode);
+    await executeWithAnimation(value, toolsConfig);
+  }, [state.listToolsId, state.isThinkingMode, executeWithAnimation]);
 
   const handleStop = useCallback(() => {
-    console.log("🛑 STOP CLICKED - Starting handleStop");
+    console.log("🛑 Arrêt en cours...");
 
+    // Clean up resources
     abortAllControllers();
-    clearTimeouts();
+    animationControl.clearTimeouts();
 
-    setLoadingIdx(null);
-    setShowThinking(false);
-    setShowAgentAnimation(false);
+    // Reset animations
+    animationControl.setShowThinking(false);
+    animationControl.setShowAgentAnimation(false);
 
-    setHistory((prev) => {
-      return prev.map((qa) => {
-        if (qa.status === "pending" || qa.status === "generating") {
-          console.log(`🛑 Stopping item with status: ${qa.status} -> stopped`);
-          return {
-            ...qa,
-            status: "stopped" as const,
-            showAnswer: true,
-            endTime: getCurrentTimeString(),
-          };
-        }
-        return qa;
-      });
-    });
+    // Update state
+    const endTime = getCurrentTimeString();
+    setState(prev => ({
+      ...prev,
+      loadingIdx: null,
+      history: updateHistoryStatus(prev.history, TOOL_CONFIG.STATUSES.STOPPED, endTime),
+    }));
 
-    console.log("🛑 handleStop completed");
-  }, [abortAllControllers, clearTimeouts, getCurrentTimeString, setLoadingIdx, setShowThinking, setShowAgentAnimation, setHistory]);
+    console.log("🛑 Arrêt terminé");
+  }, [abortAllControllers, animationControl, getCurrentTimeString, setState]);
+
+  const currentQuestion = state.currentQuestion;
+  const history = state.history;
+  const loadingIdx = state.loadingIdx;
+  const isThinkingMode = state.isThinkingMode;
+  const listToolsId = state.listToolsId;
+  const showThinking = animationControl.showThinking;
+  const showAgentAnimation = animationControl.showAgentAnimation;
+
+  const setCurrentQuestion = useCallback(
+    (value: string) => updateState('currentQuestion', value),
+    [updateState]
+  );
+
+  const setHistory = useCallback(
+    (value: QA[] | ((prev: QA[]) => QA[])) => updateState('history', value),
+    [updateState]
+  );
+
+  const setLoadingIdx = useCallback(
+    (value: number | null) => updateState('loadingIdx', value),
+    [updateState]
+  );
+
+  const setIsThinkingMode = useCallback(
+    (value: boolean) => updateState('isThinkingMode', value),
+    [updateState]
+  );
+
+  const setListToolsId = useCallback(
+    (value: number[]) => updateState('listToolsId', value),
+    [updateState]
+  );
 
   return {
     currentQuestion,

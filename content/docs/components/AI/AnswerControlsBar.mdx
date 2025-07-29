@@ -1,0 +1,99 @@
+---
+title: "Answer Controls Bar"
+description: "Answer controls bar component for AI responses with interactive actions"
+---
+
+import AnswerControlsBar from '@/components/LY UI/AI/AnswerControlsBar'
+
+<Preview link="AnswerControlsBar">
+  <AnswerControlsBar 
+    timestamp="14:32"
+    copied={false}
+  />
+</Preview>
+
+# Answer Controls Bar
+
+An answer controls bar component for AI responses with interactive actions like copy, like, dislike, regenerate, and additional options via dropdown menus.
+
+## Example
+
+```tsx
+import { AnswerControlsBar } from '@/components/LY UI/AI/AnswerControlsBar'
+import { useState } from 'react'
+
+export default function ControlsExample() {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    // Logic to copy content
+    navigator.clipboard.writeText('Answer content')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleLike = () => {
+    console.log('Answer liked')
+    // Logic to save the like
+  }
+
+  const handleDislike = () => {
+    console.log('Answer disliked')
+    // Logic to save the dislike
+  }
+
+  const handleRegenerate = () => {
+    console.log('Regeneration requested')
+    // Logic to regenerate the answer
+  }
+
+  return (
+    <div className="space-y-4">
+      <AnswerControlsBar
+        timestamp="14:32"
+        copied={copied}
+        onCopy={handleCopy}
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onRegenerate={handleRegenerate}
+      />
+
+      {/* With copied state */}
+      <AnswerControlsBar
+        timestamp="15:45"
+        copied={true}
+        onCopy={handleCopy}
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onRegenerate={handleRegenerate}
+      />
+    </div>
+  )
+}
+```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `timestamp` | `string` | `"00:00"` | Timestamp displayed on the left of the bar |
+| `copied` | `boolean` | `false` | If true, shows check icon instead of copy |
+| `onCopy` | `() => void` | - | Callback called when copy button is clicked |
+| `onLike` | `() => void` | - | Callback called when like button is clicked |
+| `onDislike` | `() => void` | - | Callback called when dislike button is clicked |
+| `onRegenerate` | `() => void` | - | Callback called when regenerate button is clicked |
+
+## Features
+
+- **Basic actions** : Copy, like, dislike with visual feedback
+- **Copy state** : Icon change when content is copied
+- **Regeneration menu** : Dropdown with "With comment" and "Without comment" options
+- **Options menu** : Dropdown with "Report issue" and "Export to PDF"
+- **Responsive design** : Adaptation to different screen sizes
+- **Dark theme** : Complete dark mode support
+- **Accessibility** : Screen reader support and keyboard navigation
+- **Animations** : Smooth transitions for interactions
+
+## Usage
+
+The `AnswerControlsBar` component is typically used at the bottom of AI responses to provide interactive controls. It integrates perfectly with other components like `GeneratedAnswer` to provide a complete user experience. 

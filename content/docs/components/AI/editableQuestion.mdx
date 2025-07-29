@@ -1,102 +1,63 @@
 ---
 title: "Editable Question"
-description: "Composant de question éditable avec interface intuitive et validation"
+description: "Editable question component with interactive interface for real-time customization"
 ---
 
-# Editable Question
+import EditableQuestion from '@/components/LY UI/AI/editableQuestion'
 
-Un composant de question éditable permettant aux utilisateurs de modifier et valider leurs questions avec une interface intuitive.
+<Preview link="editableQuestion">
+  <EditableQuestion 
+    question="How can I implement authentication in a Next.js application with Prisma and JWT tokens?"
+    className="w-full max-w-2xl"
+  />
+</Preview>
 
-## Utilisation
+
+## Example
 
 ```tsx
 import { EditableQuestion } from '@/components/LY UI/AI/editableQuestion'
 
 export default function QuestionExample() {
+  const handleQuestionChange = (newQuestion: string) => {
+    console.log('Question changed:', newQuestion)
+    // Here you can update state or send the question to API
+  }
+
   return (
-    <EditableQuestion
-      initialQuestion="Comment créer un composant React ?"
-      onQuestionChange={(newQuestion) => {
-        console.log('Question modifiée:', newQuestion)
-      }}
-      onQuestionSubmit={(finalQuestion) => {
-        console.log('Question soumise:', finalQuestion)
-      }}
-    />
+    <div className="space-y-4">
+      <EditableQuestion
+        question="What are the best practices for optimizing React application performance?"
+        onQuestionChange={handleQuestionChange}
+        className="w-full max-w-2xl"
+      />
+
+      <EditableQuestion
+        question="How to implement authentication with Next.js and Prisma?"
+        onQuestionChange={(question) => {
+          // Custom logic for update
+          updateQuestionInDatabase(question)
+        }}
+      />
+    </div>
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `initialQuestion` | `string` | `""` | Question initiale à afficher |
-| `onQuestionChange` | `(question: string) => void` | - | Callback lors de la modification |
-| `onQuestionSubmit` | `(question: string) => void` | - | Callback lors de la soumission |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `placeholder` | `string` | `"Posez votre question..."` | Texte d'aide |
-| `maxLength` | `number` | `500` | Longueur maximale de la question |
-| `isEditing` | `boolean` | `false` | Contrôle externe du mode édition |
+| `question` | `string` | `""` | Question text to display and edit |
+| `onQuestionChange` | `(newQuestion: string) => void` | - | Callback called when question is modified |
+| `className` | `string` | - | Additional CSS classes |
 
-## États
+## Features
 
-- **view** : Affichage en lecture seule
-- **editing** : Mode édition actif
-- **validating** : Validation en cours
-- **submitting** : Soumission en cours
-
-## Fonctionnalités
-
-- **Édition inline** : Modification directe du texte
-- **Validation** : Vérification de la longueur et du contenu
-- **Auto-sauvegarde** : Sauvegarde automatique des modifications
-- **Historique** : Possibilité d'annuler les modifications
-- **Accessibilité** : Support complet des lecteurs d'écran
-
-## Exemples
-
-### Question simple
-
-```tsx
-<EditableQuestion
-  initialQuestion="Qu'est-ce que React ?"
-  onQuestionSubmit={(question) => {
-    // Envoyer la question à l'IA
-    sendToAI(question)
-  }}
-/>
-```
-
-### Avec validation personnalisée
-
-```tsx
-<EditableQuestion
-  initialQuestion=""
-  placeholder="Décrivez votre problème..."
-  maxLength={1000}
-  onQuestionChange={(question) => {
-    // Validation personnalisée
-    if (question.length < 10) {
-      setError("La question doit contenir au moins 10 caractères")
-    } else {
-      setError(null)
-    }
-  }}
-/>
-```
-
-### Contrôle externe
-
-```tsx
-const [isEditing, setIsEditing] = useState(false)
-
-<EditableQuestion
-  initialQuestion="Question par défaut"
-  isEditing={isEditing}
-  onQuestionSubmit={(question) => {
-    setIsEditing(false)
-    handleQuestionSubmit(question)
-  }}
-/>
-```
+- **Interactive editing** : Click to edit question in place
+- **Keyboard shortcuts** : Ctrl+Enter to save, Escape to cancel
+- **Easy copy** : Copy button with visual feedback
+- **Intuitive interface** : Action buttons that appear on hover
+- **Validation** : Management of edit and cancel states
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support and keyboard navigation

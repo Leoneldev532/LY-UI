@@ -1,0 +1,184 @@
+# Cursor Configuration for LY-UI Documentation
+
+## Documentation Structure Rules
+
+### MDX Documentation Format
+- All component documentation must follow this structure:
+  1. **Header** (title, description)
+  2. **Preview** (single component with basic props)
+  3. **Example** (complete usage with callbacks)
+  4. **Documentation** (props table)
+  5. **Features** (capabilities list)
+
+### Preview Section Rules
+- Use only ONE component instance in preview
+- NO callbacks in preview props (causes client component errors)
+- Include basic props with realistic English data
+- Use `className="w-full max-w-md"` for responsive sizing
+- Import component at top: `import ComponentName from '@/components/LY UI/AI/componentName'`
+
+### Example Section Rules
+- Include complete usage with all callbacks
+- Use realistic English examples
+- Show state management with `useState`
+- Include error handling and logging
+- Demonstrate multiple use cases
+
+### Documentation Table Rules
+- Include ALL actual props from component source
+- NO fictional props - only real component props
+- Include Type, Default, and Description for each prop
+- Use proper TypeScript types
+- Add Types section for complex types
+
+### Features Section Rules
+- List 6-8 key capabilities
+- Use bullet points with bold feature names
+- Focus on user benefits and technical capabilities
+- Include accessibility and responsive design
+
+## Component Documentation Standards
+
+### Import Statements
+```tsx
+import ComponentName from '@/components/LY UI/AI/componentName'
+```
+
+### Preview Format
+```tsx
+<Preview link="componentName">
+  <ComponentName 
+    prop1="realistic value"
+    prop2={realisticValue}
+    className="w-full max-w-md"
+  />
+</Preview>
+```
+
+### Example Format
+```tsx
+export default function ComponentExample() {
+  const handleCallback = () => {
+    console.log('Callback executed')
+  }
+
+  return (
+    <ComponentName
+      prop1="value"
+      prop2={value}
+      onCallback={handleCallback}
+      className="w-full max-w-md"
+    />
+  )
+}
+```
+
+### Documentation Table Format
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `propName` | `Type` | `default` | Clear description |
+
+## Language and Content Rules
+
+### English Only
+- All documentation must be in English
+- Use professional, clear language
+- Maintain consistent terminology
+- Use American English spelling
+
+### Realistic Examples
+- Use realistic but fictional data
+- Include proper error handling
+- Show practical use cases
+- Demonstrate best practices
+
+### Accessibility Focus
+- Always mention screen reader support
+- Include keyboard navigation details
+- Highlight responsive design
+- Emphasize user experience
+
+## File Organization
+
+### Naming Convention
+- Use PascalCase for component names
+- Use kebab-case for file names
+- Match component name in file name
+
+### Directory Structure
+```
+content/docs/components/AI/
+├── componentName.mdx
+├── anotherComponent.mdx
+└── ...
+```
+
+## Code Quality Standards
+
+### TypeScript
+- Use proper TypeScript types
+- Include type definitions when needed
+- Use strict typing for props
+
+### React Best Practices
+- Use functional components
+- Include proper prop validation
+- Follow React hooks patterns
+- Use modern React patterns
+
+### Performance
+- Mention performance considerations
+- Include optimization tips
+- Highlight efficient usage patterns
+
+## Documentation Maintenance
+
+### Update Process
+1. Read component source file first
+2. Extract actual props and types
+3. Create realistic examples
+4. Test preview functionality
+5. Verify all links work
+
+### Quality Checklist
+- [ ] All props documented
+- [ ] No fictional props
+- [ ] Realistic examples
+- [ ] Proper TypeScript types
+- [ ] Accessibility mentioned
+- [ ] Responsive design noted
+- [ ] English language used
+- [ ] Professional tone maintained
+
+## Error Prevention
+
+### Common Issues to Avoid
+- Don't include callbacks in preview props
+- Don't create fictional component props
+- Don't use French in documentation
+- Don't skip accessibility features
+- Don't forget responsive design
+- Don't use inconsistent naming
+
+### Validation Rules
+- Preview must render without errors
+- All imports must be correct
+- Props must match component source
+- Examples must be functional
+- Links must be valid
+
+## Special Instructions
+
+### AI Components Focus
+- Emphasize AI/ML capabilities
+- Include real-time features
+- Highlight interactive elements
+- Show progressive animations
+- Demonstrate state management
+
+### User Experience Priority
+- Focus on developer experience
+- Include clear usage examples
+- Provide practical scenarios
+- Show integration patterns
+- Highlight customization options 

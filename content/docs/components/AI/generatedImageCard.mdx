@@ -1,118 +1,101 @@
 ---
 title: "Generated Image Card"
-description: "Composant de carte d'image générée par IA avec options de téléchargement et partage"
+description: "Generated image card component with interactive controls and multi-format support"
 ---
 
-# Generated Image Card
+import GeneratedImageCard from '@/components/LY UI/AI/generatedImageCard'
 
-Un composant de carte d'image générée par IA avec options de téléchargement, partage et gestion des métadonnées.
+<Preview link="generatedImageCard">
+  <GeneratedImageCard 
+    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
+    imageTitle="Mountain Landscape"
+    prompt="A beautiful mountain landscape at sunset with dramatic clouds, realistic style"
+    timestamp="14:32"
+    width={400}
+    height={400}
+    hideControls={false}
+    className="w-full max-w-md"
+  />
+</Preview>
 
-## Utilisation
+
+## Example
 
 ```tsx
 import { GeneratedImageCard } from '@/components/LY UI/AI/generatedImageCard'
 
 export default function ImageExample() {
+  const handleLike = () => {
+    console.log('User liked the image')
+    // Logic to save the like
+  }
+
+  const handleDislike = () => {
+    console.log('User disliked the image')
+    // Logic to save the dislike
+  }
+
+  const handleRegenerate = () => {
+    console.log('Image regeneration requested')
+    // Logic to regenerate the image
+  }
+
   return (
-    <GeneratedImageCard
-      imageUrl="https://example.com/generated-image.jpg"
-      prompt="Un chat dans un jardin fleuri"
-      onDownload={(url) => {
-        console.log('Téléchargement:', url)
-      }}
-    />
+    <div className="space-y-4">
+      {/* With image URL */}
+      <GeneratedImageCard
+        src="https://example.com/generated-image.jpg"
+        imageTitle="Mountain Landscape"
+        prompt="A mountain landscape at sunset, realistic style"
+        timestamp="14:32"
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onRegenerate={handleRegenerate}
+        onComplete={() => console.log('Image loaded successfully')}
+        width={400}
+        height={400}
+        className="w-full max-w-md"
+      />
+
+      {/* With Blob (after generation) */}
+      <GeneratedImageCard
+        src={imageBlob}
+        imageTitle="Generated Portrait"
+        prompt="Portrait of a woman with red hair, artistic style"
+        timestamp="15:45"
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onRegenerate={handleRegenerate}
+        hideControls={false}
+      />
+    </div>
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `imageUrl` | `string` | - | URL de l'image générée |
-| `prompt` | `string` | `""` | Prompt utilisé pour générer l'image |
-| `onDownload` | `(url: string) => void` | - | Callback lors du téléchargement |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `showPrompt` | `boolean` | `true` | Affiche le prompt utilisé |
-| `showDownloadButton` | `boolean` | `true` | Affiche le bouton de téléchargement |
-| `showShareButton` | `boolean` | `true` | Affiche le bouton de partage |
-| `metadata` | `ImageMetadata` | - | Métadonnées de l'image |
+| `src` | `string \| Blob \| StaticImport` | - | Image source (URL, Blob, or static import) |
+| `imageTitle` | `string \| null` | - | Image title |
+| `width` | `number` | `400` | Image width |
+| `height` | `number` | `400` | Image height |
+| `timestamp` | `string` | `"00:00"` | Displayed timestamp |
+| `prompt` | `string` | `""` | Prompt used to generate the image |
+| `onLike` | `() => void` | - | Callback called on like |
+| `onDislike` | `() => void` | - | Callback called on dislike |
+| `onRegenerate` | `() => void` | - | Callback called on regeneration |
+| `onComplete` | `() => void` | - | Callback called when image is loaded |
+| `hideControls` | `boolean` | `false` | Hides interactive controls |
+| `className` | `string` | - | Additional CSS classes |
 
-## Types
+## Features
 
-```tsx
-interface ImageMetadata {
-  model?: string
-  size?: string
-  quality?: string
-  timestamp?: string
-  seed?: number
-}
-```
-
-## Fonctionnalités
-
-- **Affichage d'image** : Rendu optimisé avec lazy loading
-- **Téléchargement** : Bouton de téléchargement direct
-- **Partage** : Options de partage sur les réseaux sociaux
-- **Métadonnées** : Affichage des informations de génération
-- **Responsive** : S'adapte à toutes les tailles d'écran
-
-## Exemples
-
-### Image simple
-
-```tsx
-<GeneratedImageCard
-  imageUrl="https://api.example.com/images/cat-garden.jpg"
-  prompt="Un chat orange dans un jardin avec des fleurs"
-/>
-```
-
-### Avec métadonnées
-
-```tsx
-<GeneratedImageCard
-  imageUrl="https://api.example.com/images/landscape.jpg"
-  prompt="Paysage de montagne au coucher du soleil"
-  metadata={{
-    model: "DALL-E 3",
-    size: "1024x1024",
-    quality: "high",
-    timestamp: "2024-01-15T10:30:00Z"
-  }}
-  onDownload={(url) => {
-    // Logique de téléchargement personnalisée
-    downloadImage(url, "paysage-montagne.jpg")
-  }}
-/>
-```
-
-### Sans boutons
-
-```tsx
-<GeneratedImageCard
-  imageUrl="https://api.example.com/images/abstract.jpg"
-  prompt="Formes abstraites colorées"
-  showDownloadButton={false}
-  showShareButton={false}
-  className="max-w-sm"
-/>
-```
-
-### Avec gestion d'erreur
-
-```tsx
-<GeneratedImageCard
-  imageUrl="https://api.example.com/images/portrait.jpg"
-  prompt="Portrait d'une femme dans un style renaissance"
-  onDownload={(url) => {
-    try {
-      downloadImage(url)
-      toast.success('Image téléchargée !')
-    } catch (error) {
-      toast.error('Erreur lors du téléchargement')
-    }
-  }}
-/>
-```
+- **Multi-format** : Support for URLs, Blobs, Base64 and static imports
+- **Interactive controls** : Like, dislike, copy prompt, download
+- **Loading states** : Loading indicator during download
+- **Automatic download** : Management of different formats for download
+- **Prompt copy** : Easy copy of used prompt
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support

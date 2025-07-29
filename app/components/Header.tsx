@@ -1,27 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import DefaultSearchDialog from "@/components/search";
 import PatternSVG from "./patternSvg";
+import { Toggle } from "@/components/ui/toggle";
 
-/**
- * Header component.
- * 
- * Props: None.
- * 
- * This header supports both dark and light themes using Tailwind's dark: classes.
- */
+
 const Header = () => {
   const [searchIsOpen, setSearchIsOpen] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  // Initialiser le thème au chargement
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("theme");
+      const isDark = savedTheme === "dark" || 
+        (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      setIsDarkMode(isDark);
+    }
+  }, []);
 
   const handleOpenSearchBar = () => {
     setSearchIsOpen(true);
   };
 
+  const handleThemeChange = (checked: boolean) => {
+    setIsDarkMode(checked);
+  };
+
   return (
-    <header className="flex h-16 flex-col w-full md:px-0 px-4 relative border-b border-neutral-200/60 dark:border-neutral-700/60 justify-between items-start
-     dark:bg-black bg-white">
+    <header
+      className="flex h-16 flex-col w-full md:px-0 px-4 relative border-b border-neutral-200/60 dark:border-neutral-700/60 justify-between items-start
+     dark:bg-black bg-white"
+    >
       <div className="flex w-full py-4 px-4 items-center justify-between">
         <Link href="/" className="">
           <svg
@@ -49,41 +61,51 @@ const Header = () => {
             />
           </svg>
         </Link>
-        <button
-          className="ml-4 px-3 py-1 gap-x-2 cursor-pointer flex bg-neutral-200/40 dark:bg-neutral-800 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
-          onClick={handleOpenSearchBar}
-          aria-label="Ouvrir la recherche"
-        >
-          <span className="text-neutral-500 dark:text-neutral-300">crtl + k</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
+        <div>
+          {/* <button
+            className="ml-4 px-3 py-1 gap-x-2 cursor-pointer flex bg-neutral-200/40 dark:bg-neutral-800 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
+            onClick={handleOpenSearchBar}
+            aria-label="Ouvrir la recherche"
           >
-            <circle
-              cx="11"
-              cy="11"
-              r="7"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="text-neutral-500 dark:text-neutral-300"
-            />
-            <line
-              x1="16.018"
-              y1="16.485"
-              x2="21"
-              y2="21.467"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              className="text-neutral-500 dark:text-neutral-300"
-            />
-          </svg>
-        </button>
+            <span className="text-neutral-500 dark:text-neutral-300">
+              crtl + k
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="text-neutral-500 dark:text-neutral-300"
+              />
+              <line
+                x1="16.018"
+                y1="16.485"
+                x2="21"
+                y2="21.467"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="text-neutral-500 dark:text-neutral-300"
+              />
+            </svg>
+          </button> */}
+          <Toggle 
+            checked={isDarkMode}
+            onCheckedChange={handleThemeChange}
+            themeToggle={true}
+            showLabel={true}
+            label="Thème"
+          />
+        </div>
       </div>
-
       <DefaultSearchDialog
         onOpenChange={(open) => setSearchIsOpen(open)}
         open={searchIsOpen}

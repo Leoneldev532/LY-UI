@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { useAnimationControl } from "./hooks/useAnimationControl";
 
 export type LiaContentItem = {
   type: string;
@@ -67,3 +68,40 @@ export type RenderContentOptions = {
   delay?: number;
   retryCount?: number;
 }
+
+
+export interface ChatState {
+  currentQuestion: string;
+  history: QA[];
+  loadingIdx: number | null;
+  isThinkingMode: boolean;
+  listToolsId: number[];
+}
+
+export interface AnimationConfig {
+  showAgent: boolean;
+  showThinking: boolean;
+  agentDuration: number;
+  thinkingDuration: number;
+}
+
+export interface ChatActions {
+  handleSubmit: (value: string) => Promise<void>;
+  handleStop: () => void;
+  setCurrentQuestion: (value: string) => void;
+  setHistory: (value: QA[] | ((prev: QA[]) => QA[])) => void;
+  setLoadingIdx: (value: number | null) => void;
+  setIsThinkingMode: (value: boolean) => void;
+  setListToolsId: (value: number[]) => void;
+}
+
+export interface ChatComputedValues {
+  isLoading: boolean;
+  hasHistory: boolean;
+  currentToolsConfig: ToolsConfig;
+}
+
+export type AnimationExecutor = (
+  animationControl: ReturnType<typeof useAnimationControl>,
+  onComplete: () => Promise<void>
+) => void;

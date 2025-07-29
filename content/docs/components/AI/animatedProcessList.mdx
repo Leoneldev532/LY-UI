@@ -1,91 +1,86 @@
 ---
 title: "Animated Process List"
-description: "Liste de processus avec animations séquentielles et indicateurs de progression"
+description: "Animated process list component with progressive revelations"
 ---
+
+import AnimatedProcessList from '@/components/LY UI/AI/animatedProcessList'
+
+<Preview link="animatedProcessList">
+  <AnimatedProcessList 
+    title="Processing your request"
+    processSteps={[
+      "Analyzing user requirements...",
+      "Creating component structure...",
+      "Implementing responsive design...",
+      "Adding interactive features...",
+      "Optimizing performance...",
+      "Testing functionality...",
+      "Deploying to production..."
+    ]}
+    animationSpeed="normal"
+    scrollDirection="up"
+    skeletonDuration={2000}
+    lineRevealDelay={150}
+    className="w-full max-w-lg"
+  />
+</Preview>
 
 # Animated Process List
 
-Un composant de liste de processus avec des animations séquentielles et des indicateurs de progression visuels.
+An animated process list component that displays steps with progressive revelations, scroll animations, and skeleton loading states.
 
-## Utilisation
+## Example
 
 ```tsx
 import { AnimatedProcessList } from '@/components/LY UI/AI/animatedProcessList'
 
-const processes = [
-  { id: 1, title: "Analyse des données", status: "completed" },
-  { id: 2, title: "Traitement IA", status: "active" },
-  { id: 3, title: "Génération de réponse", status: "pending" }
-]
-
 export default function ProcessExample() {
+  const processSteps = [
+    "Initializing system...",
+    "Loading dependencies...",
+    "Processing data...",
+    "Generating response...",
+    "Finalizing output..."
+  ]
+
+  const handleAnimationEnd = () => {
+    console.log('Animation ended')
+  }
+
   return (
     <AnimatedProcessList
-      processes={processes}
-      isActive={true}
-      className="space-y-4"
+      title="Processing your request"
+      processSteps={processSteps}
+      animationSpeed="normal"
+      scrollDirection="up"
+      onAnimationEnd={handleAnimationEnd}
+      skeletonDuration={2000}
+      lineRevealDelay={150}
+      className="w-full max-w-lg"
     />
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `processes` | `ProcessItem[]` | `[]` | Liste des processus à afficher |
-| `isActive` | `boolean` | `false` | Active les animations |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `animationSpeed` | `number` | `1000` | Vitesse des animations en ms |
-| `showProgress` | `boolean` | `true` | Affiche les barres de progression |
+| `title` | `string` | `"Generating elements for your web page"` | Title displayed at the top of the component |
+| `processSteps` | `string[]` | `[]` | Array of process steps to display |
+| `className` | `string` | - | Additional CSS classes |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of scroll animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Animation speed |
+| `onAnimationEnd` | `() => void` | - | Callback called when revelation animation ends |
+| `skeletonDuration` | `number` | `2000` | Duration in milliseconds of skeleton phase |
+| `lineRevealDelay` | `number` | `150` | Delay in milliseconds between each line revelation |
 
-## Types
+## Features
 
-```tsx
-interface ProcessItem {
-  id: number | string
-  title: string
-  status: 'pending' | 'active' | 'completed' | 'error'
-  description?: string
-  progress?: number // 0-100
-}
-```
-
-## États des processus
-
-- **pending** : En attente, animation de pulsation
-- **active** : En cours, animation active
-- **completed** : Terminé, indicateur de succès
-- **error** : Erreur, indicateur d'erreur
-
-## Exemples
-
-### Liste avec progression
-
-```tsx
-const processes = [
-  { id: 1, title: "Initialisation", status: "completed", progress: 100 },
-  { id: 2, title: "Analyse", status: "active", progress: 65 },
-  { id: 3, title: "Finalisation", status: "pending", progress: 0 }
-]
-
-<AnimatedProcessList
-  processes={processes}
-  isActive={true}
-  animationSpeed={800}
-/>
-```
-
-### Liste simple
-
-```tsx
-<AnimatedProcessList
-  processes={[
-    { id: 1, title: "Étape 1", status: "completed" },
-    { id: 2, title: "Étape 2", status: "active" },
-    { id: 3, title: "Étape 3", status: "pending" }
-  ]}
-  isActive={true}
-  showProgress={false}
-/>
-```
+- **Scroll animation** : Continuous scrolling of elements with configurable direction
+- **Progressive revelations** : Sequential appearance of steps with configurable delay
+- **Skeleton state** : Loading phase with pulse animation
+- **Animation speeds** : Three speed levels (slow, normal, fast)
+- **Callbacks** : Notifications for animation events
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support

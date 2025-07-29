@@ -1,130 +1,84 @@
 ---
 title: "Resizable Separator"
-description: "Composant de séparateur redimensionnable pour diviser l'espace entre deux panneaux"
+description: "Resizable separator component for managing layout space"
 ---
 
-# Resizable Separator
+import ResizableExample from '@/components/LY UI/AI/resizableExample'
 
-Un composant de séparateur redimensionnable permettant de diviser l'espace entre deux panneaux avec une interface intuitive.
+<Preview link="resizableSeparator">
+ 
+    <ResizableExample  />
 
-## Utilisation
+</Preview>
+
+
+## Example
 
 ```tsx
 import { ResizableSeparator } from '@/components/LY UI/AI/resizableSeparator'
+import { useRef, useState } from 'react'
 
 export default function SeparatorExample() {
+  const [leftSize, setLeftSize] = useState(200)
+  const parentRef = useRef<HTMLDivElement>(null)
+
+  const handleResize = (newSize: number) => {
+    setLeftSize(newSize)
+  }
+
   return (
-    <div className="flex h-96">
-      <div className="flex-1 bg-gray-100 p-4">
-        Panneau gauche
+    <div ref={parentRef} className="flex h-64 border rounded-lg">
+      <div 
+        className="bg-blue-100 dark:bg-blue-900/20 p-4"
+        style={{ width: leftSize }}
+      >
+        <p>Left zone</p>
       </div>
+      
       <ResizableSeparator
-        onResize={(newWidth) => {
-          console.log('Nouvelle largeur:', newWidth)
-        }}
+        direction="horizontal"
+        variant="outline"
+        size="medium"
+        onResize={handleResize}
+        parentRef={parentRef}
+        showIndicator={true}
+        minSize={100}
+        maxSize={400}
+        animated={true}
+        zIndex={20}
       />
-      <div className="flex-1 bg-gray-200 p-4">
-        Panneau droit
+      
+      <div className="flex-1 bg-green-100 dark:bg-green-900/20 p-4">
+        <p>Right zone</p>
       </div>
     </div>
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `onResize` | `(width: number) => void` | - | Callback lors du redimensionnement |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `minWidth` | `number` | `100` | Largeur minimale en pixels |
-| `maxWidth` | `number` | - | Largeur maximale en pixels |
-| `defaultWidth` | `number` | `50` | Largeur par défaut en pourcentage |
-| `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction du redimensionnement |
+| `direction` | `"vertical" \| "horizontal"` | `"vertical"` | Separator direction |
+| `variant` | `"ghost" \| "outline"` | `"ghost"` | Visual style of the separator |
+| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Size of the separator |
+| `onResize` | `(size: number) => void` | - | Callback called during resizing (required) |
+| `minSize` | `number` | `100` | Minimum size in pixels |
+| `maxSize` | `number` | `600` | Maximum size in pixels |
+| `parentRef` | `RefObject<HTMLElement \| null>` | - | Reference to parent element (required) |
+| `showIndicator` | `boolean` | `false` | Shows visual indicator |
+| `animated` | `boolean` | `true` | Enables animations |
+| `zIndex` | `number` | `20` | Z-index of the separator |
+| `className` | `string` | - | Additional CSS classes |
 
-## Fonctionnalités
+## Features
 
-- **Redimensionnement fluide** : Glisser-déposer intuitif
-- **Contraintes** : Largeurs minimale et maximale configurables
-- **Orientations** : Support horizontal et vertical
-- **Accessibilité** : Support complet des lecteurs d'écran
-- **Responsive** : S'adapte aux différentes tailles d'écran
-
-## Exemples
-
-### Séparateur horizontal simple
-
-```tsx
-<div className="flex h-64">
-  <div className="bg-blue-100 p-4">
-    Contenu gauche
-  </div>
-  <ResizableSeparator
-    onResize={(width) => setLeftPanelWidth(width)}
-    minWidth={150}
-    maxWidth={400}
-  />
-  <div className="bg-green-100 p-4">
-    Contenu droit
-  </div>
-</div>
-```
-
-### Séparateur vertical
-
-```tsx
-<div className="flex h-96">
-  <div className="bg-gray-100 p-4">
-    Panneau supérieur
-  </div>
-  <ResizableSeparator
-    direction="vertical"
-    onResize={(height) => setTopPanelHeight(height)}
-    minWidth={100}
-    maxWidth={300}
-  />
-  <div className="bg-gray-200 p-4">
-    Panneau inférieur
-  </div>
-</div>
-```
-
-### Avec contraintes personnalisées
-
-```tsx
-<ResizableSeparator
-  onResize={(width) => {
-    // Mise à jour de l'état
-    setPanelWidth(width)
-    // Sauvegarde dans localStorage
-    localStorage.setItem('panelWidth', width.toString())
-  }}
-  minWidth={200}
-  maxWidth={800}
-  defaultWidth={30}
-  className="bg-gray-300 hover:bg-gray-400"
-/>
-```
-
-### Gestion d'état
-
-```tsx
-const [leftWidth, setLeftWidth] = useState(300)
-
-<div className="flex h-80">
-  <div 
-    className="bg-blue-50 p-4"
-    style={{ width: `${leftWidth}px` }}
-  >
-    Panneau avec largeur fixe
-  </div>
-  <ResizableSeparator
-    onResize={setLeftWidth}
-    minWidth={150}
-    maxWidth={600}
-  />
-  <div className="flex-1 bg-green-50 p-4">
-    Panneau flexible
-  </div>
-</div>
-```
+- **Drag and drop** : Intuitive resizing by drag and drop
+- **Multiple directions** : Vertical and horizontal support
+- **Configurable limits** : Customizable minimum and maximum sizes
+- **Visual indicators** : Optional indicator bar
+- **Smooth animations** : Smooth transitions during resizing
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support
+- **Touch support** : Compatible with touch devices

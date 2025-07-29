@@ -1,71 +1,70 @@
 ---
 title: "AI Agent Animation"
-description: "Composant d'animation pour agent IA avec transitions fluides"
+description: "Animation component for AI agents with smooth transitions"
 ---
 
-# AI Agent Animation
+import AiAgentAnimationExample from '@/components/example/AiAgentAnimationExample'
 
-Un composant d'animation spécialement conçu pour les agents IA avec des transitions fluides et des états visuels dynamiques.
+<Preview link="AiAgentAnimation">
+  <AiAgentAnimationExample />
+</Preview>
 
-## Utilisation
+
+## Example
 
 ```tsx
 import { AiAgentAnimation } from '@/components/LY UI/AI/AiAgentAnimation'
 
 export default function AgentExample() {
+  const handleAnimationComplete = () => {
+    console.log('Animation completed')
+  }
+
+  const handleAnimationStart = () => {
+    console.log('Animation started')
+  }
+
   return (
     <AiAgentAnimation
-      isActive={true}
-      status="thinking"
-      className="w-16 h-16"
+      title="AI Assistant"
+      duration={5000}
+      isRunning={true}
+      onAnimationComplete={handleAnimationComplete}
+      onAnimationStart={handleAnimationStart}
+      onAnimationStop={() => console.log('Animation stopped')}
+      onAnimationReset={() => console.log('Animation reset')}
+      columns={8}
+      rows={3}
+      pauseDuration={1000}
+      dotType="round"
+      className="w-full max-w-md"
     />
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `isActive` | `boolean` | `false` | Active l'animation de l'agent |
-| `status` | `"idle" \| "thinking" \| "speaking" \| "listening"` | `"idle"` | État actuel de l'agent |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Taille de l'animation |
+| `title` | `string` | `"Agent"` | Title displayed before the percentage |
+| `duration` | `number` | `3000` | Animation duration in milliseconds |
+| `onAnimationComplete` | `() => void` | - | Callback called at the end of animation |
+| `columns` | `number` | - | Number of dot columns (automatically calculated if not specified) |
+| `rows` | `number` | `3` | Number of dot rows |
+| `className` | `string` | - | Additional CSS classes |
+| `pauseDuration` | `number` | `500` | Pause duration between each cycle (ms) |
+| `isRunning` | `boolean` | `false` | External control of animation state |
+| `onAnimationStart` | `() => void` | - | Callback called when animation starts |
+| `onAnimationStop` | `() => void` | - | Callback called when animation stops |
+| `onAnimationReset` | `() => void` | - | Callback called when animation is reset |
+| `dotType` | `"round" \| "square"` | `"round"` | Shape of the dots |
 
-## États de l'agent
+## Features
 
-- **idle** : Agent en attente, animation minimale
-- **thinking** : Agent en train de réfléchir, animation de pulsation
-- **speaking** : Agent en train de parler, animation de parole
-- **listening** : Agent en train d'écouter, animation d'écoute
-
-## Exemples
-
-### Agent en train de réfléchir
-
-```tsx
-<AiAgentAnimation
-  isActive={true}
-  status="thinking"
-  size="lg"
-/>
-```
-
-### Agent en mode écoute
-
-```tsx
-<AiAgentAnimation
-  isActive={true}
-  status="listening"
-  className="w-12 h-12"
-/>
-```
-
-### Agent inactif
-
-```tsx
-<AiAgentAnimation
-  isActive={false}
-  status="idle"
-/>
-```
+- **Smooth animation** : Smooth transitions between states
+- **External control** : Ability to control animation from outside
+- **Complete callbacks** : Notifications for all animation events
+- **Responsive** : Automatic adaptation of column count
+- **Customization** : Choice of dot shape and duration
+- **Accessibility** : Screen reader support

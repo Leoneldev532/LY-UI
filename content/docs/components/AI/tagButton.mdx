@@ -1,132 +1,83 @@
 ---
 title: "Tag Button"
-description: "Composant de bouton tag avec sélection multiple et gestion d'état"
+description: "Tag button component with icon support and animated dropdown"
 ---
 
-# Tag Button
+import TagButton from '@/components/LY UI/AI/tagButton'
 
-Un composant de bouton tag permettant la sélection multiple avec gestion d'état et animations fluides.
+<Preview link="tagButton">
+  <TagButton 
+    title="Select AI Tools"
+    variant="default"
+    items={["Web Search", "Image Generation", "Code Analysis", "AI Assistant"]}
+    className="px-4 py-2"
+  />
+</Preview>
 
-## Utilisation
+## Example
 
 ```tsx
 import { TagButton } from '@/components/LY UI/AI/tagButton'
+import { SearchSlashIcon, Code, Image, Bot } from 'lucide-react'
 
 export default function TagExample() {
+  const tools = [
+    "Web Search",
+    "Image Generation", 
+    "Code Analysis",
+    "AI Assistant"
+  ]
+
+  const handleItemClick = (item: string) => {
+    console.log('Selected tool:', item)
+  }
+
+  const handleClick = () => {
+    console.log('Button clicked')
+  }
+
   return (
-<TagButton
-      label="React"
-      isSelected={false}
-      onToggle={(selected) => {
-        console.log('Tag sélectionné:', selected)
-      }}
-/>
+    <div className="flex gap-4">
+      <TagButton
+        title="AI Tools"
+        variant="default"
+        icon={<SearchSlashIcon className="w-4 h-4" />}
+        items={tools}
+        onItemClick={handleItemClick}
+        onClick={handleClick}
+        className="px-4 py-2"
+      />
+
+      <TagButton
+        title="Models"
+        variant="outline"
+        icon={<Bot className="w-4 h-4" />}
+        items={["GPT-4", "Claude-3", "Llama-2"]}
+        onItemClick={(model) => console.log('Model:', model)}
+      />
+    </div>
   )
 }
 ```
 
-## Props
+## Documentation
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | - | Texte du tag |
-| `isSelected` | `boolean` | `false` | État de sélection du tag |
-| `onToggle` | `(selected: boolean) => void` | - | Callback lors du changement d'état |
-| `className` | `string` | - | Classes CSS supplémentaires |
-| `disabled` | `boolean` | `false` | Désactive le tag |
-| `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Variante visuelle |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Taille du tag |
+| `title` | `string` | - | Text displayed on the button (required) |
+| `variant` | `"default" \| "outline" \| "ghost"` | - | Visual style of the button (required) |
+| `icon` | `React.ReactNode` | - | Icon to display next to the text |
+| `onClick` | `() => void` | - | Callback called when button is clicked |
+| `items` | `string[]` | `[]` | List of items to display in dropdown |
+| `onItemClick` | `(item: string) => void` | - | Callback called when an item is selected |
+| `className` | `string` | - | Additional CSS classes |
 
-## Variantes
+## Features
 
-- **default** : Style par défaut avec fond coloré
-- **outline** : Contour avec fond transparent
-- **ghost** : Style minimal sans bordure
-
-## Exemples
-
-### Tag simple
-
-```tsx
-<TagButton
-  label="JavaScript"
-  isSelected={true}
-  onToggle={(selected) => {
-    setSelectedTags(prev => 
-      selected 
-        ? [...prev, "JavaScript"]
-        : prev.filter(tag => tag !== "JavaScript")
-    )
-  }}
-/>
-```
-
-### Groupe de tags
-
-```tsx
-const [selectedTags, setSelectedTags] = useState<string[]>([])
-
-const tags = ["React", "Vue", "Angular", "Svelte"]
-
-<div className="flex flex-wrap gap-2">
-  {tags.map(tag => (
-    <TagButton
-      key={tag}
-      label={tag}
-      isSelected={selectedTags.includes(tag)}
-      onToggle={(selected) => {
-        if (selected) {
-          setSelectedTags(prev => [...prev, tag])
-        } else {
-          setSelectedTags(prev => prev.filter(t => t !== tag))
-        }
-      }}
-    />
-  ))}
-</div>
-```
-
-### Tags avec variantes
-
-```tsx
-<TagButton
-  label="Premium"
-  variant="outline"
-  size="lg"
-  isSelected={true}
-  onToggle={(selected) => {
-    setPremiumSelected(selected)
-  }}
-  className="border-2 border-gold-500 text-gold-700"
-/>
-```
-
-### Tags désactivés
-
-```tsx
-<TagButton
-  label="Indisponible"
-  isSelected={false}
-  disabled={true}
-  variant="ghost"
-  className="opacity-50 cursor-not-allowed"
-/>
-```
-
-### Tags avec icônes
-
-```tsx
-import { Star, Heart } from 'lucide-react'
-
-<TagButton
-  label={
-    <div className="flex items-center gap-1">
-      <Star className="w-4 h-4" />
-      Favori
-    </div>
-  }
-  isSelected={isFavorite}
-  onToggle={setIsFavorite}
-  variant="outline"
-/>
-```
+- **Smooth animations** : Smooth transitions for dropdown open/close
+- **Icon support** : Ability to add an icon to the button
+- **Animated dropdown** : List of items with appearance animations
+- **State management** : Only one dropdown open at a time
+- **Visual variants** : Three different styles (default, outline, ghost)
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support

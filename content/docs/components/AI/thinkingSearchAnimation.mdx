@@ -1,66 +1,98 @@
 ---
-title: Thinking Search Animation
-description: Animated thinking/searching component with scrolling text content and customizable animation.
-full: true
+title: "Thinking Search Animation"
+description: "Search animation component with scrolling text and advanced customization"
 ---
 
-import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimation";
+import ThinkingSearchAnimation from '@/components/LY UI/AI/thinkingSearchAnimation'
 
 <Preview link="thinkingSearchAnimation">
-   <ThinkingSearchAnimation
-            className="max-w-sm"
-            messages={[
-              "Intelligent search in progress, please wait while we analyze your question and look for the best possible answer. We use advanced algorithms to understand the context and your intentions.",
-              "We are searching through vast databases and reliable resources to collect the most relevant information for your request.",
-              "Our system compiles and analyzes the gathered data to generate a clear, precise, and tailored answer to your question.",
-              "We validate the generated answer to ensure its relevance, reliability, and quality before presenting it to you.",
-              "Your personalized answer is almost ready! We are finalizing the last adjustments to provide you with the best possible experience.",
-              "We will also suggest additional resources to help you explore the topic further if you wish.",
-              "Thank you for waiting a little longer while we optimize the presentation of your answer.",
-              "Your feedback is valuable: it helps us continuously improve the quality of our answers and our service.",
-              "We are preparing a clear and concise summary of all the relevant information found.",
-              "Artificial intelligence is actively working to provide you with a personalized and reliable answer.",
-              "We are analyzing recent trends and up-to-date data to ensure the freshness of the answer.",
-              "We are checking the consistency and relevance of the selected information before finalizing the answer.",
-              "Your question helps enrich our knowledge base and improve our collective intelligence.",
-              "We are almost ready to present you with a detailed answer tailored to your needs.",
-              "Thank you for your patience, your answer will arrive in just a few moments!",
-            ]}
-            scrollDirection="up"
-            animationSpeed="normal"
-          />
+  <ThinkingSearchAnimation 
+    variant="default"
+    streamingText="Analyzing user query patterns and context... Processing natural language input for optimal understanding. Generating comprehensive response based on available data sources. Optimizing response relevance and accuracy for user satisfaction."
+    scrollDirection="up"
+    animationSpeed="normal"
+    minParagraphLength={50}
+    className="w-full max-w-2xl"
+  />
 </Preview>
 
-## Props
 
-| Prop                | Type                                      | Default         | Description                                                                 |
-|---------------------|-------------------------------------------|-----------------|-----------------------------------------------------------------------------|
-| `variant`           | `"default" | "ghost" | "outline"`         | `"default"`      | Visual style variant of the component                                       |
-| `streamingText`     | `string`                                  | `undefined`     | Text content to animate (split into paragraphs if no `messages` provided)   |
-| `messages`          | `string[]`                                | `[]`            | Array of text content to display in the animation                           |
-| `onAnimationEnd`    | `() => void`                              | `undefined`     | Callback called when the animation ends                                     |
-| `className`         | `string`                                  | `undefined`     | Additional CSS classes for styling                                          |
-| `scrollDirection`   | `"up" | "down"`                          | `"up"`          | Direction of the scrolling animation                                        |
-| `animationSpeed`    | `"slow" | "normal" | "fast"`            | `"normal"`      | Speed of the animation                                                      |
-| `minParagraphLength`| `number`                                  | `50`            | Minimum length for auto-generated paragraphs from streamingText             |
-| `sentenceEndPattern`| `RegExp`                                  | `/[.!?]\s+/g`   | Pattern to split sentences for paragraph grouping in streamingText          |
+## Example
 
-### Example Usage
+```tsx
+import { ThinkingSearchAnimation } from '@/components/LY UI/AI/thinkingSearchAnimation'
 
-```jsx
-import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimation";
+export default function SearchExample() {
+  const streamingText = `
+    Analyzing user data...
+    
+    Searching for patterns in previous interactions.
+    Identifying preferences and behaviors.
+    
+    Generating personalized recommendations.
+    Optimizing results to maximize engagement.
+    
+    Finalizing and validating suggestions.
+  `
 
-<ThinkingSearchAnimation
-  messages={[
-    "Analyzing your question...",
-    "Searching for relevant information...",
-    "Compiling the best answer...",
-    "Almost ready..."
-  ]}
-  scrollDirection="up"
-  animationSpeed="normal"
-  className="max-w-md"
-  variant="default"
-  onAnimationEnd={() => console.log('Animation ended')}
-/>
+  const messages = [
+    "First step of analysis...",
+    "Processing user data...",
+    "Generating recommendations...",
+    "Optimizing results..."
+  ]
+
+  const handleAnimationEnd = () => {
+    console.log('Search animation ended')
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* With streamingText */}
+      <ThinkingSearchAnimation
+        variant="default"
+        streamingText={streamingText}
+        scrollDirection="up"
+        animationSpeed="normal"
+        onAnimationEnd={handleAnimationEnd}
+        minParagraphLength={50}
+        className="w-full max-w-2xl"
+      />
+
+      {/* With messages */}
+      <ThinkingSearchAnimation
+        variant="outline"
+        messages={messages}
+        scrollDirection="down"
+        animationSpeed="fast"
+        onAnimationEnd={handleAnimationEnd}
+      />
+    </div>
+  )
+}
 ```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style of the component |
+| `streamingText` | `string` | - | Text to automatically process into paragraphs |
+| `messages` | `string[]` | - | Array of messages to display directly |
+| `onAnimationEnd` | `() => void` | - | Callback called when animation ends |
+| `className` | `string` | - | Additional CSS classes |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Scroll direction |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Animation speed |
+| `minParagraphLength` | `number` | `50` | Minimum length for auto-generated paragraphs |
+| `sentenceEndPattern` | `RegExp` | `/[.!?]\s+/g` | Pattern to split sentences |
+
+## Features
+
+- **Automatic processing** : Intelligent text division into paragraphs
+- **Smooth animations** : Automatic scrolling with smooth transitions
+- **Visual variants** : Three different styles (default, ghost, outline)
+- **Animation controls** : Configurable speed and direction
+- **Loading state** : Display while waiting for content
+- **Collapsible** : Ability to collapse/expand content
+- **Responsive** : Adapts to all screen sizes
+- **Accessibility** : Screen reader support
