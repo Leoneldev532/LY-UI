@@ -4,7 +4,6 @@ description: "Interactive control bar for AI answers with copy, like, dislike, a
 ---
 
 import AnswerControlsBar from '@/components/LY UI/AI/AnswerControlsBar'
-import { useState } from 'react'
 
 <Preview link="AnswerControlsBar">
   <AnswerControlsBar
@@ -18,78 +17,37 @@ import { useState } from 'react'
 
 ```tsx
 export default function AnswerControlsBarExample() {
-  const [copied, setCopied] = useState(false)
-  const [liked, setLiked] = useState(false)
-  const [disliked, setDisliked] = useState(false)
-  const [timestamp, setTimestamp] = useState("1:45")
-
   const handleCopy = () => {
     console.log('Answer copied to clipboard')
-    setCopied(true)
-    // Reset copied state after 2 seconds
-    setTimeout(() => setCopied(false), 2000)
   }
 
   const handleLike = () => {
     console.log('Answer liked')
-    setLiked(!liked)
-    if (disliked) setDisliked(false)
   }
 
   const handleDislike = () => {
     console.log('Answer disliked')
-    setDisliked(!disliked)
-    if (liked) setLiked(false)
   }
 
   const handleRegenerate = () => {
     console.log('Regenerating answer')
-    // Simulate regeneration
-    setTimeout(() => {
-      console.log('New answer generated')
-    }, 1000)
-  }
-
-  const handleTimestampChange = () => {
-    const newTime = Math.floor(Math.random() * 5) + ":" + Math.floor(Math.random() * 60).toString().padStart(2, '0')
-    setTimestamp(newTime)
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={handleTimestampChange}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Change Timestamp
-        </button>
-        <span className="text-sm text-gray-600">
-          Copied: {copied ? 'Yes' : 'No'}
-        </span>
-        <span className="text-sm text-gray-600">
-          Liked: {liked ? 'Yes' : 'No'}
-        </span>
-        <span className="text-sm text-gray-600">
-          Disliked: {disliked ? 'Yes' : 'No'}
-        </span>
-      </div>
-
-      <div className="border rounded-lg p-4 bg-white dark:bg-gray-800">
-        <p className="text-gray-700 dark:text-gray-300 mb-4">
-          This is a sample AI-generated answer that demonstrates the control bar functionality. 
-          You can copy, like, dislike, or regenerate this content using the controls below.
-        </p>
-        
-        <AnswerControlsBar
-          timestamp={timestamp}
-          copied={copied}
-          onCopy={handleCopy}
-          onLike={handleLike}
-          onDislike={handleDislike}
-          onRegenerate={handleRegenerate}
-        />
-      </div>
+    <div className="border rounded-lg p-4 bg-white dark:bg-gray-800">
+      <p className="text-gray-700 dark:text-gray-300 mb-4">
+        This is a sample AI-generated answer that demonstrates the control bar functionality. 
+        You can copy, like, dislike, or regenerate this content using the controls below.
+      </p>
+      
+      <AnswerControlsBar
+        timestamp="1:45"
+        copied={false}
+        onCopy={handleCopy}
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onRegenerate={handleRegenerate}
+      />
     </div>
   )
 }

@@ -76,13 +76,13 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
 }, ref) => {
   const icons = stepIcons && stepIcons.length > 0 ? stepIcons : defaultStepIcons
   const defaultLines: ProcessLine[] = [
-    { icon: icons[0 % icons.length], content: "We analyze your question to understand the context and intent." },
-    { icon: icons[1 % icons.length], content: "We search reliable databases and relevant resources." },
-    { icon: icons[2 % icons.length], content: "We compile the collected information to generate a clear and concise answer." },
-    { icon: icons[3 % icons.length], content: "We validate the answer to ensure its relevance and reliability." },
-    { icon: icons[4 % icons.length], content: "Your personalized answer is ready to be displayed." },
-    { icon: icons[5 % icons.length], content: "We suggest additional resources or directions to deepen your understanding." },
-    { icon: icons[6 % icons.length], content: "Your feedback helps us improve the quality of future answers." },
+    { icon: icons[0 % icons.length], content: "Analyse de la question" },
+    { icon: icons[1 % icons.length], content: "Recherche de sources" },
+    { icon: icons[2 % icons.length], content: "Synthèse des infos" },
+    { icon: icons[3 % icons.length], content: "Vérification de la réponse" },
+    { icon: icons[4 % icons.length], content: "Affichage de la réponse" },
+    { icon: icons[5 % icons.length], content: "Suggestions utiles" },
+    { icon: icons[6 % icons.length], content: "Collecte de feedback" },
   ]
   const normalizedLines: ProcessLine[] = (lines && lines.length > 0
     ? lines.map((line, idx) => ({
@@ -188,10 +188,10 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
       >
         <div className="flex gap-2 justify-start items-center py-2 w-full max-w-xl mx-auto">
           <Loader className="animate-spin min-w-5 min-h-5 text-black dark:text-white" />
-          <h2 className="text-lg md:text-xl line-clamp-1 font-semibold py-2 text-center text-neutral-700 dark:text-gray-200 w-full">{title}</h2>
+          <h2 className="text-lg md:text-xl line-clamp-1 font-semibold py-2 text-left text-neutral-700 dark:text-gray-200 w-full">{title}</h2>
         </div>
 
-        <div className="relative w-full max-w-xl h-72 overflow-hidden ">
+        <div className="relative w-full   h-72 overflow-hidden ">
 
 
           <div className="pointer-events-none absolute inset-0 z-10">

@@ -3,95 +3,20 @@ title: "AI Agent Animation"
 description: "Animated AI agent with progress tracking, dot grid visualization, and customizable animation states"
 ---
 
-import AiAgentAnimation from '@/components/LY UI/AI/AiAgentAnimation'
-import { useState } from 'react'
+
+import AiAgentAnimationExample from '@/components/example/AiAgentAnimationExample'
 
 <Preview link="AiAgentAnimation">
-  <AiAgentAnimation
-    title="AI Agent"
-    duration={3000}
-    className="w-full max-w-md"
-  />
+  <AiAgentAnimationExample/>
 </Preview>
 
 ## Example
 
 ```tsx
+import AiAgentAnimationExample from '@/components/example/AiAgentAnimationExample'
+
 export default function AiAgentAnimationExample() {
-  const [isRunning, setIsRunning] = useState(false)
-  const [animationPhase, setAnimationPhase] = useState('idle')
-  const [progress, setProgress] = useState(0)
-
-  const handleAnimationStart = () => {
-    console.log('Animation started')
-    setAnimationPhase('running')
-  }
-
-  const handleAnimationStop = () => {
-    console.log('Animation stopped')
-    setAnimationPhase('stopped')
-  }
-
-  const handleAnimationReset = () => {
-    console.log('Animation reset')
-    setAnimationPhase('idle')
-    setProgress(0)
-  }
-
-  const handleAnimationComplete = () => {
-    console.log('Animation completed')
-    setAnimationPhase('completed')
-    setProgress(100)
-  }
-
-  const handleStartAnimation = () => {
-    setIsRunning(true)
-  }
-
-  const handleStopAnimation = () => {
-    setIsRunning(false)
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={handleStartAnimation}
-          disabled={isRunning}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
-        >
-          Start Animation
-        </button>
-        <button
-          onClick={handleStopAnimation}
-          disabled={!isRunning}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
-        >
-          Stop Animation
-        </button>
-        <span className="text-sm text-gray-600">
-          Phase: {animationPhase}
-        </span>
-        <span className="text-sm text-gray-600">
-          Progress: {progress.toFixed(1)}%
-        </span>
-      </div>
-
-      <AiAgentAnimation
-        title="Processing Agent"
-        duration={5000}
-        pauseDuration={800}
-        isRunning={isRunning}
-        onAnimationStart={handleAnimationStart}
-        onAnimationStop={handleAnimationStop}
-        onAnimationReset={handleAnimationReset}
-        onAnimationComplete={handleAnimationComplete}
-        dotType="round"
-        rows={4}
-        className="w-full max-w-md"
-      />
-    </div>
-  )
+  return <AiAgentAnimationExample />
 }
 ```
 

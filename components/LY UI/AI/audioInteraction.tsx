@@ -100,7 +100,7 @@ const AudioInteraction = forwardRef<HTMLDivElement, AudioInteractionProps>(({
   };
 
   return (
-    <div ref={ref} className="flex flex-col items-center gap-4 p-4" {...props}>
+    <div ref={ref} className="flex flex-col justify-center items-center gap-4 p-4" {...props}>
       <ParticleAnimation ref={RefParticularAnimation} />
       <div className="flex gap-2 justify-center items-center gap-x-4">
         {status === 'idle' && (

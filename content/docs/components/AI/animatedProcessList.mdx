@@ -4,7 +4,6 @@ description: "Animated process list with skeleton loading, progressive reveal, a
 ---
 
 import AnimatedProcessList from '@/components/LY UI/AI/animatedProcessList'
-import { useState } from 'react'
 
 <Preview link="animatedProcessList">
   <AnimatedProcessList
@@ -25,19 +24,6 @@ import { useState } from 'react'
 
 ```tsx
 export default function AnimatedProcessListExample() {
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal')
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up')
-
-  const handleAnimationEnd = () => {
-    console.log('Process list animation completed')
-    setIsAnimating(false)
-  }
-
-  const handleStartAnimation = () => {
-    setIsAnimating(true)
-  }
-
   const processSteps = [
     "Initializing development environment and dependencies",
     "Setting up project structure and configuration files",
@@ -49,45 +35,21 @@ export default function AnimatedProcessListExample() {
     "Deploying to production environment",
   ]
 
-  return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={handleStartAnimation}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Start Process
-        </button>
-        <select
-          value={animationSpeed}
-          onChange={(e) => setAnimationSpeed(e.target.value as 'slow' | 'normal' | 'fast')}
-          className="px-3 py-2 border rounded-lg"
-        >
-          <option value="slow">Slow</option>
-          <option value="normal">Normal</option>
-          <option value="fast">Fast</option>
-        </select>
-        <select
-          value={scrollDirection}
-          onChange={(e) => setScrollDirection(e.target.value as 'up' | 'down')}
-          className="px-3 py-2 border rounded-lg"
-        >
-          <option value="up">Scroll Up</option>
-          <option value="down">Scroll Down</option>
-        </select>
-      </div>
+  const handleAnimationEnd = () => {
+    console.log('Process list animation completed')
+  }
 
-      <AnimatedProcessList
-        title="Building your application..."
-        processSteps={processSteps}
-        animationSpeed={animationSpeed}
-        scrollDirection={scrollDirection}
-        onAnimationEnd={handleAnimationEnd}
-        skeletonDuration={1500}
-        lineRevealDelay={200}
-        className="w-full max-w-lg"
-      />
-    </div>
+  return (
+    <AnimatedProcessList
+      title="Building your application..."
+      processSteps={processSteps}
+      animationSpeed="normal"
+      scrollDirection="up"
+      onAnimationEnd={handleAnimationEnd}
+      skeletonDuration={1500}
+      lineRevealDelay={200}
+      className="w-full max-w-lg"
+    />
   )
 }
 ```

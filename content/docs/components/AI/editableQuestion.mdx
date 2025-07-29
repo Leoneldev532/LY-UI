@@ -4,7 +4,6 @@ description: "Interactive question component with inline editing, copy functiona
 ---
 
 import EditableQuestion from '@/components/LY UI/AI/editableQuestion'
-import { useState } from 'react'
 
 <Preview link="editableQuestion">
   <EditableQuestion
@@ -17,74 +16,16 @@ import { useState } from 'react'
 
 ```tsx
 export default function EditableQuestionExample() {
-  const [currentQuestion, setCurrentQuestion] = useState("What are the best practices for state management in React?")
-  const [questionHistory, setQuestionHistory] = useState<string[]>([])
-  const [editCount, setEditCount] = useState(0)
-
   const handleQuestionChange = (newQuestion: string) => {
     console.log('Question updated:', newQuestion)
-    setCurrentQuestion(newQuestion)
-    setQuestionHistory(prev => [...prev, newQuestion])
-    setEditCount(prev => prev + 1)
-  }
-
-  const resetQuestion = () => {
-    setCurrentQuestion("What are the best practices for state management in React?")
-    setEditCount(0)
-  }
-
-  const clearHistory = () => {
-    setQuestionHistory([])
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={resetQuestion}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Reset Question
-        </button>
-        <button
-          onClick={clearHistory}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
-        >
-          Clear History
-        </button>
-        <span className="text-sm text-gray-600">
-          Edits: {editCount}
-        </span>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Editable Question</h3>
-          <EditableQuestion
-            question={currentQuestion}
-            onQuestionChange={handleQuestionChange}
-            className="w-full"
-          />
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Question History</h3>
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
-            {questionHistory.length === 0 ? (
-              <p className="text-gray-500 text-sm">No edits made yet. Edit the question to see history.</p>
-            ) : (
-              <div className="space-y-2">
-                {questionHistory.map((question, index) => (
-                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300 p-2 bg-white dark:bg-gray-700 rounded border">
-                    {question}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    <EditableQuestion
+      question="What are the best practices for state management in React?"
+      onQuestionChange={handleQuestionChange}
+      className="w-full"
+    />
   )
 }
 ```

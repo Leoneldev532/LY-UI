@@ -4,7 +4,6 @@ description: "AI-generated answer component with progressive text reveal, markdo
 ---
 
 import GeneratedAnswer from '@/components/LY UI/AI/generatedAnswer'
-import { useState } from 'react'
 
 <Preview link="generatedAnswer">
   <GeneratedAnswer
@@ -18,11 +17,6 @@ import { useState } from 'react'
 
 ```tsx
 export default function GeneratedAnswerExample() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [textSpeed, setTextSpeed] = useState(30)
-  const [hideControls, setHideControls] = useState(false)
-  const [answerContent, setAnswerContent] = useState("")
-
   const sampleContent = `# React Best Practices
 
 ## Component Structure
@@ -52,16 +46,6 @@ const MyComponent = ({ data }) => {
 }
 \`\`\``
 
-  const handleStartLoading = () => {
-    setIsLoading(true)
-    setAnswerContent("")
-    // Simulate loading
-    setTimeout(() => {
-      setIsLoading(false)
-      setAnswerContent(sampleContent)
-    }, 3000)
-  }
-
   const handleEndAnimation = () => {
     console.log('Text animation ended')
   }
@@ -70,49 +54,18 @@ const MyComponent = ({ data }) => {
     console.log('Answer generation completed')
   }
 
-  const handleSpeedChange = (speed: number) => {
-    setTextSpeed(speed)
-  }
-
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={handleStartLoading}
-          disabled={isLoading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-        >
-          {isLoading ? 'Loading...' : 'Generate Answer'}
-        </button>
-        <select
-          value={textSpeed}
-          onChange={(e) => handleSpeedChange(Number(e.target.value))}
-          className="px-3 py-2 border rounded-lg"
-        >
-          <option value={10}>Fast</option>
-          <option value={30}>Normal</option>
-          <option value={50}>Slow</option>
-        </select>
-        <button
-          onClick={() => setHideControls(!hideControls)}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
-        >
-          {hideControls ? 'Show' : 'Hide'} Controls
-        </button>
-      </div>
-
-      <GeneratedAnswer
-        content={answerContent}
-        timestamp="1:23"
-        isLoading={isLoading}
-        textSpeed={textSpeed}
-        markdownMode={true}
-        hideControls={hideControls}
-        onEndAnimation={handleEndAnimation}
-        onComplete={handleComplete}
-        className="w-full max-w-2xl"
-      />
-    </div>
+    <GeneratedAnswer
+      content={sampleContent}
+      timestamp="1:23"
+      isLoading={false}
+      textSpeed={30}
+      markdownMode={true}
+      hideControls={false}
+      onEndAnimation={handleEndAnimation}
+      onComplete={handleComplete}
+      className="w-full max-w-2xl"
+    />
   )
 }
 ```

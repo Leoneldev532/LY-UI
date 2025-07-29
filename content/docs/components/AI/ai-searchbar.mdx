@@ -4,7 +4,6 @@ description: "Intelligent AI search bar with tool selection, model switching, an
 ---
 
 import AiSearchBar from '@/components/LY UI/AI/ai-searchbar'
-import { useState } from 'react'
 
 <Preview link="ai-searchbar">
   <AiSearchBar
@@ -18,11 +17,6 @@ import { useState } from 'react'
 
 ```tsx
 export default function AiSearchBarExample() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [selectedTools, setSelectedTools] = useState<number[]>([])
-  const [thinkMode, setThinkMode] = useState(false)
-  const [selectedModel, setSelectedModel] = useState(0)
-
   const handleSubmit = (value: string, options: { 
     selectedTools: number[], 
     thinkMode: boolean, 
@@ -32,12 +26,6 @@ export default function AiSearchBarExample() {
     console.log('Selected tools:', options.selectedTools)
     console.log('Think mode:', options.thinkMode)
     console.log('Selected model:', options.selectedModel)
-    
-    setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
   }
 
   const handleChange = (value: string) => {
@@ -45,55 +33,33 @@ export default function AiSearchBarExample() {
   }
 
   const handleToolsChange = (tools: number[]) => {
-    setSelectedTools(tools)
     console.log('Tools changed:', tools)
   }
 
   const handleThinkModeChange = (enabled: boolean) => {
-    setThinkMode(enabled)
     console.log('Think mode:', enabled)
   }
 
   const handleModelChange = (modelIndex: number) => {
-    setSelectedModel(modelIndex)
     console.log('Model changed:', modelIndex)
   }
 
   const handleStop = () => {
     console.log('Operation stopped')
-    setIsLoading(false)
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={() => setIsLoading(!isLoading)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          {isLoading ? 'Stop Loading' : 'Start Loading'}
-        </button>
-        <span className="text-sm text-gray-600">
-          Selected tools: {selectedTools.join(', ') || 'None'}
-        </span>
-        <span className="text-sm text-gray-600">
-          Think mode: {thinkMode ? 'On' : 'Off'}
-        </span>
-      </div>
-
-      <AiSearchBar
-        placeholder="Ask me anything about AI, coding, or design..."
-        variant="default"
-        onSubmit={handleSubmit}
-        onChange={handleChange}
-        onToolsChange={handleToolsChange}
-        onThinkModeChange={handleThinkModeChange}
-        onModelChange={handleModelChange}
-        submitLoading={isLoading}
-        onStop={handleStop}
-        className="w-full max-w-2xl"
-      />
-    </div>
+    <AiSearchBar
+      placeholder="Ask me anything about AI, coding, or design..."
+      variant="default"
+      onSubmit={handleSubmit}
+      onChange={handleChange}
+      onToolsChange={handleToolsChange}
+      onThinkModeChange={handleThinkModeChange}
+      onModelChange={handleModelChange}
+      onStop={handleStop}
+      className="w-full max-w-2xl"
+    />
   )
 }
 ```
@@ -145,5 +111,5 @@ type AI_SearchBarProps = {
 - **Loading States**: Built-in loading states with custom loader support
 - **Stop Functionality**: Ability to stop ongoing operations with external control
 - **Responsive Design**: Adapts to different screen sizes with mobile-friendly interface
-- **Dark Mode Support**: Full dark mode compatibility with proper color schemes
+- **Dark Mode Support**: Full dark mode compatibility with appropriate color schemes
 - **Accessibility Focused**: Keyboard navigation and screen reader support

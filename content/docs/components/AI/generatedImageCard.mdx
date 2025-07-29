@@ -4,7 +4,6 @@ description: "AI-generated image display component with download, copy prompt, a
 ---
 
 import GeneratedImageCard from '@/components/LY UI/AI/generatedImageCard'
-import { useState } from 'react'
 
 <Preview link="generatedImageCard">
   <GeneratedImageCard
@@ -20,113 +19,35 @@ import { useState } from 'react'
 
 ```tsx
 export default function GeneratedImageCardExample() {
-  const [currentImage, setCurrentImage] = useState("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop")
-  const [currentPrompt, setCurrentPrompt] = useState("A serene mountain landscape at sunset with golden light")
-  const [hideControls, setHideControls] = useState(false)
-  const [imageHistory, setImageHistory] = useState<string[]>([])
-
-  const sampleImages = [
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
-  ]
-
-  const samplePrompts = [
-    "A serene mountain landscape at sunset with golden light",
-    "A dense forest with sunlight filtering through the trees",
-    "A futuristic cityscape with neon lights and flying cars"
-  ]
-
   const handleLike = () => {
     console.log('Image liked')
-    setImageHistory(prev => [...prev, 'Liked'])
   }
 
   const handleDislike = () => {
     console.log('Image disliked')
-    setImageHistory(prev => [...prev, 'Disliked'])
   }
 
   const handleRegenerate = () => {
     console.log('Regenerating image')
-    const randomIndex = Math.floor(Math.random() * sampleImages.length)
-    setCurrentImage(sampleImages[randomIndex])
-    setCurrentPrompt(samplePrompts[randomIndex])
-    setImageHistory(prev => [...prev, 'Regenerated'])
   }
 
   const handleComplete = () => {
     console.log('Image generation completed')
   }
 
-  const changeImage = () => {
-    const randomIndex = Math.floor(Math.random() * sampleImages.length)
-    setCurrentImage(sampleImages[randomIndex])
-    setCurrentPrompt(samplePrompts[randomIndex])
-  }
-
-  const clearHistory = () => {
-    setImageHistory([])
-  }
-
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <button
-          onClick={changeImage}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Change Image
-        </button>
-        <button
-          onClick={() => setHideControls(!hideControls)}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
-        >
-          {hideControls ? 'Show' : 'Hide'} Controls
-        </button>
-        <button
-          onClick={clearHistory}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-        >
-          Clear History
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Generated Image</h3>
-          <GeneratedImageCard
-            src={currentImage}
-            imageTitle="AI Generated Image"
-            prompt={currentPrompt}
-            timestamp="2:30"
-            hideControls={hideControls}
-            onLike={handleLike}
-            onDislike={handleDislike}
-            onRegenerate={handleRegenerate}
-            onComplete={handleComplete}
-            className="w-full"
-          />
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Action History</h3>
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
-            {imageHistory.length === 0 ? (
-              <p className="text-gray-500 text-sm">No actions taken yet. Interact with the image to see history.</p>
-            ) : (
-              <div className="space-y-2">
-                {imageHistory.map((action, index) => (
-                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300 p-2 bg-white dark:bg-gray-700 rounded border">
-                    {action}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    <GeneratedImageCard
+      src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
+      imageTitle="AI Generated Image"
+      prompt="A serene mountain landscape at sunset with golden light"
+      timestamp="2:30"
+      hideControls={false}
+      onLike={handleLike}
+      onDislike={handleDislike}
+      onRegenerate={handleRegenerate}
+      onComplete={handleComplete}
+      className="w-full"
+    />
   )
 }
 ```

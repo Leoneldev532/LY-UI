@@ -4,161 +4,19 @@ description: "Interactive resizable separator component for managing layout spac
 ---
 
 import ResizableSeparator from '@/components/LY UI/AI/resizableSeparator'
-import { useState, useRef } from 'react'
+import ResizableSeparatorExample from '@/components/example/resizeExample'
 
 <Preview link="resizableSeparator">
-  <div className="flex h-64 w-full max-w-md">
-    <div className="flex-1 bg-blue-100 dark:bg-blue-900 p-4">
-      Left Panel
-    </div>
-    <ResizableSeparator
-      direction="vertical"
-      variant="ghost"
-      size="medium"
-      onResize={(size) => console.log('Resized to:', size)}
-      parentRef={useRef(null)}
-      showIndicator={true}
-      className="w-2"
-    />
-    <div className="flex-1 bg-green-100 dark:bg-green-900 p-4">
-      Right Panel
-    </div>
-  </div>
+  <ResizableSeparatorExample />
 </Preview>
 
 ## Example
 
 ```tsx
+import ResizableSeparatorExample from '@/components/example/resizeExample'
+
 export default function ResizableSeparatorExample() {
-  const [leftSize, setLeftSize] = useState(200)
-  const [rightSize, setRightSize] = useState(300)
-  const [separatorVariant, setSeparatorVariant] = useState<'ghost' | 'outline'>('ghost')
-  const [separatorSize, setSeparatorSize] = useState<'small' | 'medium' | 'large'>('medium')
-  const [showIndicator, setShowIndicator] = useState(true)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  const handleLeftResize = (size: number) => {
-    console.log('Left panel resized to:', size)
-    setLeftSize(size)
-  }
-
-  const handleRightResize = (size: number) => {
-    console.log('Right panel resized to:', size)
-    setRightSize(size)
-  }
-
-  const resetSizes = () => {
-    setLeftSize(200)
-    setRightSize(300)
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex gap-4 items-center">
-        <select
-          value={separatorVariant}
-          onChange={(e) => setSeparatorVariant(e.target.value as 'ghost' | 'outline')}
-          className="px-3 py-2 border rounded-lg"
-        >
-          <option value="ghost">Ghost</option>
-          <option value="outline">Outline</option>
-        </select>
-        <select
-          value={separatorSize}
-          onChange={(e) => setSeparatorSize(e.target.value as 'small' | 'medium' | 'large')}
-          className="px-3 py-2 border rounded-lg"
-        >
-          <option value="small">Small</option>
-          <option value="medium">Medium</option>
-          <option value="large">Large</option>
-        </select>
-        <button
-          onClick={() => setShowIndicator(!showIndicator)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          {showIndicator ? 'Hide' : 'Show'} Indicator
-        </button>
-        <button
-          onClick={resetSizes}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
-        >
-          Reset Sizes
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Vertical Separator</h3>
-          <div ref={containerRef} className="flex h-64 w-full border rounded-lg overflow-hidden">
-            <div 
-              className="bg-blue-100 dark:bg-blue-900 p-4 flex items-center justify-center"
-              style={{ height: leftSize }}
-            >
-              <div className="text-center">
-                <p className="font-semibold">Top Panel</p>
-                <p className="text-sm text-gray-600">Height: {leftSize}px</p>
-              </div>
-            </div>
-            <ResizableSeparator
-              direction="vertical"
-              variant={separatorVariant}
-              size={separatorSize}
-              onResize={handleLeftResize}
-              parentRef={containerRef}
-              showIndicator={showIndicator}
-              minSize={100}
-              maxSize={400}
-              className="w-2"
-            />
-            <div 
-              className="bg-green-100 dark:bg-green-900 p-4 flex items-center justify-center"
-              style={{ height: rightSize }}
-            >
-              <div className="text-center">
-                <p className="font-semibold">Bottom Panel</p>
-                <p className="text-sm text-gray-600">Height: {rightSize}px</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Horizontal Separator</h3>
-          <div className="flex flex-col h-64 w-full border rounded-lg overflow-hidden">
-            <div 
-              className="bg-purple-100 dark:bg-purple-900 p-4 flex items-center justify-center"
-              style={{ width: leftSize }}
-            >
-              <div className="text-center">
-                <p className="font-semibold">Left Panel</p>
-                <p className="text-sm text-gray-600">Width: {leftSize}px</p>
-              </div>
-            </div>
-            <ResizableSeparator
-              direction="horizontal"
-              variant={separatorVariant}
-              size={separatorSize}
-              onResize={handleRightResize}
-              parentRef={containerRef}
-              showIndicator={showIndicator}
-              minSize={100}
-              maxSize={400}
-              className="h-2"
-            />
-            <div 
-              className="bg-orange-100 dark:bg-orange-900 p-4 flex items-center justify-center"
-              style={{ width: rightSize }}
-            >
-              <div className="text-center">
-                <p className="font-semibold">Right Panel</p>
-                <p className="text-sm text-gray-600">Width: {rightSize}px</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return <ResizableSeparatorExample />
 }
 ```
 
