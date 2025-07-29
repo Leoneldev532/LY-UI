@@ -1,72 +1,110 @@
 ---
 title: "Thinking Search Animation"
-description: "Search animation component with scrolling text and advanced customization"
+description: "Animated thinking/searching component with scrolling text, customizable animation, and streaming text support"
 ---
 
 import ThinkingSearchAnimation from '@/components/LY UI/AI/thinkingSearchAnimation'
+import { useState } from 'react'
 
 <Preview link="thinkingSearchAnimation">
-  <ThinkingSearchAnimation 
+  <ThinkingSearchAnimation
     variant="default"
-    streamingText="Analyzing user query patterns and context... Processing natural language input for optimal understanding. Generating comprehensive response based on available data sources. Optimizing response relevance and accuracy for user satisfaction."
-    scrollDirection="up"
-    animationSpeed="normal"
-    minParagraphLength={50}
-    className="w-full max-w-2xl"
+    streamingText="Analyzing user input and context requirements. Processing natural language patterns and extracting key information. Generating comprehensive response based on available data sources."
+    className="w-full max-w-lg"
   />
 </Preview>
-
 
 ## Example
 
 ```tsx
-import { ThinkingSearchAnimation } from '@/components/LY UI/AI/thinkingSearchAnimation'
+export default function ThinkingSearchAnimationExample() {
+  const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal')
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up')
+  const [variant, setVariant] = useState<'default' | 'ghost' | 'outline'>('default')
+  const [isAnimating, setIsAnimating] = useState(false)
 
-export default function SearchExample() {
-  const streamingText = `
-    Analyzing user data...
-    
-    Searching for patterns in previous interactions.
-    Identifying preferences and behaviors.
-    
-    Generating personalized recommendations.
-    Optimizing results to maximize engagement.
-    
-    Finalizing and validating suggestions.
-  `
+  const sampleStreamingText = `Analyzing user input and context requirements. Processing natural language patterns and extracting key information. Generating comprehensive response based on available data sources. Validating response accuracy and relevance. Optimizing output for user experience and readability. Finalizing content with proper formatting and structure.`
 
-  const messages = [
-    "First step of analysis...",
-    "Processing user data...",
-    "Generating recommendations...",
-    "Optimizing results..."
+  const sampleMessages = [
+    "Initializing search parameters and query analysis...",
+    "Processing natural language patterns and context extraction...",
+    "Generating comprehensive response based on available data...",
+    "Validating response accuracy and relevance metrics...",
+    "Optimizing output for user experience and readability...",
+    "Finalizing content with proper formatting and structure..."
   ]
 
   const handleAnimationEnd = () => {
-    console.log('Search animation ended')
+    console.log('Thinking animation completed')
+    setIsAnimating(false)
+  }
+
+  const startAnimation = () => {
+    setIsAnimating(true)
   }
 
   return (
-    <div className="space-y-4">
-      {/* With streamingText */}
-      <ThinkingSearchAnimation
-        variant="default"
-        streamingText={streamingText}
-        scrollDirection="up"
-        animationSpeed="normal"
-        onAnimationEnd={handleAnimationEnd}
-        minParagraphLength={50}
-        className="w-full max-w-2xl"
-      />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <select
+          value={animationSpeed}
+          onChange={(e) => setAnimationSpeed(e.target.value as 'slow' | 'normal' | 'fast')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="slow">Slow</option>
+          <option value="normal">Normal</option>
+          <option value="fast">Fast</option>
+        </select>
+        <select
+          value={scrollDirection}
+          onChange={(e) => setScrollDirection(e.target.value as 'up' | 'down')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="up">Scroll Up</option>
+          <option value="down">Scroll Down</option>
+        </select>
+        <select
+          value={variant}
+          onChange={(e) => setVariant(e.target.value as 'default' | 'ghost' | 'outline')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="default">Default</option>
+          <option value="ghost">Ghost</option>
+          <option value="outline">Outline</option>
+        </select>
+        <button
+          onClick={startAnimation}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Start Animation
+        </button>
+      </div>
 
-      {/* With messages */}
-      <ThinkingSearchAnimation
-        variant="outline"
-        messages={messages}
-        scrollDirection="down"
-        animationSpeed="fast"
-        onAnimationEnd={handleAnimationEnd}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Streaming Text Animation</h3>
+          <ThinkingSearchAnimation
+            variant={variant}
+            streamingText={sampleStreamingText}
+            scrollDirection={scrollDirection}
+            animationSpeed={animationSpeed}
+            onAnimationEnd={handleAnimationEnd}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Messages Animation</h3>
+          <ThinkingSearchAnimation
+            variant={variant}
+            messages={sampleMessages}
+            scrollDirection={scrollDirection}
+            animationSpeed={animationSpeed}
+            onAnimationEnd={handleAnimationEnd}
+            className="w-full"
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -76,23 +114,39 @@ export default function SearchExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style of the component |
-| `streamingText` | `string` | - | Text to automatically process into paragraphs |
-| `messages` | `string[]` | - | Array of messages to display directly |
-| `onAnimationEnd` | `() => void` | - | Callback called when animation ends |
-| `className` | `string` | - | Additional CSS classes |
-| `scrollDirection` | `"up" \| "down"` | `"up"` | Scroll direction |
-| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Animation speed |
+| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style variant |
+| `streamingText` | `string` | `undefined` | Text content to animate (auto-split into paragraphs) |
+| `messages` | `string[]` | `undefined` | Array of text content to display in animation |
+| `onAnimationEnd` | `() => void` | `undefined` | Callback when animation ends |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
 | `minParagraphLength` | `number` | `50` | Minimum length for auto-generated paragraphs |
-| `sentenceEndPattern` | `RegExp` | `/[.!?]\s+/g` | Pattern to split sentences |
+| `sentenceEndPattern` | `RegExp` | `/[.!?]\s+/g` | Pattern to split sentences for paragraph grouping |
+
+### Types
+
+```tsx
+type ThinkingSearchAnimationProps = {
+  variant?: "default" | "ghost" | "outline"
+  streamingText?: string
+  messages?: string[]
+  onAnimationEnd?: () => void
+  className?: string
+  scrollDirection?: "up" | "down"
+  animationSpeed?: "slow" | "normal" | "fast"
+  minParagraphLength?: number
+  sentenceEndPattern?: RegExp
+}
+```
 
 ## Features
 
-- **Automatic processing** : Intelligent text division into paragraphs
-- **Smooth animations** : Automatic scrolling with smooth transitions
-- **Visual variants** : Three different styles (default, ghost, outline)
-- **Animation controls** : Configurable speed and direction
-- **Loading state** : Display while waiting for content
-- **Collapsible** : Ability to collapse/expand content
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support
+- **Streaming Text Support**: Auto-split long text into animated paragraphs
+- **Message Arrays**: Support for predefined message arrays
+- **Customizable Animation**: Configurable speed and scroll direction
+- **Multiple Variants**: Default, ghost, and outline styling options
+- **Smart Text Processing**: Automatic paragraph detection and sentence grouping
+- **Responsive Design**: Adapts to different screen sizes with proper scaling
+- **Dark Mode Support**: Full dark mode compatibility with appropriate styling
+- **Accessibility Focused**: Screen reader friendly with proper semantic structure

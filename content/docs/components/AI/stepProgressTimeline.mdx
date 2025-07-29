@@ -1,62 +1,149 @@
 ---
 title: "Step Progress Timeline"
-description: "Step progress timeline component with sequential animations"
+description: "Animated step progress timeline with sequential generation states and visual connectors"
 ---
 
 import StepProgressTimeline from '@/components/LY UI/AI/stepProgressTimeline'
+import { useState } from 'react'
 
 <Preview link="stepProgressTimeline">
-  <StepProgressTimeline 
+  <StepProgressTimeline
     steps={[
-      { step: 1, stepName: "Data Analysis", duration: 2000, status: "waiting..." },
-      { step: 2, stepName: "AI Processing", duration: 3000, status: "waiting..." },
-      { step: 3, stepName: "Response Generation", duration: 2500, status: "waiting..." },
-      { step: 4, stepName: "Finalization", duration: 1500, status: "waiting..." }
+      { step: 1, stepName: "Analyzing input", duration: 2000, status: "waiting..." },
+      { step: 2, stepName: "Processing data", duration: 3000, status: "waiting..." },
+      { step: 3, stepName: "Generating response", duration: 2500, status: "waiting..." },
+      { step: 4, stepName: "Finalizing output", duration: 1500, status: "waiting..." },
     ]}
-    externalStart={true}
-    externalStop={false}
-    scrollSpeed="normal"
     className="w-full max-w-md"
   />
 </Preview>
 
-
 ## Example
 
 ```tsx
-import { StepProgressTimeline } from '@/components/LY UI/AI/stepProgressTimeline'
+export default function StepProgressTimelineExample() {
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [externalStart, setExternalStart] = useState(false)
+  const [externalStop, setExternalStop] = useState(false)
+  const [scrollSpeed, setScrollSpeed] = useState<'fast' | 'normal' | 'slow'>('normal')
+  const [generationLog, setGenerationLog] = useState<string[]>([])
 
-export default function TimelineExample() {
   const steps = [
-    { step: 1, stepName: "Initialization", duration: 2000, status: "waiting..." },
-    { step: 2, stepName: "Analysis", duration: 3000, status: "waiting..." },
-    { step: 3, stepName: "Processing", duration: 2500, status: "waiting..." },
-    { step: 4, stepName: "Finalization", duration: 1500, status: "waiting..." }
+    { step: 1, stepName: "Initializing system", duration: 2000, status: "waiting..." as const },
+    { step: 2, stepName: "Loading dependencies", duration: 3000, status: "waiting..." as const },
+    { step: 3, stepName: "Processing request", duration: 2500, status: "waiting..." as const },
+    { step: 4, stepName: "Generating content", duration: 4000, status: "waiting..." as const },
+    { step: 5, stepName: "Optimizing output", duration: 2000, status: "waiting..." as const },
+    { step: 6, stepName: "Finalizing results", duration: 1500, status: "waiting..." as const },
   ]
+
+  const addLogMessage = (message: string) => {
+    setGenerationLog(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
+  }
 
   const handleGenerationStart = () => {
     console.log('Generation started')
+    addLogMessage('Generation process initiated')
   }
 
   const handleGenerationComplete = () => {
     console.log('Generation completed')
+    addLogMessage('All steps completed successfully')
+    setIsGenerating(false)
   }
 
   const handleGenerationStop = () => {
     console.log('Generation stopped')
+    addLogMessage('Generation process stopped')
+    setIsGenerating(false)
+  }
+
+  const startGeneration = () => {
+    setExternalStart(true)
+    setIsGenerating(true)
+    setGenerationLog([])
+    // Reset after a short delay
+    setTimeout(() => setExternalStart(false), 100)
+  }
+
+  const stopGeneration = () => {
+    setExternalStop(true)
+    setIsGenerating(false)
+    // Reset after a short delay
+    setTimeout(() => setExternalStop(false), 100)
+  }
+
+  const clearLogs = () => {
+    setGenerationLog([])
   }
 
   return (
-    <StepProgressTimeline
-      steps={steps}
-      onGenerationStart={handleGenerationStart}
-      onGenerationComplete={handleGenerationComplete}
-      onGenerationStop={handleGenerationStop}
-      externalStart={true}
-      externalStop={false}
-      scrollSpeed="normal"
-      className="w-full max-w-md"
-    />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={startGeneration}
+          disabled={isGenerating}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+        >
+          Start Generation
+        </button>
+        <button
+          onClick={stopGeneration}
+          disabled={!isGenerating}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+        >
+          Stop Generation
+        </button>
+        <select
+          value={scrollSpeed}
+          onChange={(e) => setScrollSpeed(e.target.value as 'fast' | 'normal' | 'slow')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="slow">Slow</option>
+          <option value="normal">Normal</option>
+          <option value="fast">Fast</option>
+        </select>
+        <button
+          onClick={clearLogs}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+        >
+          Clear Logs
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Step Progress Timeline</h3>
+          <StepProgressTimeline
+            steps={steps}
+            externalStart={externalStart}
+            externalStop={externalStop}
+            scrollSpeed={scrollSpeed}
+            onGenerationStart={handleGenerationStart}
+            onGenerationComplete={handleGenerationComplete}
+            onGenerationStop={handleGenerationStop}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Generation Log</h3>
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
+            {generationLog.length === 0 ? (
+              <p className="text-gray-500 text-sm">No generation events logged yet. Start the generation to see events.</p>
+            ) : (
+              <div className="space-y-1">
+                {generationLog.map((message, index) => (
+                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300">
+                    {message}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 ```
@@ -65,32 +152,45 @@ export default function TimelineExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `steps` | `StepProps[]` | - | Array of steps to display (required) |
-| `onGenerationStart` | `() => void` | - | Callback called when generation starts |
-| `onGenerationComplete` | `() => void` | - | Callback called when generation completes |
-| `onGenerationStop` | `() => void` | - | Callback called when generation stops |
+| `steps` | `StepProps[]` | `defaultSteps` | Array of step configurations |
+| `onGenerationStart` | `() => void` | `undefined` | Callback when generation starts |
+| `onGenerationComplete` | `() => void` | `undefined` | Callback when all steps complete |
+| `onGenerationStop` | `() => void` | `undefined` | Callback when generation stops |
 | `externalStop` | `boolean` | `false` | External control to stop generation |
 | `externalStart` | `boolean` | `false` | External control to start generation |
-| `className` | `string` | - | Additional CSS classes |
-| `scrollSpeed` | `"fast" \| "normal" \| "slow"` | `"normal"` | Timeline scroll speed |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollSpeed` | `"fast" \| "normal" \| "slow"` | `"normal"` | Speed of scroll animations |
 
-## Types
+### Types
 
 ```tsx
 type StepProps = {
-  step?: number;
-  stepName?: string;
-  duration?: number;
-  status: "waiting..." | "generating..." | "completed";
-};
+  step?: number
+  stepName?: string
+  duration?: number
+  status: "waiting..." | "generating..." | "completed"
+}
+
+type StepProgressTimelineProps = {
+  steps: StepProps[]
+  onGenerationStart?: () => void
+  onGenerationComplete?: () => void
+  onGenerationStop?: () => void
+  externalStop?: boolean
+  externalStart?: boolean
+  className?: string
+  scrollSpeed?: "fast" | "normal" | "slow"
+}
 ```
 
 ## Features
 
-- **Sequential animations** : Automatic progression from one step to another
-- **Status indicators** : Visual display of each step's state
-- **External controls** : Ability to start/stop from outside
-- **Complete callbacks** : Notifications for all generation events
-- **Configurable timing** : Customizable duration for each step
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support
+- **Sequential Processing**: Steps execute one after another with configurable durations
+- **Visual States**: Clear status indicators (waiting, generating, completed)
+- **Progress Connectors**: Animated connectors between completed steps
+- **External Control**: Start and stop generation from external components
+- **Customizable Speed**: Three scroll speed options for different use cases
+- **Real-time Feedback**: Live status updates with loading animations
+- **Responsive Design**: Adapts to different screen sizes with proper scaling
+- **Dark Mode Support**: Full dark mode compatibility with appropriate styling
+- **Accessibility Focused**: Screen reader friendly with proper semantic structure

@@ -1,73 +1,131 @@
 ---
 title: "Generated Image Card"
-description: "Generated image card component with interactive controls and multi-format support"
+description: "AI-generated image display component with download, copy prompt, and interactive controls"
 ---
 
 import GeneratedImageCard from '@/components/LY UI/AI/generatedImageCard'
+import { useState } from 'react'
 
 <Preview link="generatedImageCard">
-  <GeneratedImageCard 
+  <GeneratedImageCard
     src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
     imageTitle="Mountain Landscape"
-    prompt="A beautiful mountain landscape at sunset with dramatic clouds, realistic style"
-    timestamp="14:32"
-    width={400}
-    height={400}
-    hideControls={false}
+    prompt="A serene mountain landscape at sunset with golden light"
+    timestamp="1:45"
     className="w-full max-w-md"
   />
 </Preview>
 
-
 ## Example
 
 ```tsx
-import { GeneratedImageCard } from '@/components/LY UI/AI/generatedImageCard'
+export default function GeneratedImageCardExample() {
+  const [currentImage, setCurrentImage] = useState("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop")
+  const [currentPrompt, setCurrentPrompt] = useState("A serene mountain landscape at sunset with golden light")
+  const [hideControls, setHideControls] = useState(false)
+  const [imageHistory, setImageHistory] = useState<string[]>([])
 
-export default function ImageExample() {
+  const sampleImages = [
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
+  ]
+
+  const samplePrompts = [
+    "A serene mountain landscape at sunset with golden light",
+    "A dense forest with sunlight filtering through the trees",
+    "A futuristic cityscape with neon lights and flying cars"
+  ]
+
   const handleLike = () => {
-    console.log('User liked the image')
-    // Logic to save the like
+    console.log('Image liked')
+    setImageHistory(prev => [...prev, 'Liked'])
   }
 
   const handleDislike = () => {
-    console.log('User disliked the image')
-    // Logic to save the dislike
+    console.log('Image disliked')
+    setImageHistory(prev => [...prev, 'Disliked'])
   }
 
   const handleRegenerate = () => {
-    console.log('Image regeneration requested')
-    // Logic to regenerate the image
+    console.log('Regenerating image')
+    const randomIndex = Math.floor(Math.random() * sampleImages.length)
+    setCurrentImage(sampleImages[randomIndex])
+    setCurrentPrompt(samplePrompts[randomIndex])
+    setImageHistory(prev => [...prev, 'Regenerated'])
+  }
+
+  const handleComplete = () => {
+    console.log('Image generation completed')
+  }
+
+  const changeImage = () => {
+    const randomIndex = Math.floor(Math.random() * sampleImages.length)
+    setCurrentImage(sampleImages[randomIndex])
+    setCurrentPrompt(samplePrompts[randomIndex])
+  }
+
+  const clearHistory = () => {
+    setImageHistory([])
   }
 
   return (
-    <div className="space-y-4">
-      {/* With image URL */}
-      <GeneratedImageCard
-        src="https://example.com/generated-image.jpg"
-        imageTitle="Mountain Landscape"
-        prompt="A mountain landscape at sunset, realistic style"
-        timestamp="14:32"
-        onLike={handleLike}
-        onDislike={handleDislike}
-        onRegenerate={handleRegenerate}
-        onComplete={() => console.log('Image loaded successfully')}
-        width={400}
-        height={400}
-        className="w-full max-w-md"
-      />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={changeImage}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Change Image
+        </button>
+        <button
+          onClick={() => setHideControls(!hideControls)}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+        >
+          {hideControls ? 'Show' : 'Hide'} Controls
+        </button>
+        <button
+          onClick={clearHistory}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        >
+          Clear History
+        </button>
+      </div>
 
-      {/* With Blob (after generation) */}
-      <GeneratedImageCard
-        src={imageBlob}
-        imageTitle="Generated Portrait"
-        prompt="Portrait of a woman with red hair, artistic style"
-        timestamp="15:45"
-        onLike={handleLike}
-        onDislike={handleDislike}
-        onRegenerate={handleRegenerate}
-        hideControls={false}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Generated Image</h3>
+          <GeneratedImageCard
+            src={currentImage}
+            imageTitle="AI Generated Image"
+            prompt={currentPrompt}
+            timestamp="2:30"
+            hideControls={hideControls}
+            onLike={handleLike}
+            onDislike={handleDislike}
+            onRegenerate={handleRegenerate}
+            onComplete={handleComplete}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Action History</h3>
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
+            {imageHistory.length === 0 ? (
+              <p className="text-gray-500 text-sm">No actions taken yet. Interact with the image to see history.</p>
+            ) : (
+              <div className="space-y-2">
+                {imageHistory.map((action, index) => (
+                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300 p-2 bg-white dark:bg-gray-700 rounded border">
+                    {action}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -77,25 +135,45 @@ export default function ImageExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `src` | `string \| Blob \| StaticImport` | - | Image source (URL, Blob, or static import) |
-| `imageTitle` | `string \| null` | - | Image title |
-| `width` | `number` | `400` | Image width |
-| `height` | `number` | `400` | Image height |
-| `timestamp` | `string` | `"00:00"` | Displayed timestamp |
-| `prompt` | `string` | `""` | Prompt used to generate the image |
-| `onLike` | `() => void` | - | Callback called on like |
-| `onDislike` | `() => void` | - | Callback called on dislike |
-| `onRegenerate` | `() => void` | - | Callback called on regeneration |
-| `onComplete` | `() => void` | - | Callback called when image is loaded |
-| `hideControls` | `boolean` | `false` | Hides interactive controls |
-| `className` | `string` | - | Additional CSS classes |
+| `src` | `string \| Blob \| StaticImport` | `undefined` | Image source URL, blob, or static import |
+| `imageTitle` | `string \| null` | `null` | Title/alt text for the image |
+| `width` | `number` | `400` | Image width in pixels |
+| `height` | `number` | `400` | Image height in pixels |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `timestamp` | `string` | `"00:00"` | Timestamp displayed in the controls |
+| `prompt` | `string` | `""` | The prompt used to generate the image |
+| `onLike` | `() => void` | `undefined` | Callback when like button is clicked |
+| `onDislike` | `() => void` | `undefined` | Callback when dislike button is clicked |
+| `onRegenerate` | `() => void` | `undefined` | Callback when regenerate button is clicked |
+| `onComplete` | `() => void` | `undefined` | Callback when image loading completes |
+| `hideControls` | `boolean` | `false` | Whether to hide the control buttons |
+
+### Types
+
+```tsx
+interface GeneratedImageCardProps {
+  src?: string | Blob | StaticImport
+  imageTitle?: string | null
+  width?: number
+  height?: number
+  className?: string
+  timestamp?: string
+  prompt?: string
+  onLike?: () => void
+  onDislike?: () => void
+  onRegenerate?: () => void
+  onComplete?: () => void
+  hideControls?: boolean
+}
+```
 
 ## Features
 
-- **Multi-format** : Support for URLs, Blobs, Base64 and static imports
-- **Interactive controls** : Like, dislike, copy prompt, download
-- **Loading states** : Loading indicator during download
-- **Automatic download** : Management of different formats for download
-- **Prompt copy** : Easy copy of used prompt
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support
+- **Multiple Image Sources**: Support for URLs, blobs, base64, and static imports
+- **Download Functionality**: One-click download with proper filename handling
+- **Copy Prompt**: Copy the generation prompt to clipboard with visual feedback
+- **Interactive Controls**: Like, dislike, and regenerate functionality
+- **Loading States**: Smooth loading transitions with spinner indicators
+- **Responsive Design**: Adapts to different screen sizes with proper aspect ratios
+- **Dark Mode Support**: Full dark mode compatibility with appropriate styling
+- **Accessibility Focused**: Proper ARIA labels and keyboard navigation support

@@ -126,7 +126,7 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
             )}
           >
             {icon && (
-              <div className="flex items-center justify-center w-full h-full">
+              <div className="flex bg-black items-center justify-center w-full h-full">
                 {icon}
               </div>
             )}

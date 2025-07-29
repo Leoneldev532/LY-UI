@@ -1,60 +1,118 @@
 ---
 title: "Tag Button"
-description: "Tag button component with icon support and animated dropdown"
+description: "Interactive tag button with dropdown support, smooth animations, and customizable variants"
 ---
 
 import TagButton from '@/components/LY UI/AI/tagButton'
+import { useState } from 'react'
+import { Settings, Code, Database, Palette } from 'lucide-react'
 
 <Preview link="tagButton">
-  <TagButton 
-    title="Select AI Tools"
+  <TagButton
+    icon={<Settings className="w-4 h-4" />}
+    title="Configuration"
     variant="default"
-    items={["Web Search", "Image Generation", "Code Analysis", "AI Assistant"]}
-    className="px-4 py-2"
+    items={["General Settings", "Advanced Options", "User Preferences"]}
+    className="w-full max-w-md"
   />
 </Preview>
 
 ## Example
 
 ```tsx
-import { TagButton } from '@/components/LY UI/AI/tagButton'
-import { SearchSlashIcon, Code, Image, Bot } from 'lucide-react'
+export default function TagButtonExample() {
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [buttonVariant, setButtonVariant] = useState<'default' | 'outline' | 'ghost'>('default')
+  const [selectedIcon, setSelectedIcon] = useState<'settings' | 'code' | 'database' | 'palette'>('settings')
 
-export default function TagExample() {
-  const tools = [
-    "Web Search",
-    "Image Generation", 
-    "Code Analysis",
-    "AI Assistant"
-  ]
-
-  const handleItemClick = (item: string) => {
-    console.log('Selected tool:', item)
+  const iconMap = {
+    settings: <Settings className="w-4 h-4" />,
+    code: <Code className="w-4 h-4" />,
+    database: <Database className="w-4 h-4" />,
+    palette: <Palette className="w-4 h-4" />
   }
 
-  const handleClick = () => {
-    console.log('Button clicked')
+  const sampleItems = {
+    settings: ["General Settings", "Advanced Options", "User Preferences", "System Configuration"],
+    code: ["JavaScript", "TypeScript", "Python", "React", "Next.js"],
+    database: ["PostgreSQL", "MongoDB", "MySQL", "Redis", "SQLite"],
+    palette: ["Light Theme", "Dark Theme", "Custom Colors", "Color Schemes"]
+  }
+
+  const handleItemClick = (item: string) => {
+    console.log('Selected item:', item)
+    setSelectedItems(prev => [...prev, item])
+  }
+
+  const handleButtonClick = () => {
+    console.log('Tag button clicked')
+  }
+
+  const clearSelections = () => {
+    setSelectedItems([])
   }
 
   return (
-    <div className="flex gap-4">
-      <TagButton
-        title="AI Tools"
-        variant="default"
-        icon={<SearchSlashIcon className="w-4 h-4" />}
-        items={tools}
-        onItemClick={handleItemClick}
-        onClick={handleClick}
-        className="px-4 py-2"
-      />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <select
+          value={buttonVariant}
+          onChange={(e) => setButtonVariant(e.target.value as 'default' | 'outline' | 'ghost')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="default">Default</option>
+          <option value="outline">Outline</option>
+          <option value="ghost">Ghost</option>
+        </select>
+        <select
+          value={selectedIcon}
+          onChange={(e) => setSelectedIcon(e.target.value as 'settings' | 'code' | 'database' | 'palette')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="settings">Settings</option>
+          <option value="code">Code</option>
+          <option value="database">Database</option>
+          <option value="palette">Palette</option>
+        </select>
+        <button
+          onClick={clearSelections}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+        >
+          Clear Selections
+        </button>
+      </div>
 
-      <TagButton
-        title="Models"
-        variant="outline"
-        icon={<Bot className="w-4 h-4" />}
-        items={["GPT-4", "Claude-3", "Llama-2"]}
-        onItemClick={(model) => console.log('Model:', model)}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Tag Button</h3>
+          <TagButton
+            icon={iconMap[selectedIcon]}
+            title={selectedIcon.charAt(0).toUpperCase() + selectedIcon.slice(1)}
+            variant={buttonVariant}
+            items={sampleItems[selectedIcon]}
+            onClick={handleButtonClick}
+            onItemClick={handleItemClick}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Selected Items</h3>
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
+            {selectedItems.length === 0 ? (
+              <p className="text-gray-500 text-sm">No items selected yet. Click the tag button to see selections.</p>
+            ) : (
+              <div className="space-y-2">
+                {selectedItems.map((item, index) => (
+                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300 p-2 bg-white dark:bg-gray-700 rounded border">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -64,20 +122,35 @@ export default function TagExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `string` | - | Text displayed on the button (required) |
-| `variant` | `"default" \| "outline" \| "ghost"` | - | Visual style of the button (required) |
-| `icon` | `React.ReactNode` | - | Icon to display next to the text |
-| `onClick` | `() => void` | - | Callback called when button is clicked |
-| `items` | `string[]` | `[]` | List of items to display in dropdown |
-| `onItemClick` | `(item: string) => void` | - | Callback called when an item is selected |
-| `className` | `string` | - | Additional CSS classes |
+| `icon` | `React.ReactNode` | `undefined` | Icon component to display |
+| `title` | `string` | **required** | Text content for the button |
+| `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Visual style variant |
+| `onClick` | `() => void` | `undefined` | Click handler function |
+| `items` | `string[]` | `[]` | List of items for dropdown selection |
+| `onItemClick` | `(item: string) => void` | `undefined` | Callback when a dropdown item is selected |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+
+### Types
+
+```tsx
+interface TagButtonProps {
+  icon?: React.ReactNode
+  title: string
+  variant: "default" | "outline" | "ghost"
+  onClick?: () => void
+  items?: string[]
+  onItemClick?: (item: string) => void
+  className?: string
+}
+```
 
 ## Features
 
-- **Smooth animations** : Smooth transitions for dropdown open/close
-- **Icon support** : Ability to add an icon to the button
-- **Animated dropdown** : List of items with appearance animations
-- **State management** : Only one dropdown open at a time
-- **Visual variants** : Three different styles (default, outline, ghost)
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support
+- **Dropdown Support**: Expandable dropdown with customizable items
+- **Smooth Animations**: Framer Motion powered transitions and hover effects
+- **Icon Support**: Optional icon display with flexible positioning
+- **Multiple Variants**: Default, outline, and ghost styling options
+- **Auto-close Behavior**: Only one dropdown open at a time
+- **Responsive Design**: Adapts to different screen sizes with proper scaling
+- **Dark Mode Support**: Full dark mode compatibility with appropriate styling
+- **Accessibility Focused**: Proper ARIA labels and keyboard navigation support

@@ -1,44 +1,96 @@
 ---
 title: "AI Agent Animation"
-description: "Animation component for AI agents with smooth transitions"
+description: "Animated AI agent with progress tracking, dot grid visualization, and customizable animation states"
 ---
 
-import AiAgentAnimationExample from '@/components/example/AiAgentAnimationExample'
+import AiAgentAnimation from '@/components/LY UI/AI/AiAgentAnimation'
+import { useState } from 'react'
 
 <Preview link="AiAgentAnimation">
-  <AiAgentAnimationExample />
+  <AiAgentAnimation
+    title="AI Agent"
+    duration={3000}
+    className="w-full max-w-md"
+  />
 </Preview>
-
 
 ## Example
 
 ```tsx
-import { AiAgentAnimation } from '@/components/LY UI/AI/AiAgentAnimation'
-
-export default function AgentExample() {
-  const handleAnimationComplete = () => {
-    console.log('Animation completed')
-  }
+export default function AiAgentAnimationExample() {
+  const [isRunning, setIsRunning] = useState(false)
+  const [animationPhase, setAnimationPhase] = useState('idle')
+  const [progress, setProgress] = useState(0)
 
   const handleAnimationStart = () => {
     console.log('Animation started')
+    setAnimationPhase('running')
+  }
+
+  const handleAnimationStop = () => {
+    console.log('Animation stopped')
+    setAnimationPhase('stopped')
+  }
+
+  const handleAnimationReset = () => {
+    console.log('Animation reset')
+    setAnimationPhase('idle')
+    setProgress(0)
+  }
+
+  const handleAnimationComplete = () => {
+    console.log('Animation completed')
+    setAnimationPhase('completed')
+    setProgress(100)
+  }
+
+  const handleStartAnimation = () => {
+    setIsRunning(true)
+  }
+
+  const handleStopAnimation = () => {
+    setIsRunning(false)
   }
 
   return (
-    <AiAgentAnimation
-      title="AI Assistant"
-      duration={5000}
-      isRunning={true}
-      onAnimationComplete={handleAnimationComplete}
-      onAnimationStart={handleAnimationStart}
-      onAnimationStop={() => console.log('Animation stopped')}
-      onAnimationReset={() => console.log('Animation reset')}
-      columns={8}
-      rows={3}
-      pauseDuration={1000}
-      dotType="round"
-      className="w-full max-w-md"
-    />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={handleStartAnimation}
+          disabled={isRunning}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+        >
+          Start Animation
+        </button>
+        <button
+          onClick={handleStopAnimation}
+          disabled={!isRunning}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+        >
+          Stop Animation
+        </button>
+        <span className="text-sm text-gray-600">
+          Phase: {animationPhase}
+        </span>
+        <span className="text-sm text-gray-600">
+          Progress: {progress.toFixed(1)}%
+        </span>
+      </div>
+
+      <AiAgentAnimation
+        title="Processing Agent"
+        duration={5000}
+        pauseDuration={800}
+        isRunning={isRunning}
+        onAnimationStart={handleAnimationStart}
+        onAnimationStop={handleAnimationStop}
+        onAnimationReset={handleAnimationReset}
+        onAnimationComplete={handleAnimationComplete}
+        dotType="round"
+        rows={4}
+        className="w-full max-w-md"
+      />
+    </div>
   )
 }
 ```
@@ -49,22 +101,43 @@ export default function AgentExample() {
 |------|------|---------|-------------|
 | `title` | `string` | `"Agent"` | Title displayed before the percentage |
 | `duration` | `number` | `3000` | Animation duration in milliseconds |
-| `onAnimationComplete` | `() => void` | - | Callback called at the end of animation |
-| `columns` | `number` | - | Number of dot columns (automatically calculated if not specified) |
+| `onAnimationComplete` | `() => void` | `undefined` | Callback called at the end of the animation |
+| `columns` | `number` | `auto-calculated` | Number of dot columns (auto-calculated if not specified) |
 | `rows` | `number` | `3` | Number of dot rows |
-| `className` | `string` | - | Additional CSS classes |
-| `pauseDuration` | `number` | `500` | Pause duration between each cycle (ms) |
-| `isRunning` | `boolean` | `false` | External control of animation state |
-| `onAnimationStart` | `() => void` | - | Callback called when animation starts |
-| `onAnimationStop` | `() => void` | - | Callback called when animation stops |
-| `onAnimationReset` | `() => void` | - | Callback called when animation is reset |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `pauseDuration` | `number` | `500` | Pause duration between each cycle in milliseconds |
+| `isRunning` | `boolean` | `false` | External control of the animation state |
+| `onAnimationStart` | `() => void` | `undefined` | Callback called when the animation starts |
+| `onAnimationStop` | `() => void` | `undefined` | Callback called when the animation stops |
+| `onAnimationReset` | `() => void` | `undefined` | Callback called when the animation is reset |
 | `dotType` | `"round" \| "square"` | `"round"` | Shape of the dots |
+
+### Types
+
+```tsx
+interface AiAgentAnimationProps {
+  title?: string
+  duration?: number
+  onAnimationComplete?: () => void
+  columns?: number
+  rows?: number
+  className?: string
+  pauseDuration?: number
+  isRunning?: boolean
+  onAnimationStart?: () => void
+  onAnimationStop?: () => void
+  onAnimationReset?: () => void
+  dotType?: 'round' | 'square'
+}
+```
 
 ## Features
 
-- **Smooth animation** : Smooth transitions between states
-- **External control** : Ability to control animation from outside
-- **Complete callbacks** : Notifications for all animation events
-- **Responsive** : Automatic adaptation of column count
-- **Customization** : Choice of dot shape and duration
-- **Accessibility** : Screen reader support
+- **Progress Tracking**: Real-time progress percentage display with smooth animations
+- **Dot Grid Visualization**: Animated dot grid that responds to animation state changes
+- **Customizable Animation**: Configurable duration, pause intervals, and dot patterns
+- **External Control**: Full external control over animation start, stop, and reset
+- **Responsive Design**: Auto-calculated columns based on container width
+- **Multiple Dot Types**: Support for round and square dot shapes
+- **State Callbacks**: Comprehensive callback system for animation lifecycle events
+- **Accessibility Support**: Screen reader friendly with proper ARIA attributes

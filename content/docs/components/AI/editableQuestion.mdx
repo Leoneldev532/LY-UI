@@ -1,44 +1,89 @@
 ---
 title: "Editable Question"
-description: "Editable question component with interactive interface for real-time customization"
+description: "Interactive question component with inline editing, copy functionality, and real-time updates"
 ---
 
 import EditableQuestion from '@/components/LY UI/AI/editableQuestion'
+import { useState } from 'react'
 
 <Preview link="editableQuestion">
-  <EditableQuestion 
-    question="How can I implement authentication in a Next.js application with Prisma and JWT tokens?"
-    className="w-full max-w-2xl"
+  <EditableQuestion
+    question="How can I implement a responsive navigation menu in React?"
+    className="w-full max-w-lg"
   />
 </Preview>
-
 
 ## Example
 
 ```tsx
-import { EditableQuestion } from '@/components/LY UI/AI/editableQuestion'
+export default function EditableQuestionExample() {
+  const [currentQuestion, setCurrentQuestion] = useState("What are the best practices for state management in React?")
+  const [questionHistory, setQuestionHistory] = useState<string[]>([])
+  const [editCount, setEditCount] = useState(0)
 
-export default function QuestionExample() {
   const handleQuestionChange = (newQuestion: string) => {
-    console.log('Question changed:', newQuestion)
-    // Here you can update state or send the question to API
+    console.log('Question updated:', newQuestion)
+    setCurrentQuestion(newQuestion)
+    setQuestionHistory(prev => [...prev, newQuestion])
+    setEditCount(prev => prev + 1)
+  }
+
+  const resetQuestion = () => {
+    setCurrentQuestion("What are the best practices for state management in React?")
+    setEditCount(0)
+  }
+
+  const clearHistory = () => {
+    setQuestionHistory([])
   }
 
   return (
-    <div className="space-y-4">
-      <EditableQuestion
-        question="What are the best practices for optimizing React application performance?"
-        onQuestionChange={handleQuestionChange}
-        className="w-full max-w-2xl"
-      />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={resetQuestion}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Reset Question
+        </button>
+        <button
+          onClick={clearHistory}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+        >
+          Clear History
+        </button>
+        <span className="text-sm text-gray-600">
+          Edits: {editCount}
+        </span>
+      </div>
 
-      <EditableQuestion
-        question="How to implement authentication with Next.js and Prisma?"
-        onQuestionChange={(question) => {
-          // Custom logic for update
-          updateQuestionInDatabase(question)
-        }}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Editable Question</h3>
+          <EditableQuestion
+            question={currentQuestion}
+            onQuestionChange={handleQuestionChange}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Question History</h3>
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
+            {questionHistory.length === 0 ? (
+              <p className="text-gray-500 text-sm">No edits made yet. Edit the question to see history.</p>
+            ) : (
+              <div className="space-y-2">
+                {questionHistory.map((question, index) => (
+                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300 p-2 bg-white dark:bg-gray-700 rounded border">
+                    {question}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -48,16 +93,27 @@ export default function QuestionExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `question` | `string` | `""` | Question text to display and edit |
-| `onQuestionChange` | `(newQuestion: string) => void` | - | Callback called when question is modified |
-| `className` | `string` | - | Additional CSS classes |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `question` | `string` | `""` | The question text to display and edit |
+| `onQuestionChange` | `(newQuestion: string) => void` | `undefined` | Callback when the question text changes |
+
+### Types
+
+```tsx
+type EditableQuestionProps = {
+  className?: string
+  question?: string
+  onQuestionChange?: (newQuestion: string) => void
+}
+```
 
 ## Features
 
-- **Interactive editing** : Click to edit question in place
-- **Keyboard shortcuts** : Ctrl+Enter to save, Escape to cancel
-- **Easy copy** : Copy button with visual feedback
-- **Intuitive interface** : Action buttons that appear on hover
-- **Validation** : Management of edit and cancel states
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support and keyboard navigation
+- **Inline Editing**: Click to edit question text directly in the interface
+- **Copy Functionality**: One-click copy with visual feedback and success state
+- **Keyboard Shortcuts**: Ctrl+Enter to save, Escape to cancel
+- **Real-time Updates**: Immediate callback when question content changes
+- **Visual Feedback**: Clear editing states and hover effects
+- **Responsive Design**: Adapts to different screen sizes with proper text wrapping
+- **Dark Mode Support**: Full dark mode compatibility with appropriate styling
+- **Accessibility Focused**: Proper ARIA labels and keyboard navigation support

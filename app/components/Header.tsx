@@ -61,8 +61,15 @@ const Header = () => {
             />
           </svg>
         </Link>
-        <div>
-          {/* <button
+        <div className="flex items-center gap-2">
+        <Toggle 
+            checked={isDarkMode}
+            onCheckedChange={handleThemeChange}
+            themeToggle={true}
+            showLabel={true}
+            
+          />
+          <button
             className="ml-4 px-3 py-1 gap-x-2 cursor-pointer flex bg-neutral-200/40 dark:bg-neutral-800 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
             onClick={handleOpenSearchBar}
             aria-label="Ouvrir la recherche"
@@ -96,14 +103,8 @@ const Header = () => {
                 className="text-neutral-500 dark:text-neutral-300"
               />
             </svg>
-          </button> */}
-          <Toggle 
-            checked={isDarkMode}
-            onCheckedChange={handleThemeChange}
-            themeToggle={true}
-            showLabel={true}
-            label="Thème"
-          />
+          </button>
+          
         </div>
       </div>
       <DefaultSearchDialog

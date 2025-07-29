@@ -1,51 +1,97 @@
 ---
 title: "Audio Interaction"
-description: "Audio interaction component for AI voice interactions with particle animations"
+description: "Interactive audio component with particle animation, playback controls, and timer display"
 ---
 
 import AudioInteraction from '@/components/LY UI/AI/audioInteraction'
+import { useState } from 'react'
 
 <Preview link="audioInteraction">
-  <AudioInteraction 
-    className="w-full max-w-md"
-  />
+  <AudioInteraction className="w-full max-w-md" />
 </Preview>
 
 ## Example
 
 ```tsx
-import { AudioInteraction } from '@/components/LY UI/AI/audioInteraction'
+export default function AudioInteractionExample() {
+  const [audioStatus, setAudioStatus] = useState('idle')
+  const [logMessages, setLogMessages] = useState<string[]>([])
 
-export default function AudioExample() {
+  const addLogMessage = (message: string) => {
+    setLogMessages(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
+  }
+
   const handleAudioStart = () => {
-    console.log('Audio recording started')
-    // Logic to start recording
+    console.log('Audio started')
+    setAudioStatus('playing')
+    addLogMessage('Audio playback started')
   }
 
   const handleAudioStop = () => {
-    console.log('Audio recording stopped')
-    // Logic to stop recording
+    console.log('Audio stopped')
+    setAudioStatus('idle')
+    addLogMessage('Audio playback stopped')
   }
 
   const handleAudioPause = () => {
-    console.log('Audio recording paused')
-    // Logic to pause
+    console.log('Audio paused')
+    setAudioStatus('paused')
+    addLogMessage('Audio playback paused')
   }
 
   const handleAudioResume = () => {
-    console.log('Audio recording resumed')
-    // Logic to resume recording
+    console.log('Audio resumed')
+    setAudioStatus('playing')
+    addLogMessage('Audio playback resumed')
+  }
+
+  const clearLogs = () => {
+    setLogMessages([])
   }
 
   return (
-    <div className="space-y-4">
-      <AudioInteraction
-        onAudioStart={handleAudioStart}
-        onAudioStop={handleAudioStop}
-        onAudioPause={handleAudioPause}
-        onAudioResume={handleAudioResume}
-        className="w-full max-w-md"
-      />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <span className="text-sm text-gray-600">
+          Status: <span className="font-semibold">{audioStatus}</span>
+        </span>
+        <button
+          onClick={clearLogs}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+        >
+          Clear Logs
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Audio Controls</h3>
+          <AudioInteraction
+            onAudioStart={handleAudioStart}
+            onAudioStop={handleAudioStop}
+            onAudioPause={handleAudioPause}
+            onAudioResume={handleAudioResume}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Event Log</h3>
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 h-64 overflow-y-auto">
+            {logMessages.length === 0 ? (
+              <p className="text-gray-500 text-sm">No events logged yet. Start the audio to see events.</p>
+            ) : (
+              <div className="space-y-1">
+                {logMessages.map((message, index) => (
+                  <div key={index} className="text-sm text-gray-700 dark:text-gray-300">
+                    {message}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -55,24 +101,31 @@ export default function AudioExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `onAudioStart` | `() => void` | - | Callback called when audio starts |
-| `onAudioStop` | `() => void` | - | Callback called when audio stops |
-| `onAudioPause` | `() => void` | - | Callback called when audio is paused |
-| `onAudioResume` | `() => void` | - | Callback called when audio resumes |
-| `className` | `string` | - | Additional CSS classes |
+| `onAudioStart` | `() => void` | `undefined` | Callback when audio playback starts |
+| `onAudioStop` | `() => void` | `undefined` | Callback when audio playback stops |
+| `onAudioPause` | `() => void` | `undefined` | Callback when audio playback pauses |
+| `onAudioResume` | `() => void` | `undefined` | Callback when audio playback resumes |
 
-## States
+### Types
 
-- **idle** : Initial state, ready to start
-- **playing** : Currently playing/recording
-- **paused** : Paused
+```tsx
+type AudioInteractionProps = {
+  onAudioStart?: () => void
+  onAudioStop?: () => void
+  onAudioPause?: () => void
+  onAudioResume?: () => void
+}
+
+type Status = 'idle' | 'playing' | 'paused'
+```
 
 ## Features
 
-- **Particle animations** : Visual effect during audio interaction
-- **Playback controls** : Start, Pause, Resume, Stop buttons
-- **Integrated timer** : Display of elapsed time in MM:SS format
-- **Complete callbacks** : Notifications for all audio events
-- **Visual states** : Interface that adapts to current state
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support
+- **Particle Animation**: Visual feedback with animated particles during playback
+- **Playback Controls**: Start, pause, resume, and stop functionality
+- **Timer Display**: Real-time elapsed time display in MM:SS format
+- **State Management**: Tracks idle, playing, and paused states
+- **Event Callbacks**: Comprehensive callback system for all audio events
+- **Responsive Design**: Adapts to different screen sizes with mobile-friendly controls
+- **Visual Feedback**: Clear button states and particle animation synchronization
+- **Accessibility Support**: Proper ARIA labels and keyboard navigation

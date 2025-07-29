@@ -1,15 +1,13 @@
 ---
-title: Animated Process List Lovable
-description: Custom animated process list with icons inspired by lovable design
-full: true
+title: "Animated Process List Lovable"
+description: "Animated process list with icons and progressive reveal, inspired by lovable design"
 ---
 
-import { CheckCircle, Settings, FileText, Paintbrush, Sparkles, Moon, Gauge } from "lucide-react";
-import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessList_Lovable";
+import AnimatedProcessList_Lovable from '@/components/LY UI/AI/animatedProcessList_Lovable'
+import { CheckCircle, Settings, FileText, Paintbrush, Sparkles, Moon, Gauge } from 'lucide-react'
 
-<Preview link="animatedProcessList_Lovable" >
+<Preview link="animatedProcessList_Lovable">
   <AnimatedProcessList_Lovable
-    className="h-72"
     lines={[
       {
         icon: <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />,
@@ -40,49 +38,132 @@ import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessLi
         content: "Your feedback helps us improve the quality of future answers.",
       },
     ]}
+    className="w-full max-w-lg"
   />
 </Preview>
 
-## Props
+## Example
 
-| Prop              | Type                              | Default                                   | Description                                              |
-|-------------------|-----------------------------------|-------------------------------------------|----------------------------------------------------------|
-| `title`           | `string`                          | `"Spinning up preview..."`                | Title displayed at the top of the component              |
-| `lines`           | `ProcessLine[]`                   | `[]`                                      | Array of line items with icons and content               |
-| `className`       | `string`                          | `undefined`                               | Additional CSS classes for styling                       |
-| `scrollDirection` | `"up" | "down"`                  | `"up"`                                    | Direction of the scrolling animation                     |
-| `animationSpeed`  | `"slow" | "normal" | "fast"`    | `"normal"`                                | Speed of the animation                                   |
-| `onAnimationEnd`  | `() => void`                      | `undefined`                               | Callback when the reveal animation ends                  |
-| `skeletonDuration`| `number`                          | `2000`                                    | Duration in milliseconds of the skeleton phase           |
-| `lineRevealDelay` | `number`                          | `150`                                     | Delay in milliseconds between each line reveal           |
-| `stepIcons`       | `React.ReactNode[]`               | `defaultStepIcons`                        | Custom icons for each step (optional)                    |
+```tsx
+export default function AnimatedProcessListExample() {
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal')
 
-### LineItem
+  const handleAnimationEnd = () => {
+    console.log('Animation completed')
+    setIsAnimating(false)
+  }
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `icon` | `ReactNode` | Icon component to display |
-| `content` | `string` | Text content for the line |
+  const handleStartAnimation = () => {
+    setIsAnimating(true)
+  }
 
-### Example Usage
+  return (
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={handleStartAnimation}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Start Animation
+        </button>
+        <select
+          value={animationSpeed}
+          onChange={(e) => setAnimationSpeed(e.target.value as 'slow' | 'normal' | 'fast')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="slow">Slow</option>
+          <option value="normal">Normal</option>
+          <option value="fast">Fast</option>
+        </select>
+      </div>
 
-```jsx
-import AnimatedProcessList_Lovable from "@/components/LY UI/AI/animatedProcessList_Lovable";
-import { CheckCircle, Settings } from "lucide-react";
-
-<AnimatedProcessList_Lovable
-  lines={[
-    {
-      icon: <CheckCircle className="w-5 h-5 text-green-600" />,
-      content: "Processing your request...",
-    },
-    {
-      icon: <Settings className="w-5 h-5 text-blue-600" />,
-      content: "Configuring the response...",
-    },
-  ]}
-  animationSpeed="normal"
-  scrollDirection="up"
-  className="h-64"
-/>
+      <AnimatedProcessList_Lovable
+        title="Processing your request..."
+        lines={[
+          {
+            icon: <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />,
+            content: "Analyzing user input and context requirements",
+          },
+          {
+            icon: <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+            content: "Configuring system parameters and preferences",
+          },
+          {
+            icon: <FileText className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />,
+            content: "Gathering relevant data and documentation",
+          },
+          {
+            icon: <Paintbrush className="w-5 h-5 text-pink-600 dark:text-pink-400" />,
+            content: "Applying custom styling and branding",
+          },
+          {
+            icon: <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
+            content: "Generating personalized recommendations",
+          },
+          {
+            icon: <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />,
+            content: "Optimizing for dark mode and accessibility",
+          },
+          {
+            icon: <Gauge className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
+            content: "Finalizing performance optimizations",
+          },
+        ]}
+        animationSpeed={animationSpeed}
+        onAnimationEnd={handleAnimationEnd}
+        scrollDirection="up"
+        skeletonDuration={1500}
+        lineRevealDelay={200}
+        className="w-full max-w-lg"
+      />
+    </div>
+  )
+}
 ```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | `"Spinning up preview..."` | Title displayed at the top of the component |
+| `lines` | `ProcessLine[]` | `defaultLines` | Array of line items with icons and content |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
+| `onAnimationEnd` | `() => void` | `undefined` | Callback when the reveal animation ends |
+| `skeletonDuration` | `number` | `2000` | Duration in milliseconds of the skeleton phase |
+| `lineRevealDelay` | `number` | `150` | Delay in milliseconds between each line reveal |
+| `stepIcons` | `React.ReactNode[]` | `defaultStepIcons` | Custom icons for each step |
+
+### Types
+
+```tsx
+interface ProcessLine {
+  icon: React.ReactNode
+  content: string
+}
+
+interface AnimatedProcessList_LovableProps {
+  title?: string
+  lines?: ProcessLine[]
+  className?: string
+  scrollDirection?: "up" | "down"
+  animationSpeed?: "slow" | "normal" | "fast"
+  onAnimationEnd?: () => void
+  skeletonDuration?: number
+  lineRevealDelay?: number
+  stepIcons?: React.ReactNode[]
+}
+```
+
+## Features
+
+- **Progressive Reveal Animation**: Lines appear one by one with smooth fade-in effects
+- **Customizable Icons**: Support for custom icons for each process step
+- **Flexible Animation Speed**: Three speed options (slow, normal, fast) for different use cases
+- **Scroll Direction Control**: Choose between upward or downward scrolling animation
+- **Skeleton Loading Phase**: Initial loading state with customizable duration
+- **Responsive Design**: Adapts to different screen sizes with proper scaling
+- **Dark Mode Support**: Full dark mode compatibility with appropriate color schemes
+- **Accessibility Focused**: Screen reader friendly with proper semantic structure

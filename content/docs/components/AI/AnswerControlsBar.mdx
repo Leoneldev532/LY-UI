@@ -1,72 +1,95 @@
 ---
 title: "Answer Controls Bar"
-description: "Answer controls bar component for AI responses with interactive actions"
+description: "Interactive control bar for AI answers with copy, like, dislike, and regenerate functionality"
 ---
 
 import AnswerControlsBar from '@/components/LY UI/AI/AnswerControlsBar'
+import { useState } from 'react'
 
 <Preview link="AnswerControlsBar">
-  <AnswerControlsBar 
-    timestamp="14:32"
+  <AnswerControlsBar
+    timestamp="2:34"
     copied={false}
+    className="w-full max-w-md"
   />
 </Preview>
-
-# Answer Controls Bar
-
-An answer controls bar component for AI responses with interactive actions like copy, like, dislike, regenerate, and additional options via dropdown menus.
 
 ## Example
 
 ```tsx
-import { AnswerControlsBar } from '@/components/LY UI/AI/AnswerControlsBar'
-import { useState } from 'react'
-
-export default function ControlsExample() {
+export default function AnswerControlsBarExample() {
   const [copied, setCopied] = useState(false)
+  const [liked, setLiked] = useState(false)
+  const [disliked, setDisliked] = useState(false)
+  const [timestamp, setTimestamp] = useState("1:45")
 
   const handleCopy = () => {
-    // Logic to copy content
-    navigator.clipboard.writeText('Answer content')
+    console.log('Answer copied to clipboard')
     setCopied(true)
+    // Reset copied state after 2 seconds
     setTimeout(() => setCopied(false), 2000)
   }
 
   const handleLike = () => {
     console.log('Answer liked')
-    // Logic to save the like
+    setLiked(!liked)
+    if (disliked) setDisliked(false)
   }
 
   const handleDislike = () => {
     console.log('Answer disliked')
-    // Logic to save the dislike
+    setDisliked(!disliked)
+    if (liked) setLiked(false)
   }
 
   const handleRegenerate = () => {
-    console.log('Regeneration requested')
-    // Logic to regenerate the answer
+    console.log('Regenerating answer')
+    // Simulate regeneration
+    setTimeout(() => {
+      console.log('New answer generated')
+    }, 1000)
+  }
+
+  const handleTimestampChange = () => {
+    const newTime = Math.floor(Math.random() * 5) + ":" + Math.floor(Math.random() * 60).toString().padStart(2, '0')
+    setTimestamp(newTime)
   }
 
   return (
-    <div className="space-y-4">
-      <AnswerControlsBar
-        timestamp="14:32"
-        copied={copied}
-        onCopy={handleCopy}
-        onLike={handleLike}
-        onDislike={handleDislike}
-        onRegenerate={handleRegenerate}
-      />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={handleTimestampChange}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Change Timestamp
+        </button>
+        <span className="text-sm text-gray-600">
+          Copied: {copied ? 'Yes' : 'No'}
+        </span>
+        <span className="text-sm text-gray-600">
+          Liked: {liked ? 'Yes' : 'No'}
+        </span>
+        <span className="text-sm text-gray-600">
+          Disliked: {disliked ? 'Yes' : 'No'}
+        </span>
+      </div>
 
-      {/* With copied state */}
-      <AnswerControlsBar
-        timestamp="15:45"
-        copied={true}
-        onCopy={handleCopy}
-        onLike={handleLike}
-        onDislike={handleDislike}
-        onRegenerate={handleRegenerate}
-      />
+      <div className="border rounded-lg p-4 bg-white dark:bg-gray-800">
+        <p className="text-gray-700 dark:text-gray-300 mb-4">
+          This is a sample AI-generated answer that demonstrates the control bar functionality. 
+          You can copy, like, dislike, or regenerate this content using the controls below.
+        </p>
+        
+        <AnswerControlsBar
+          timestamp={timestamp}
+          copied={copied}
+          onCopy={handleCopy}
+          onLike={handleLike}
+          onDislike={handleDislike}
+          onRegenerate={handleRegenerate}
+        />
+      </div>
     </div>
   )
 }
@@ -76,24 +99,33 @@ export default function ControlsExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `timestamp` | `string` | `"00:00"` | Timestamp displayed on the left of the bar |
-| `copied` | `boolean` | `false` | If true, shows check icon instead of copy |
-| `onCopy` | `() => void` | - | Callback called when copy button is clicked |
-| `onLike` | `() => void` | - | Callback called when like button is clicked |
-| `onDislike` | `() => void` | - | Callback called when dislike button is clicked |
-| `onRegenerate` | `() => void` | - | Callback called when regenerate button is clicked |
+| `timestamp` | `string` | `"00:00"` | Timestamp displayed on the left side |
+| `copied` | `boolean` | `false` | Whether the content has been copied |
+| `onCopy` | `() => void` | `undefined` | Callback when copy button is clicked |
+| `onLike` | `() => void` | `undefined` | Callback when like button is clicked |
+| `onDislike` | `() => void` | `undefined` | Callback when dislike button is clicked |
+| `onRegenerate` | `() => void` | `undefined` | Callback when regenerate button is clicked |
+
+### Types
+
+```tsx
+interface AnswerControlsBarProps {
+  timestamp?: string
+  copied?: boolean
+  onCopy?: () => void
+  onLike?: () => void
+  onDislike?: () => void
+  onRegenerate?: () => void
+}
+```
 
 ## Features
 
-- **Basic actions** : Copy, like, dislike with visual feedback
-- **Copy state** : Icon change when content is copied
-- **Regeneration menu** : Dropdown with "With comment" and "Without comment" options
-- **Options menu** : Dropdown with "Report issue" and "Export to PDF"
-- **Responsive design** : Adaptation to different screen sizes
-- **Dark theme** : Complete dark mode support
-- **Accessibility** : Screen reader support and keyboard navigation
-- **Animations** : Smooth transitions for interactions
-
-## Usage
-
-The `AnswerControlsBar` component is typically used at the bottom of AI responses to provide interactive controls. It integrates perfectly with other components like `GeneratedAnswer` to provide a complete user experience. 
+- **Copy Functionality**: One-click copy with visual feedback and success state
+- **Like/Dislike System**: Interactive feedback system with toggle states
+- **Regenerate Option**: Quick regeneration with dropdown menu for additional options
+- **Timestamp Display**: Shows when the answer was generated
+- **Responsive Design**: Adapts to different screen sizes with mobile-friendly controls
+- **Dark Mode Support**: Full dark mode compatibility with appropriate styling
+- **Accessibility Focused**: Proper ARIA labels and keyboard navigation support
+- **Visual Feedback**: Clear visual states for all interactive elements 

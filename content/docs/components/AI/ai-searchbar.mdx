@@ -1,49 +1,99 @@
 ---
-title: "AI Searchbar"
-description: "Intelligent search bar component with animations and advanced interactions"
+title: "AI Search Bar"
+description: "Intelligent AI search bar with tool selection, model switching, and advanced submission capabilities"
 ---
 
 import AiSearchBar from '@/components/LY UI/AI/ai-searchbar'
+import { useState } from 'react'
 
 <Preview link="ai-searchbar">
-  <AiSearchBar 
+  <AiSearchBar
     placeholder="What can I help you with today?"
-    submitLoading={false}
+    variant="default"
+    className="w-full max-w-2xl"
   />
 </Preview>
-
-# AI Searchbar
-
-An intelligent search bar component with smooth animations and advanced interactions, including tool selection, model switching, and loading state management.
 
 ## Example
 
 ```tsx
-import { AiSearchbar } from '@/components/LY UI/AI/ai-searchbar'
+export default function AiSearchBarExample() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedTools, setSelectedTools] = useState<number[]>([])
+  const [thinkMode, setThinkMode] = useState(false)
+  const [selectedModel, setSelectedModel] = useState(0)
 
-export default function SearchExample() {
   const handleSubmit = (value: string, options: { 
     selectedTools: number[], 
     thinkMode: boolean, 
     selectedModel: number 
   }) => {
-    console.log('Search value:', value)
+    console.log('Submitted:', value)
     console.log('Selected tools:', options.selectedTools)
     console.log('Think mode:', options.thinkMode)
     console.log('Selected model:', options.selectedModel)
+    
+    setIsLoading(true)
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+  }
+
+  const handleChange = (value: string) => {
+    console.log('Input changed:', value)
+  }
+
+  const handleToolsChange = (tools: number[]) => {
+    setSelectedTools(tools)
+    console.log('Tools changed:', tools)
+  }
+
+  const handleThinkModeChange = (enabled: boolean) => {
+    setThinkMode(enabled)
+    console.log('Think mode:', enabled)
+  }
+
+  const handleModelChange = (modelIndex: number) => {
+    setSelectedModel(modelIndex)
+    console.log('Model changed:', modelIndex)
+  }
+
+  const handleStop = () => {
+    console.log('Operation stopped')
+    setIsLoading(false)
   }
 
   return (
-    <AiSearchbar
-      placeholder="What can I do for you?"
-      onSubmit={handleSubmit}
-      onChange={(value) => console.log('Input changed:', value)}
-      onToolsChange={(tools) => console.log('Tools changed:', tools)}
-      onThinkModeChange={(enabled) => console.log('Think mode:', enabled)}
-      onModelChange={(modelIndex) => console.log('Model changed:', modelIndex)}
-      submitLoading={false}
-      onStop={() => console.log('Stop requested')}
-    />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={() => setIsLoading(!isLoading)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          {isLoading ? 'Stop Loading' : 'Start Loading'}
+        </button>
+        <span className="text-sm text-gray-600">
+          Selected tools: {selectedTools.join(', ') || 'None'}
+        </span>
+        <span className="text-sm text-gray-600">
+          Think mode: {thinkMode ? 'On' : 'Off'}
+        </span>
+      </div>
+
+      <AiSearchBar
+        placeholder="Ask me anything about AI, coding, or design..."
+        variant="default"
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+        onToolsChange={handleToolsChange}
+        onThinkModeChange={handleThinkModeChange}
+        onModelChange={handleModelChange}
+        submitLoading={isLoading}
+        onStop={handleStop}
+        className="w-full max-w-2xl"
+      />
+    </div>
   )
 }
 ```
@@ -52,26 +102,48 @@ export default function SearchExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style of the search bar |
-| `placeholder` | `string` | `"What can I do for you?"` | Help text in the input field |
-| `onSubmit` | `(value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void` | - | Callback called on submission |
-| `onChange` | `(value: string) => void` | - | Callback called on text change |
-| `onToolsChange` | `(selectedTools: number[]) => void` | - | Callback called when selected tools change |
-| `onThinkModeChange` | `(isEnabled: boolean) => void` | - | Callback called when "think" mode changes |
-| `onModelChange` | `(modelIndex: number) => void` | - | Callback called when model changes |
-| `className` | `string` | - | Additional CSS classes |
-| `submitLoading` | `boolean` | `false` | If true, disables input and shows loading state |
-| `submitLoaderComponent` | `React.ReactNode` | - | Custom loader for submit button |
-| `onStop` | `() => void` | - | Callback to stop external operation |
-| `isStopped` | `boolean` | `false` | Boolean to signal if operation was stopped |
-| `onStoppedChange` | `(stopped: boolean) => void` | - | Callback called when user clicks stop |
+| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style variant of the search bar |
+| `placeholder` | `string` | `"What can I do for you?"` | Placeholder text for the input field |
+| `onSubmit` | `(value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void` | `undefined` | Callback when form is submitted |
+| `onChange` | `(value: string) => void` | `undefined` | Callback when input value changes |
+| `onToolsChange` | `(selectedTools: number[]) => void` | `undefined` | Callback when selected tools change |
+| `onThinkModeChange` | `(isEnabled: boolean) => void` | `undefined` | Callback when think mode is toggled |
+| `onModelChange` | `(modelIndex: number) => void` | `undefined` | Callback when AI model is changed |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `submitLoading` | `boolean` | `false` | Whether to show loading state and disable input |
+| `submitLoaderComponent` | `React.ReactNode` | `undefined` | Custom loader component for submit button |
+| `onStop` | `() => void` | `undefined` | Callback to stop external operations |
+| `isStopped` | `boolean` | `false` | External control for stopped state |
+| `onStoppedChange` | `(stopped: boolean) => void` | `undefined` | Callback when stop state changes |
+
+### Types
+
+```tsx
+type AI_SearchBarProps = {
+  variant?: "default" | "ghost" | "outline"
+  placeholder?: string
+  onSubmit?: (value: string, options: { selectedTools: number[], thinkMode: boolean, selectedModel: number }) => void
+  onChange?: (value: string) => void
+  onToolsChange?: (selectedTools: number[]) => void
+  onThinkModeChange?: (isEnabled: boolean) => void
+  onModelChange?: (modelIndex: number) => void
+  className?: string
+  submitLoading?: boolean
+  submitLoaderComponent?: React.ReactNode
+  onStop?: () => void
+  isStopped?: boolean
+  onStoppedChange?: (stopped: boolean) => void
+}
+```
 
 ## Features
 
-- **Smooth animation** : Smooth transitions during input
-- **Tool selection** : Interface to select available AI tools
-- **Model switching** : Selection between different AI models (GPT-4, Claude-3, etc.)
-- **Think mode** : Activation of advanced thinking mode
-- **State management** : Support for loading and stop states
-- **Accessibility** : Complete screen reader support
-- **Responsive** : Adapts to all screen sizes
+- **Intelligent Tool Selection**: Choose from multiple AI tools including web search, image generation, and code interpretation
+- **Model Switching**: Switch between different AI models (GPT-4, GPT-3.5, Claude-3, Llama-2, Mistral-7B)
+- **Think Mode**: Enable advanced reasoning mode for complex queries
+- **Real-time Input Handling**: Responsive textarea with auto-resize and typing indicators
+- **Loading States**: Built-in loading states with custom loader support
+- **Stop Functionality**: Ability to stop ongoing operations with external control
+- **Responsive Design**: Adapts to different screen sizes with mobile-friendly interface
+- **Dark Mode Support**: Full dark mode compatibility with proper color schemes
+- **Accessibility Focused**: Keyboard navigation and screen reader support

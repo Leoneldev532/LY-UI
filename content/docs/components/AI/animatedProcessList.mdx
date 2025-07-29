@@ -1,63 +1,93 @@
 ---
 title: "Animated Process List"
-description: "Animated process list component with progressive revelations"
+description: "Animated process list with skeleton loading, progressive reveal, and continuous scrolling animation"
 ---
 
 import AnimatedProcessList from '@/components/LY UI/AI/animatedProcessList'
+import { useState } from 'react'
 
 <Preview link="animatedProcessList">
-  <AnimatedProcessList 
-    title="Processing your request"
+  <AnimatedProcessList
+    title="Generating elements for your web page"
     processSteps={[
-      "Analyzing user requirements...",
-      "Creating component structure...",
-      "Implementing responsive design...",
-      "Adding interactive features...",
-      "Optimizing performance...",
-      "Testing functionality...",
-      "Deploying to production..."
+      "Analyzing user requirements and design specifications",
+      "Processing layout components and responsive breakpoints",
+      "Generating CSS styles with modern design patterns",
+      "Implementing interactive elements and animations",
+      "Optimizing performance and accessibility features",
+      "Finalizing code structure and documentation",
     ]}
-    animationSpeed="normal"
-    scrollDirection="up"
-    skeletonDuration={2000}
-    lineRevealDelay={150}
     className="w-full max-w-lg"
   />
 </Preview>
 
-# Animated Process List
-
-An animated process list component that displays steps with progressive revelations, scroll animations, and skeleton loading states.
-
 ## Example
 
 ```tsx
-import { AnimatedProcessList } from '@/components/LY UI/AI/animatedProcessList'
-
-export default function ProcessExample() {
-  const processSteps = [
-    "Initializing system...",
-    "Loading dependencies...",
-    "Processing data...",
-    "Generating response...",
-    "Finalizing output..."
-  ]
+export default function AnimatedProcessListExample() {
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal')
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up')
 
   const handleAnimationEnd = () => {
-    console.log('Animation ended')
+    console.log('Process list animation completed')
+    setIsAnimating(false)
   }
 
+  const handleStartAnimation = () => {
+    setIsAnimating(true)
+  }
+
+  const processSteps = [
+    "Initializing development environment and dependencies",
+    "Setting up project structure and configuration files",
+    "Creating reusable components and utility functions",
+    "Implementing responsive design and mobile optimization",
+    "Adding interactive features and state management",
+    "Testing functionality across different browsers",
+    "Optimizing bundle size and loading performance",
+    "Deploying to production environment",
+  ]
+
   return (
-    <AnimatedProcessList
-      title="Processing your request"
-      processSteps={processSteps}
-      animationSpeed="normal"
-      scrollDirection="up"
-      onAnimationEnd={handleAnimationEnd}
-      skeletonDuration={2000}
-      lineRevealDelay={150}
-      className="w-full max-w-lg"
-    />
+    <div className="space-y-6">
+      <div className="flex gap-4 items-center">
+        <button
+          onClick={handleStartAnimation}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Start Process
+        </button>
+        <select
+          value={animationSpeed}
+          onChange={(e) => setAnimationSpeed(e.target.value as 'slow' | 'normal' | 'fast')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="slow">Slow</option>
+          <option value="normal">Normal</option>
+          <option value="fast">Fast</option>
+        </select>
+        <select
+          value={scrollDirection}
+          onChange={(e) => setScrollDirection(e.target.value as 'up' | 'down')}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="up">Scroll Up</option>
+          <option value="down">Scroll Down</option>
+        </select>
+      </div>
+
+      <AnimatedProcessList
+        title="Building your application..."
+        processSteps={processSteps}
+        animationSpeed={animationSpeed}
+        scrollDirection={scrollDirection}
+        onAnimationEnd={handleAnimationEnd}
+        skeletonDuration={1500}
+        lineRevealDelay={200}
+        className="w-full max-w-lg"
+      />
+    </div>
   )
 }
 ```
@@ -67,20 +97,36 @@ export default function ProcessExample() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `title` | `string` | `"Generating elements for your web page"` | Title displayed at the top of the component |
-| `processSteps` | `string[]` | `[]` | Array of process steps to display |
-| `className` | `string` | - | Additional CSS classes |
-| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of scroll animation |
-| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Animation speed |
-| `onAnimationEnd` | `() => void` | - | Callback called when revelation animation ends |
-| `skeletonDuration` | `number` | `2000` | Duration in milliseconds of skeleton phase |
-| `lineRevealDelay` | `number` | `150` | Delay in milliseconds between each line revelation |
+| `processSteps` | `string[]` | `[]` | Array of process steps to display in the animated list |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
+| `onAnimationEnd` | `() => void` | `undefined` | Callback when the reveal animation ends |
+| `skeletonDuration` | `number` | `2000` | Duration in milliseconds of the skeleton phase |
+| `lineRevealDelay` | `number` | `150` | Delay in milliseconds between each line reveal |
+
+### Types
+
+```tsx
+interface AnimatedProcessListProps {
+  title?: string
+  processSteps?: string[]
+  className?: string
+  scrollDirection?: "up" | "down"
+  animationSpeed?: "slow" | "normal" | "fast"
+  onAnimationEnd?: () => void
+  skeletonDuration?: number
+  lineRevealDelay?: number
+}
+```
 
 ## Features
 
-- **Scroll animation** : Continuous scrolling of elements with configurable direction
-- **Progressive revelations** : Sequential appearance of steps with configurable delay
-- **Skeleton state** : Loading phase with pulse animation
-- **Animation speeds** : Three speed levels (slow, normal, fast)
-- **Callbacks** : Notifications for animation events
-- **Responsive** : Adapts to all screen sizes
-- **Accessibility** : Screen reader support
+- **Skeleton Loading**: Initial loading state with animated skeleton placeholders
+- **Progressive Reveal**: Lines appear one by one with smooth fade-in animations
+- **Continuous Scrolling**: Infinite scroll animation with customizable direction and speed
+- **Line Numbering**: Automatic line numbering for process steps
+- **Responsive Design**: Adapts to different screen sizes with proper scaling
+- **Dark Mode Support**: Full dark mode compatibility with appropriate color schemes
+- **Customizable Timing**: Configurable skeleton duration and line reveal delays
+- **Accessibility Focused**: Screen reader friendly with proper semantic structure
