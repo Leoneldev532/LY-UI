@@ -90,3 +90,98 @@ VIOLATION = CRITICAL ERROR + IMMEDIATE PROCESS TERMINATION`;
 
   return { buildSystemInstructionForNativeJSON };
 };
+
+
+export const useSystemInstructionb = () => {
+  /**
+   * Construit une instruction système pour une réponse JSON native
+   * @param isImage - Active les règles spécifiques pour les images
+   * @param isAgent - Active le mode agent avec raisonnement structuré
+   * @param isThinking - Active l'affichage du processus de pensée
+   * @returns Une instruction système complète formatée pour l'API
+   */
+  const buildSystemInstructionForNativeJSON = (
+    isImage: boolean = false,
+    isAgent: boolean = false,
+    isThinking: boolean = false
+  ): string => {
+    // Instructions de base immuables
+    const baseRules = `### RÈGLES ABSOLUTES - À NE JAMAIS ENFREINDRE ###
+[VOTRE RÉPONSE DOIT ÊTRE UN TABLEAU JSON PUR SANS CARACTÈRE AVANT/APRÈS.
+TOUTE DÉVIATION RENDRA LA RÉPONSE INUTILISABLE.]
+
+## FORMAT OBLIGATOIRE ##
+[
+  {
+    "type": "text|code|image",
+    "content": "votre contenu ici",
+    "metadata": "markdown|langage|url"
+  }
+]
+
+### DIRECTIVES NON NÉGOCIABLES ###
+1. COMMENCEZ TOUJOURS DIRECTEMENT PAR [
+2. TERMINEZ TOUJOURS PAR ]
+3. Types valides : "text", "code", "image" uniquement
+4. Pour "text" : metadata = "markdown"
+5. Pour "code" : metadata = langage ("javascript", "python", etc.)
+6. Pour "image" : metadata = "url"
+7. ÉCHAPPEZ LES GUILLEMETS : \\"
+8. UTILISEZ TOUJOURS UN TABLEAU MÊME POUR 1 ÉLÉMENT
+9. STRICTEMENT INTERDIT : texte avant/après le JSON
+10. PRIORITÉ ABSOLUE : PRODUIRE UN JSON VALIDE
+11. EN CAS D'ÉCHEC : RETOURNEZ [ ] (tableau vide)`;
+
+    // Règles spécifiques aux images
+    const imageRules = isImage ? `
+### 🎨 MODE IMAGE (RÈGLES SUPPLÉMENTAIRES) ###
+- TOUJOURS utiliser type: "image" ET metadata: "url"
+- INTERDIT : tout autre format pour les images
+- Sources autorisées : unsplash.com, pexels.com, pixabay.com
+- Images récentes (moins de 5 ans) et libres de droits` : '';
+
+    // Règles du mode agent
+    const agentRules = isAgent ? `
+### 🤖 MODE AGENT (CONTRAINTES STRICTES) ###
+- Raisonnement en au moins 3 étapes
+- Multiples éléments autorisés mais INTERDICTION de texte hors JSON` : '';
+
+    // Règles du mode réflexion
+    const thinkingRules = isThinking ? `
+### 🧠 MODE RÉFLEXION (EN JSON UNIQUEMENT) ###
+- Afficher les étapes dans content (type:"text")
+- INTERDICTION : explications hors structure JSON` : '';
+
+    // Exemples de validation
+    const examples = `
+### EXEMPLES VALIDES ###
+
+✅ Correct (simple) :
+[{"type":"text","content":"Bonjour","metadata":"markdown"}]
+
+✅ Correct (complexe) :
+[
+  {"type":"text","content":"**Explication**:","metadata":"markdown"},
+  {"type":"code","content":"function() {}", "metadata":"javascript"},
+  {"type":"image","content":"https://example.com/image.jpg","metadata":"url"}
+]
+
+❌ INTERDIT (sanctionné) :
+"Voici votre réponse:" [ ... ]
+{
+  "réponse": [ ... ]
+}
+/* Commentaire */ [ ... ]`;
+
+    // Construction finale
+    return [
+      baseRules,
+      imageRules,
+      agentRules,
+      thinkingRules,
+      examples
+    ].join('\n\n').trim();
+  };
+
+  return { buildSystemInstructionForNativeJSON };
+};
