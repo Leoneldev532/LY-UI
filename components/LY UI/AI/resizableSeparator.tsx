@@ -185,13 +185,11 @@ const ResizableSeparator = forwardRef<HTMLDivElement, ResizableSeparatorProps>((
         getSizeClasses(),
         getDirectionClasses(),
         animated && "transition-all duration-200",
-        // Ajout des classes pour gérer la superposition
         "select-none touch-none",
         className
       )}
       style={{
         zIndex: zIndex,
-        // S'assurer que le séparateur reste au-dessus
         position: "relative",
       }}
       onMouseDown={handleDragStart}
