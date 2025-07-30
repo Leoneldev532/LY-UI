@@ -105,3 +105,37 @@ export type AnimationExecutor = (
   animationControl: ReturnType<typeof useAnimationControl>,
   onComplete: () => Promise<void>
 ) => void;
+
+
+
+
+export interface ChatState {
+  currentQuestion: string;
+  history: QA[];
+  loadingIdx: number | null;
+  isThinkingMode: boolean;
+  listToolsId: number[];
+}
+
+export interface AnimationConfig {
+  showAgent: boolean;
+  showThinking: boolean;
+  agentDuration: number;
+  thinkingDuration: number;
+}
+
+export interface ChatActions {
+  handleSubmit: (value: string) => Promise<void>;
+  handleStop: () => void;
+  setCurrentQuestion: (value: string) => void;
+  setHistory: (value: QA[] | ((prev: QA[]) => QA[])) => void;
+  setLoadingIdx: (value: number | null) => void;
+  setIsThinkingMode: (value: boolean) => void;
+  setListToolsId: (value: number[]) => void;
+}
+
+export interface ChatComputedValues {
+  isLoading: boolean;
+  hasHistory: boolean;
+  currentToolsConfig: ToolsConfig;
+}
