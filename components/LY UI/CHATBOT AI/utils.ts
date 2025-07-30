@@ -139,3 +139,5 @@ export interface ChatComputedValues {
   hasHistory: boolean;
   currentToolsConfig: ToolsConfig;
 }
+
+// ----------------------------------------------
