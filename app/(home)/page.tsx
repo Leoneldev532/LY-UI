@@ -14,17 +14,14 @@ import NewsLetter from "../components/newsletter";
 import ChatbotIA from "@/components/LY UI/CHATBOT AI/ChatbotIA";
 
 export default function HomePage() {
-  // Animation state for long lines
   const [linesExpanded, setLinesExpanded] = useState(false);
   const longLineRefs = useRef<(SVGPolygonElement | null)[]>([]);
   const animationValues = useRef<number[]>([]);
 
-  // Initialiser les valeurs d'animation
   useEffect(() => {
     animationValues.current = new Array(12).fill(0);
   }, []);
 
-  // Fonction pour recalculer les points du polygone
   const calculatePolygonPoints = (i: number, animValue: number) => {
     const angle = ((i * 360) / 96) * (Math.PI / 180);
     const center = 200;
@@ -61,7 +58,6 @@ export default function HomePage() {
     return `${tipInX},${tipInY} ${bx1},${by1} ${ex1},${ey1} ${tipOutX},${tipOutY} ${ex2},${ey2} ${bx2},${by2}`;
   };
 
-  // Animate with GSAP - correction pour synchronisation
   useEffect(() => {
     let direction: "expand" | "collapse" = "expand";
     let interval: NodeJS.Timeout | null = null;
@@ -77,46 +73,48 @@ export default function HomePage() {
           ease: "power2.inOut",
           onUpdate: function () {
             const targets = longLineRefs.current;
-            targets.forEach((target: SVGPolygonElement | null, index: number) => {
-              if (target) {
-                const timeline = this as unknown as gsap.core.Timeline;
-                const progress =
-                  typeof timeline.progress === "function"
-                    ? timeline.progress()
-                    : 0;
-                const totalDuration =
-                  typeof timeline.duration === "function"
-                    ? timeline.duration()
-                    : 1;
-                const staggerDelay = index * 0.05;
-                const currentTime = progress * totalDuration;
-                const elementStartTime = staggerDelay * totalDuration;
+            targets.forEach(
+              (target: SVGPolygonElement | null, index: number) => {
+                if (target) {
+                  const timeline = this as unknown as gsap.core.Timeline;
+                  const progress =
+                    typeof timeline.progress === "function"
+                      ? timeline.progress()
+                      : 0;
+                  const totalDuration =
+                    typeof timeline.duration === "function"
+                      ? timeline.duration()
+                      : 1;
+                  const staggerDelay = index * 0.05;
+                  const currentTime = progress * totalDuration;
+                  const elementStartTime = staggerDelay * totalDuration;
 
-                let elementProgress = Math.max(
-                  0,
-                  Math.min(
-                    1,
-                    (currentTime - elementStartTime) /
-                      (totalDuration - elementStartTime)
-                  )
-                );
+                  let elementProgress = Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      (currentTime - elementStartTime) /
+                        (totalDuration - elementStartTime)
+                    )
+                  );
 
-                if (elementProgress > 0) {
-                  elementProgress = toExpand
-                    ? elementProgress
-                    : 1 - elementProgress;
+                  if (elementProgress > 0) {
+                    elementProgress = toExpand
+                      ? elementProgress
+                      : 1 - elementProgress;
+                  }
+
+                  const originalIndex = index * 8;
+                  const points = calculatePolygonPoints(
+                    originalIndex,
+                    elementProgress
+                  );
+                  target.setAttribute("points", points);
+
+                  animationValues.current[index] = elementProgress;
                 }
-
-                const originalIndex = index * 8;
-                const points = calculatePolygonPoints(
-                  originalIndex,
-                  elementProgress
-                );
-                target.setAttribute("points", points);
-
-                animationValues.current[index] = elementProgress;
               }
-            });
+            );
           },
           onStart: () => setLinesExpanded(toExpand),
         });
@@ -141,11 +139,11 @@ export default function HomePage() {
     };
   }, []);
 
-
-
   return (
-    <main className="flex flex-col h-full relative justify-center text-center w-full bg-white 
-    dark:bg-black transition-colors duration-300">
+    <main
+      className="flex flex-col h-full relative justify-center text-center w-full bg-white 
+    dark:bg-black transition-colors duration-300"
+    >
       <div className="flex flex-col h-full gap-4 w-full justify-center items-center">
         <div className="relative flex items-center justify-center">
           <svg
@@ -171,7 +169,6 @@ export default function HomePage() {
                       longLineRefs.current[longLineIndex] = el;
                     }}
                     points={initialPoints}
-                    // dark:fill-white (dark mode), fill-neutral-400 (light mode)
                     className="fill-neutral-400 dark:fill-white transition-colors duration-300"
                   />
                 );
@@ -204,48 +201,55 @@ export default function HomePage() {
         <div className="flex flex-col gap-y-3 w-full border-y border-neutral-200 dark:border-neutral-700 justify-center items-center mt-4 transition-colors duration-300">
           <h2 className="text-3xl sm:text-3xl max-w-xl md:text-5xl m-0 p-0 font-medium text-customDarkTwo dark:text-white text-center text-balance transition-colors duration-300">
             Discover{" "}
-            <span className="text-neutral-400 dark:text-neutral-400">Free</span> UI{" "}
-            <span className="text-neutral-400 dark:text-neutral-400">Components</span> For Your Next{" "}
-            <span className="text-neutral-400 dark:text-neutral-400">AI Project</span>
+            <span className="text-neutral-400 dark:text-neutral-400">Free</span>{" "}
+            UI{" "}
+            <span className="text-neutral-400 dark:text-neutral-400">
+              Components
+            </span>{" "}
+            For Your Next{" "}
+            <span className="text-neutral-400 dark:text-neutral-400">
+              AI Project
+            </span>
           </h2>
         </div>
 
-       
-<Link
-  href="/docs"
-  className="relative mt-8 border rounded-2xl p-1 group ease duration-300 border-neutral-300 dark:border-white/20"
->
-  <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -top-1 -left-1 transition-colors duration-300"></span>
-  <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -top-1 -right-1 transition-colors duration-300"></span>
-  <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -bottom-1 -left-1 transition-colors duration-300"></span>
-  <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -bottom-1 -right-1 transition-colors duration-300"></span>
+        <Link
+          href="/docs"
+          className="relative mt-8 border rounded-2xl p-1 group ease duration-300 border-neutral-300 dark:border-white/20"
+        >
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -top-1 -left-1 transition-colors duration-300"></span>
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -top-1 -right-1 transition-colors duration-300"></span>
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -bottom-1 -left-1 transition-colors duration-300"></span>
+          <span className="pointer-events-none absolute w-1 h-1 bg-black dark:bg-white rounded-full -bottom-1 -right-1 transition-colors duration-300"></span>
 
-  <button className="flex gap-x-3 w-full justify-center items-center px-4 py-2 
+          <button
+            className="flex gap-x-3 w-full justify-center items-center px-4 py-2 
                    bg-customGrayTwo dark:bg-customDarkTwo 
                    border border-neutral-300 cursor-pointer dark:border-white/30 
                    text-customDarkTwo dark:text-white 
                    rounded-xl transition-colors duration-300
-                   group-hover:bg-neutral-100/40 group-hover:dark:bg-neutral-100/40">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
-      fill="none"
-      viewBox="0 0 103 109"
-    >
-      <path
-        className="stroke-black dark:stroke-white transition-colors duration-300"
-        strokeWidth="3"
-        d="m67.105 70.846-63.613 34.55c5.574-11.17 9.785-20.364 13.985-29.54 4.678-10.217 9.346-20.411 15.89-33.322L99.504 3.785zm-10.47-13.99c0 4.146-3.516 7.61-7.979 7.61s-7.978-3.464-7.978-7.61 3.515-7.61 7.978-7.61 7.979 3.463 7.979 7.61Zm3 0c0-5.915-4.972-10.61-10.979-10.61s-10.978 4.695-10.978 10.61 4.972 10.61 10.978 10.61c6.007 0 10.979-4.695 10.979-10.61Z"
-      ></path>
-    </svg>
-    <span>Explore components</span>
-  </button>
-</Link>
+                   group-hover:bg-neutral-100/40 group-hover:dark:bg-neutral-100/40"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              fill="none"
+              viewBox="0 0 103 109"
+            >
+              <path
+                className="stroke-black dark:stroke-white transition-colors duration-300"
+                strokeWidth="3"
+                d="m67.105 70.846-63.613 34.55c5.574-11.17 9.785-20.364 13.985-29.54 4.678-10.217 9.346-20.411 15.89-33.322L99.504 3.785zm-10.47-13.99c0 4.146-3.516 7.61-7.979 7.61s-7.978-3.464-7.978-7.61 3.515-7.61 7.978-7.61 7.979 3.463 7.979 7.61Zm3 0c0-5.915-4.972-10.61-10.979-10.61s-10.978 4.695-10.978 10.61 4.972 10.61 10.978 10.61c6.007 0 10.979-4.695 10.979-10.61Z"
+              ></path>
+            </svg>
+            <span>Explore components</span>
+          </button>
+        </Link>
 
         <div className="flex gap-3"></div>
 
-<div className="flex gap-x-3 py-4 justify-center items-center">
+        <div className="flex gap-x-3 py-4 justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 256 256"
@@ -373,17 +377,15 @@ export default function HomePage() {
               </h2>
               <div className="flex flex-col text-left py-4 justify-start items-start">
                 <p className="w-full text-left text-neutral-600 dark:text-neutral-500 transition-colors duration-300">
-                  Our library leverages cutting-edge CSS to deliver a seamless and
-                  enjoyable developer experience with modern UI components.
+                  Our library leverages cutting-edge CSS to deliver a seamless
+                  and enjoyable developer experience with modern UI components.
                 </p>
               </div>
             </div>
             <div className="w-full border-y group border-neutral-200 dark:border-neutral-700 flex justify-center items-center transition-colors duration-300">
               <div className="flex w-full md:flex-row flex-col max-w-3xl px-3 bg-gray-50/60 dark:bg-gray-200/10 gap-4 p-2 justify-start items-start transition-colors duration-300">
-                {/* ...cartes de composants... */}
-                <div
-                  className="w-full md:w-1/2 flex bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-gray-400/10 p-4 rounded-xl h-full transition-colors duration-300"
-                >
+               
+                <div className="w-full md:w-1/2 flex bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-gray-400/10 p-4 rounded-xl h-full transition-colors duration-300">
                   <div className="flex flex-col gap-3 justify-start items-start">
                     <div className="w-full flex gap-x-4 justify-center items-center">
                       <svg
@@ -422,7 +424,6 @@ export default function HomePage() {
                           fill="#D9D9D9"
                           d="M12 35a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
                         ></path>
-                        {/* Les cercles sont neutres, pas besoin de changer */}
                         <circle cx="14" cy="28" r="1" fill="#D9D9D9"></circle>
                         <circle cx="19" cy="24" r="1" fill="#D9D9D9"></circle>
                         <circle cx="25" cy="22" r="1" fill="#D9D9D9"></circle>
@@ -477,10 +478,12 @@ export default function HomePage() {
                         ></circle>
                       </svg>
                       <div className="flex flex-col w-full justify-start items-start gap-1">
-                        <h2 className="text-xl md:text-2xl text-customDarkTwo dark:text-white transition-colors duration-300">AI Components</h2>
+                        <h2 className="text-xl md:text-2xl text-customDarkTwo dark:text-white transition-colors duration-300">
+                          AI Components
+                        </h2>
                         <p className="text-sm text-balance text-neutral-600 dark:text-neutral-400 text-left transition-colors duration-300">
-                          Seamlessly add intelligent AI features to your UI for easy
-                          content generation and interaction.
+                          Seamlessly add intelligent AI features to your UI for
+                          easy content generation and interaction.
                         </p>
                       </div>
                     </div>
@@ -495,9 +498,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div
-                  className="w-full md:w-1/2 flex bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-gray-400/10 p-4 rounded-xl h-full transition-colors duration-300"
-                >
+                <div className="w-full md:w-1/2 flex bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-gray-400/10 p-4 rounded-xl h-full transition-colors duration-300">
                   <div className="flex flex-col gap-3 justify-start items-start">
                     <div className="w-full flex gap-x-4 justify-start items-start">
                       <svg
@@ -548,10 +549,12 @@ export default function HomePage() {
                         </defs>
                       </svg>
                       <div className="flex flex-col w-full justify-start items-start gap-2">
-                        <h2 className="text-xl md:text-2xl text-customDarkTwo dark:text-white transition-colors duration-300">Code Components</h2>
+                        <h2 className="text-xl md:text-2xl text-customDarkTwo dark:text-white transition-colors duration-300">
+                          Code Components
+                        </h2>
                         <p className="text-sm text-balance text-neutral-600 dark:text-neutral-400 text-left transition-colors duration-300">
-                          Streamline coding with pre-built, customizable code blocks
-                          for rapid development and editing.
+                          Streamline coding with pre-built, customizable code
+                          blocks for rapid development and editing.
                         </p>
                       </div>
                     </div>
@@ -572,20 +575,17 @@ export default function HomePage() {
 
         <div className="flex flex-col w-full justify-center items-center gap-x-4">
           <div className="flex max-w-3xl flex-col justify-start items-start w-full">
-            <h2 className="text-3xl px-4 text-left text-customDarkTwo dark:text-white transition-colors duration-300">Test Our AI Chatbot</h2>
+            <h2 className="text-3xl px-4 text-left text-customDarkTwo dark:text-white transition-colors duration-300">
+              Test Our AI Chatbot
+            </h2>
           </div>
-          <ChatbotIA/>
-          {/* <ChatbotIA /> */}
+          <ChatbotIA />
         </div>
 
         <div className="absolute sm:flex hidden w-full pointer-events-none justify-center h-full items-center">
           <div className="w-full max-w-[52rem] flex items-center justify-between h-full">
-            <div
-              className="w-8 h-full border-x border-neutral-200 dark:border-neutral-400/40 bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10 transition-colors duration-300"
-            ></div>
-            <div
-              className="w-8 h-full border-x border-neutral-200 dark:border-neutral-400/40 bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10 transition-colors duration-300"
-            ></div>
+            <div className="w-8 h-full border-x border-neutral-200 dark:border-neutral-400/40 bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10 transition-colors duration-300"></div>
+            <div className="w-8 h-full border-x border-neutral-200 dark:border-neutral-400/40 bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10 transition-colors duration-300"></div>
           </div>
         </div>
 
