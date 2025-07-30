@@ -63,6 +63,7 @@ const Header = () => {
         </Link>
         <div className="flex items-center gap-2">
         <Toggle 
+            className={` ${isDarkMode ? "dark:bg-neutral-300" : "bg-neutral-700"}`}
             checked={isDarkMode}
             onCheckedChange={handleThemeChange}
             themeToggle={true}
