@@ -2,12 +2,15 @@
 import { useSystemInstructionb } from "@/components/LY UI/CHATBOT AI/hooks/useSystemInstruction";
 import { NextResponse } from "next/server";
 
+// Configuration pour Vercel/Next.js - supprime les timeouts
+export const maxDuration = 300; // 5 minutes maximum pour Vercel Pro
+export const dynamic = 'force-dynamic';
 
 const DEFAULT_MODEL = "deepseek-ai/DeepSeek-V3";
 const API_URL = "https://api.together.xyz/v1/chat/completions";
 
 export async function POST(request: Request) {
-  // Handle CORS - these headers should be set via middleware instead
+  // Handle CORS - ces headers devraient être définis via middleware
   const headers = new Headers();
   headers.set("Access-Control-Allow-Origin", "*");
   headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -16,7 +19,7 @@ export async function POST(request: Request) {
   try {
     const { prompt, options = {} } = await request.json();
 
-    // Validate request body
+    // Valider le body de la requête
     if (!prompt) {
       return NextResponse.json(
         { error: "Prompt is required" },
@@ -36,7 +39,7 @@ export async function POST(request: Request) {
       options.isThinking || false
     );
 
-    // Prepare API request
+    // Préparer la requête API
     const requestBody = {
       model: DEFAULT_MODEL,
       messages: [
@@ -45,16 +48,17 @@ export async function POST(request: Request) {
       ],
       response_format: { type: "json_object" },
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: options.maxTokens || 4000, // Permet de personnaliser
       frequency_penalty: 0,
       presence_penalty: 0,
+      stream: options.stream || false, // Support du streaming pour les longues réponses
       ...(options.apiParams || {}),
     };
 
-    // Configure abort controller for timeout
-    const controller = new AbortController();
+    // SUPPRIMÉ: AbortController et timeout
+    // Pas de limitation de durée côté client
 
-    // Execute API call
+    // Exécuter l'appel API sans timeout
     const apiResponse = await fetch(API_URL, {
       method: "POST",
       headers: {
@@ -63,11 +67,10 @@ export async function POST(request: Request) {
         Accept: "application/json",
       },
       body: JSON.stringify(requestBody),
-      signal: controller.signal,
+      // SUPPRIMÉ: signal: controller.signal
     });
 
-
-    // Handle API errors
+    // Gérer les erreurs API
     if (!apiResponse.ok) {
       const errorData = await apiResponse.json().catch(() => null);
       const statusCode = apiResponse.status;
@@ -84,15 +87,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Process successful response
+    // Traiter la réponse réussie
     const responseData = await apiResponse.json();
    
     if (!responseData) {
       throw new Error("Received empty response from AI");
     }
 
-
-    // Return formatted response
+    // Retourner la réponse formatée
     return NextResponse.json(
       {
         content: responseData,
@@ -109,10 +111,7 @@ export async function POST(request: Request) {
 
     if (error instanceof Error) {
       errorMessage = error.message;
-      if (error.name === "AbortError") {
-        statusCode = 504;
-        errorMessage = "Request timeout";
-      }
+      // SUPPRIMÉ: Gestion de AbortError
     }
 
     return NextResponse.json(
@@ -127,7 +126,7 @@ export async function POST(request: Request) {
   }
 }
 
-// Handle OPTIONS method for CORS preflight
+// Gérer la méthode OPTIONS pour CORS preflight
 export async function OPTIONS() {
   const headers = new Headers();
   headers.set("Access-Control-Allow-Origin", "*");
