@@ -63,7 +63,7 @@ const SafeSequentialRenderer: React.FC<SafeSequentialRendererProps> = ({
       {renderedItems}
 
       {isAllComplete && (
-        <div className="mt-4 sticky bottom-4 z-10">
+        <div className="mt-4  z-10">
           <AnswerControlsBar
             timestamp={getCurrentTimeString()}
             copied={copied}
