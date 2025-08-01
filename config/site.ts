@@ -1,7 +1,7 @@
 export const siteConfig = {
     name: "LY UI",
-    url: "https://ly-ui.vercel.app",
-    ogImage: "https://ly-ui.vercel.app/og.jpg",
+    url: "https://ly-ui.dev",
+    ogImage: "https://ly-ui.dev/og.jpg",
     description:
         "Explore LY UI: a collection of sleek, intuitive React components designed for modern interfaces. Enjoy streamlined design, effortless integration, and comprehensive documentation.",
     links: {

@@ -8,8 +8,10 @@ import PatternLayout from '../components/patternLayout';
 
 export const metadata: Metadata = {
   title: {
-      template: "%s | LY  UI - Open Source Components",
-      default: "LY  UI - Open Source Components",
+      // template: "%s | LY  UI - Open Source Components",
+      // default: "LY  UI - Open Source Components",
+      template: "%s | LY UI - Build Quickly",
+      default: "LY UI - Build Quickly",
   },
 };
 

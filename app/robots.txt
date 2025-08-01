@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: https://ly-ui.vercel.app/sitemap.xml
+Sitemap: https://ly-ui.dev/sitemap.xml

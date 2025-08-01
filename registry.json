@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "ly-ui",
-  "homepage": "https://ly-ui.leonelyimga.com",
+  "homepage": "https://ly-ui.dev",
   "items": [
     {
       "name": "AiSearchbar",
@@ -73,22 +73,7 @@
         }
       ]
     },
-    {
-      "name": "AnimatedProcessList",
-      "type": "registry:component",
-      "title": "Custom Animated process List",
-      "dependencies": [
-        "lucide-react",
-        "react"
-      ],
-      "description": "Custom process List ",
-      "files": [
-        {
-          "path": "components/LY UI/AI/animatedProcessList.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
+    
     {
       "name": "ParticleAnimation",
       "type": "registry:component",
@@ -215,7 +200,7 @@
       ]
     },
     {
-      "name": "EditableQuestion",
+      "name": "editableQuestion",
       "type": "registry:component",
       "title": "Editable Question",
       "registryDependencies": [
@@ -244,7 +229,7 @@
       ]
     },
     {
-      "name": "GeneratedImageCard",
+      "name": "generatedImageCard",
       "type": "registry:component",
       "title": "Generated Image Card",
       "registryDependencies": [
@@ -272,7 +257,7 @@
       ]
     },
     {
-      "name": "ResizeExample",
+      "name": "resizeExample",
       "type": "registry:component",
       "title": "resizable Example",
       "dependencies": [
@@ -291,7 +276,7 @@
       ]
     },
     {
-      "name": "AnimatedProcessListLovable",
+      "name": "animatedProcessListLovable",
       "type": "registry:component",
       "title": "animated Process List Lovable",
       "dependencies": [
@@ -311,7 +296,31 @@
       ]
     },
     {
-      "name": "CodeSection",
+      "name": "animatedCodeList",
+      "type": "registry:component",
+      "title": "animated Process List Lovable",
+      "dependencies": [
+        "react",
+        "lucide-react"
+      ],
+      "description": " Displays an AI-generated image in a styled card",
+      "files": [
+        {
+          "path": "components/hooks/useCodeListAnimation.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "components/LY UI/AI/animatedCodeList.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "codeSection",
       "type": "registry:component",
       "title": "Code Section",
       "dependencies": [

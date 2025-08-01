@@ -24,6 +24,11 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   applicationName: siteConfig.name,
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
   keywords: [
       "ui",
       "components",
@@ -54,6 +59,9 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${instrument.variable} ${inter.className}`} suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body className="flex flex-col min-h-screen">
         <Toaster/>
         <RootProvider  >{children}</RootProvider>

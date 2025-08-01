@@ -4,14 +4,17 @@ description: "Interactive tag button with dropdown support, smooth animations, a
 ---
 
 import TagButton from '@/components/LY UI/AI/tagButton'
-import { Settings, Code, Database, Palette } from 'lucide-react'
 
 <Preview link="tagButton">
+
   <TagButton
-    icon={<Settings className="w-4 h-4" />}
-    title="Configuration"
-    variant="default"
-    items={["General Settings", "Advanced Options", "User Preferences"]}
+    title="Programming Languages"
+    items={[
+      "React",
+      "TypeScript", 
+      "Tailwind",
+      "Next.js",
+    ]}
     className="w-full max-w-md"
   />
 </Preview>
@@ -21,31 +24,30 @@ import { Settings, Code, Database, Palette } from 'lucide-react'
 ```tsx
 export default function TagButtonExample() {
   const items = [
-    "Machine Learning",
-    "Deep Learning",
-    "Natural Language Processing",
-    "Computer Vision",
-    "Reinforcement Learning",
-    "Data Science",
-    "Generative AI",
-    "Speech Recognition",
-    "Recommendation Systems",
-    "Robotics"
+    "JavaScript",
+    "Python", 
+    "Java",
+    "C++",
+    "Go",
+    "Rust",
   ]
 
   const handleItemClick = (item: string) => {
     console.log('Selected item:', item)
   }
 
+  const handleClick = () => {
+    console.log('Button clicked')
+  }
+
   return (
     <TagButton
-      icon={<Code className="w-4 h-4" />}
-      title="AI Technologies"
-      items={items}
+      title="Programming Languages"
       variant="default"
-      selectedIcon="✓"
+      items={items}
       onItemClick={handleItemClick}
-      className="w-full max-w-md"
+      onClick={handleClick}
+      className="w-full"
     />
   )
 }
@@ -55,31 +57,28 @@ export default function TagButtonExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `icon` | `React.ReactNode` | `undefined` | Icon element to display in the button |
-| `title` | `string` | `undefined` | Main title text for the button |
-| `items` | `string[]` | `[]` | Array of string items to display in the dropdown |
+| `icon` | `ReactNode` | `undefined` | Icon to display next to the title |
+| `title` | `string` | `""` | Text displayed on the button |
 | `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Visual style variant of the button |
-| `selectedIcon` | `string` | `"✓"` | Icon to show for selected items |
+| `onClick` | `() => void` | `undefined` | Callback when the button is clicked |
+| `items` | `string[]` | `[]` | Array of items to display in the dropdown |
 | `onItemClick` | `(item: string) => void` | `undefined` | Callback when an item is clicked |
-| `className` | `string` | `undefined` | Additional CSS classes for styling |
 
 ### Types
 
 ```tsx
 interface TagButtonProps {
-  icon?: React.ReactNode
-  title?: string
-  items: string[]
-  variant?: "default" | "outline" | "ghost"
-  selectedIcon?: string
-  onItemClick?: (item: string) => void
-  className?: string
+  icon?: ReactNode;
+  title: string;
+  variant: "default" | "outline" | "ghost";
+  onClick?: () => void;
+  items?: string[];
+  onItemClick?: (item: string) => void;
 }
 ```
 
 ## Features
 
-- **Icon & Title Support**: Display custom icons and titles in the main button
 - **Dropdown Support**: Expandable dropdown with smooth animations
 - **Multiple Variants**: Default, outline, and ghost button styles
 - **Item Selection**: Click to select items with visual feedback

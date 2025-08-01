@@ -37,7 +37,6 @@ export const useItemRenderer = (
         return (
           <div key={key} className={wrapperClasses}>
             <CodeSection
-              maxHeight="400"
               autoHeight={true}
               progressiveMode={true}
               onComplete={handleItemComplete}

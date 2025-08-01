@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { source } from "@/lib/source";
 
-const BASE_URL = "https://ly-ui.vercel.app";
+const BASE_URL = "https://ly-ui.dev";
 
 function getPageUrl(slug?: string[]) {
   if (!slug || slug.length === 0) return `${BASE_URL}/docs`;

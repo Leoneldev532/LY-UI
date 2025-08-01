@@ -1,0 +1,122 @@
+---
+title: "Particle Animation"
+description: "Interactive particle animation with customizable orbits, colors, and animation controls"
+---
+
+import ParticleAnimation from '@/components/LY UI/AI/particleAnimation'
+
+<Preview link="particleAnimation">
+
+  <ParticleAnimation
+    width={300}
+    height={300}
+    numParticles={120}
+    minRadius={80}
+    maxRadius={140}
+    particleColor="#9CA3AF"
+    brightParticleColor="#FFFFFF"
+    className="w-full max-w-md"
+  />
+</Preview>
+
+## Example
+
+```tsx
+export default function ParticleAnimationExample() {
+  const animationRef = useRef<ParticleAnimationHandle>(null);
+
+  const handleStart = () => {
+    animationRef.current?.startAnimation();
+  };
+
+  const handlePause = () => {
+    animationRef.current?.pauseAnimation();
+  };
+
+  const handleResume = () => {
+    animationRef.current?.resumeAnimation();
+  };
+
+  const handleStop = () => {
+    animationRef.current?.stopAnimation();
+  };
+
+  return (
+    <div className="space-y-4">
+      <ParticleAnimation
+        width={400}
+        height={400}
+        numParticles={150}
+        minRadius={100}
+        maxRadius={180}
+        backgroundColor="rgba(0, 0, 0, 0.1)"
+        particleColor="#3B82F6"
+        brightParticleColor="#60A5FA"
+        showCenter={true}
+        showBorders={true}
+        className="w-full"
+        ref={animationRef}
+      />
+      
+      <div className="flex gap-2">
+        <button onClick={handleStart}>Start</button>
+        <button onClick={handlePause}>Pause</button>
+        <button onClick={handleResume}>Resume</button>
+        <button onClick={handleStop}>Stop</button>
+      </div>
+    </div>
+  )
+}
+```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `number` | `300` | Width of the animation container in pixels |
+| `height` | `number` | `300` | Height of the animation container in pixels |
+| `numParticles` | `number` | `120` | Number of particles to animate |
+| `minRadius` | `number` | `80` | Minimum orbit radius for particles |
+| `maxRadius` | `number` | `140` | Maximum orbit radius for particles |
+| `backgroundColor` | `string` | `'transparent'` | Background color of the container |
+| `particleColor` | `string` | `'#9CA3AF'` | Color of regular particles |
+| `brightParticleColor` | `string` | `'#FFFFFF'` | Color of bright particles |
+| `showCenter` | `boolean` | `false` | Show center point indicator |
+| `showBorders` | `boolean` | `false` | Show orbit border circles |
+| `className` | `string` | `''` | Additional CSS classes |
+
+### Types
+
+```tsx
+interface ParticleAnimationProps {
+  width?: number;
+  height?: number;
+  numParticles?: number;
+  minRadius?: number;
+  maxRadius?: number;
+  backgroundColor?: string;
+  particleColor?: string;
+  brightParticleColor?: string;
+  showCenter?: boolean;
+  showBorders?: boolean;
+  className?: string;
+}
+
+interface ParticleAnimationHandle {
+  startAnimation: () => void;
+  pauseAnimation: () => void;
+  resumeAnimation: () => void;
+  stopAnimation: () => void;
+}
+```
+
+## Features
+
+- **Orbital Animation**: Particles rotate around a central point with customizable orbits
+- **Pulse Effects**: Dynamic size and opacity changes for visual appeal
+- **Bright Particles**: Special bright particles with glow effects
+- **Animation Controls**: Start, pause, resume, and stop functionality via ref
+- **Dispersion Animation**: Initial spread animation when starting
+- **Customizable Colors**: Configurable particle and background colors
+- **Responsive Design**: Adapts to different container sizes
+- **Performance Optimized**: Efficient animation loop with requestAnimationFrame 

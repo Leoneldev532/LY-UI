@@ -1,0 +1,293 @@
+---
+title: "Animated Code List"
+description: "Animated list of code lines with skeleton loading, progressive reveal, continuous scrolling, and virtualization for large datasets, powered by a custom hook"
+---
+
+import AnimatedCodeList from '@/components/LY UI/AI/AnimatedCodeList'
+
+## Preview
+
+<Preview link="animatedCodeList">
+   <AnimatedCodeList
+      title="Generating code for your application"
+    codeLines={[
+        // Python: Fibonacci sequence
+        "def fibonacci(n):",
+        " if n<=1:return n",
+        " return fibonacci(n-1)+fibonacci(n-2)",
+        "",
+        "def quick_sort(arr):",
+        " if len(arr)<=1:return arr",
+        " pivot=arr[0]",
+        " left=[x for x in arr[1:] if x<pivot]",
+        " right=[x for x in arr[1:] if x>=pivot]",
+        " return quick_sort(left)+[pivot]+quick_sort(right)",
+        "",
+        "class DataProcessor:",
+        " def __init__(self,data):self.data=data",
+        " def process(self):return [x*2 for x in self.data]",
+        "",
+        "function sumArray(arr){return arr.reduce((a,v)=>a+v,0);}",
+        "",
+        "function processData(data){",
+        " const results=[];",
+        " for(let i=0;i<data.length;i++){",
+        "  const item=data[i];",
+        "  if(item.isValid){results.push(item.process());}",
+        " }",
+        " return results;",
+        "}",
+        "",
+        "const data=[",
+        " {id:1,isValid:true,process:()=>\"processed\"},",
+        " {id:2,isValid:false,process:()=>\"skipped\"},",
+        " {id:3,isValid:true,process:()=>\"processed\"},",
+        "];",
+        "",
+        "const result=processData(data);",
+        "console.log(result);//['processed','processed']",
+        "",
+        "numbers=[1,2,3,4,5]",
+        "processor=DataProcessor(numbers)",
+        "print(processor.process())#[2,4,6,8,10]",
+        "",
+        "sorted_numbers=quick_sort([5,2,9,1])",
+        "print(sorted_numbers)#[1,2,5,9]",
+        "",
+        "print(fibonacci(6))#8",
+          "def fibonacci(n):",
+        " if n<=1:return n",
+        " return fibonacci(n-1)+fibonacci(n-2)",
+        "",
+        "def quick_sort(arr):",
+        " if len(arr)<=1:return arr",
+        " pivot=arr[0]",
+        " left=[x for x in arr[1:] if x<pivot]",
+        " right=[x for x in arr[1:] if x>=pivot]",
+        " return quick_sort(left)+[pivot]+quick_sort(right)",
+        "",
+        "class DataProcessor:",
+        " def __init__(self,data):self.data=data",
+        " def process(self):return [x*2 for x in self.data]",
+        "",
+        "function sumArray(arr){return arr.reduce((a,v)=>a+v,0);}",
+        "",
+        "function processData(data){",
+        " const results=[];",
+        " for(let i=0;i<data.length;i++){",
+        "  const item=data[i];",
+        "  if(item.isValid){results.push(item.process());}",
+        " }",
+        " return results;",
+        "}",
+        "",
+        "const data=[",
+        " {id:1,isValid:true,process:()=>\"processed\"},",
+        " {id:2,isValid:false,process:()=>\"skipped\"},",
+        " {id:3,isValid:true,process:()=>\"processed\"},",
+        "];",
+        "",
+        "const result=processData(data);",
+        "console.log(result);//['processed','processed']",
+        "",
+        "numbers=[1,2,3,4,5]",
+        "processor=DataProcessor(numbers)",
+        "print(processor.process())#[2,4,6,8,10]",
+        "",
+        "sorted_numbers=quick_sort([5,2,9,1])",
+        "print(sorted_numbers)#[1,2,5,9]",
+        "",
+        "print(fibonacci(6))#8",
+          "def fibonacci(n):",
+        " if n<=1:return n",
+        " return fibonacci(n-1)+fibonacci(n-2)",
+        "",
+        "def quick_sort(arr):",
+        " if len(arr)<=1:return arr",
+        " pivot=arr[0]",
+        " left=[x for x in arr[1:] if x<pivot]",
+        " right=[x for x in arr[1:] if x>=pivot]",
+        " return quick_sort(left)+[pivot]+quick_sort(right)",
+        "",
+        "class DataProcessor:",
+        " def __init__(self,data):self.data=data",
+        " def process(self):return [x*2 for x in self.data]",
+        "",
+        "function sumArray(arr){return arr.reduce((a,v)=>a+v,0);}",
+        "",
+        "function processData(data){",
+        " const results=[];",
+        " for(let i=0;i<data.length;i++){",
+        "  const item=data[i];",
+        "  if(item.isValid){results.push(item.process());}",
+        " }",
+        " return results;",
+        "}",
+        "",
+        "const data=[",
+        " {id:1,isValid:true,process:()=>\"processed\"},",
+        " {id:2,isValid:false,process:()=>\"skipped\"},",
+        " {id:3,isValid:true,process:()=>\"processed\"},",
+        "];",
+        "",
+        "const result=processData(data);",
+        "console.log(result);//['processed','processed']",
+        "",
+        "numbers=[1,2,3,4,5]",
+        "processor=DataProcessor(numbers)",
+        "print(processor.process())#[2,4,6,8,10]",
+        "",
+        "sorted_numbers=quick_sort([5,2,9,1])",
+        "print(sorted_numbers)#[1,2,5,9]",
+        "",
+        "print(fibonacci(6))#8",
+          "def fibonacci(n):",
+        " if n<=1:return n",
+        " return fibonacci(n-1)+fibonacci(n-2)",
+        "",
+        "def quick_sort(arr):",
+        " if len(arr)<=1:return arr",
+        " pivot=arr[0]",
+        " left=[x for x in arr[1:] if x<pivot]",
+        " right=[x for x in arr[1:] if x>=pivot]",
+        " return quick_sort(left)+[pivot]+quick_sort(right)",
+        "",
+        "class DataProcessor:",
+        " def __init__(self,data):self.data=data",
+        " def process(self):return [x*2 for x in self.data]",
+        "",
+        "function sumArray(arr){return arr.reduce((a,v)=>a+v,0);}",
+        "",
+        "function processData(data){",
+        " const results=[];",
+        " for(let i=0;i<data.length;i++){",
+        "  const item=data[i];",
+        "  if(item.isValid){results.push(item.process());}",
+        " }",
+        " return results;",
+        "}",
+        "",
+        "const data=[",
+        " {id:1,isValid:true,process:()=>\"processed\"},",
+        " {id:2,isValid:false,process:()=>\"skipped\"},",
+        " {id:3,isValid:true,process:()=>\"processed\"},",
+        "];",
+        "",
+        "const result=processData(data);",
+        "console.log(result);//['processed','processed']",
+        "",
+        "numbers=[1,2,3,4,5]",
+        "processor=DataProcessor(numbers)",
+        "print(processor.process())#[2,4,6,8,10]",
+        "",
+        "sorted_numbers=quick_sort([5,2,9,1])",
+        "print(sorted_numbers)#[1,2,5,9]",
+        "",
+        "print(fibonacci(6))#8",
+    ]}
+
+    animationSpeed="slow"
+    scrollCadence="stepped"
+    startLineNumber={1}
+    className="w-full max-w-sm"
+  />
+   
+</Preview>
+
+## Example
+
+```tsx
+export default function AnimatedCodeListExample() {
+  const codeLines = [
+    "function processData(data) {",
+    "  const results = [];",
+    "  for (let i = 0; i < data.length; i++) {",
+    "    const item = data[i];",
+    "    if (item.isValid) {",
+    "      results.push(item.process());",
+    "    }",
+    "  }",
+    "  return results;",
+    "}",
+    "",
+    "// Example usage",
+    "const data = [",
+    "  { id: 1, isValid: true, process: () => 'processed' },",
+    "  { id: 2, isValid: false, process: () => 'skipped' },",
+    "  { id: 3, isValid: true, process: () => 'processed' },",
+    "];",
+    "",
+    "const result = processData(data);",
+    "console.log(result); // ['processed', 'processed']",
+  ];
+
+  const handleComplete = () => {
+    console.log('Code reveal completed');
+  };
+
+  return (
+    <AnimatedCodeList
+      title="Generating code for your application..."
+      codeLines={codeLines}
+      animationSpeed="normal"
+      scrollDirection="up"
+      scrollDuration={25000} // Custom 25 second duration
+      scrollCadence="stepped"
+      pauseDuration={1500}
+      skeletonDuration={2000}
+      lineRevealDelay={150}
+      containerHeight={288}
+      className="w-full max-w-lg"
+    />
+  );
+}
+```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | `"Generating code for your application"` | Title displayed at the top |
+| `codeLines` | `string[]` | `[]` | Array of code lines to display |
+| `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of the scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Animation speed (smooth mode uses much slower values) |
+| `scrollDuration` | `number` | `undefined` | Custom animation duration in milliseconds (overrides animationSpeed) |
+| `scrollCadence` | `"smooth" \| "stepped"` | `"smooth"` | Animation style: "smooth" for continuous infinite scroll, "stepped" for infinite stepped scroll |
+| `pauseDuration` | `number` | `200` | Pause duration between scroll steps in ms (only used with "stepped" cadence) |
+| `skeletonDuration` | `number` | `150` | Duration of skeleton phase in ms |
+| `lineRevealDelay` | `number` | `10` | Delay between each line reveal in ms |
+| `containerHeight` | `number` | `288` | Height of the container in pixels (18rem = 288px) |
+| `startLineNumber` | `number` | `1` | Starting line number for code display |
+
+### Types
+
+```tsx
+interface AnimatedCodeListProps {
+  title?: string;
+  codeLines?: string[];
+  className?: string;
+  scrollDirection?: "up" | "down";
+  animationSpeed?: "slow" | "normal" | "fast";
+  scrollDuration?: number;
+  scrollCadence?: "smooth" | "stepped";
+  pauseDuration?: number;
+  skeletonDuration?: number;
+  lineRevealDelay?: number;
+  containerHeight?: number;
+  startLineNumber?: number;
+}
+```
+
+## Features
+
+- **Skeleton Loading**: Animated placeholders during initial load.
+- **Progressive Reveal**: Code lines fade in one by one.
+- **Infinite Scrolling**: Both smooth and stepped modes loop infinitely for continuous code generation effect.
+- **Line Numbering**: Auto-numbered code lines, starting from 112.
+- **Responsive Design**: Scales for all screen sizes.
+- **Dark Mode Support**: Compatible color schemes.
+- **Customizable Timing**: Adjust skeleton, reveal, scroll, and pause durations.
+- **Accessibility**: Screen reader friendly with semantic structure.
+- **Virtualization**: Efficiently handles large datasets (e.g., hundreds or thousands of code lines) by rendering only visible items.
+- **Custom Hook**: Uses `useCodeListAnimation` for cleaner, reusable logic.

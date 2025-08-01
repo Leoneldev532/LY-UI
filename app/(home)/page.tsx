@@ -18,6 +18,9 @@ export default function HomePage() {
   const longLineRefs = useRef<(SVGPolygonElement | null)[]>([]);
   const animationValues = useRef<number[]>([]);
 
+  // For dynamic year
+  const currentYear = new Date().getFullYear();
+
   useEffect(() => {
     animationValues.current = new Array(12).fill(0);
   }, []);
@@ -597,14 +600,14 @@ export default function HomePage() {
 
         <div className="flex border-y border-neutral-200 dark:border-neutral-400/40 flex-col w-full justify-center items-center gap-x-4 pt-4 transition-colors duration-300">
           <div className="w-full px-4 flex justify-between items-center mb-8 max-w-3xl">
-            <Link href={"/"}>
+            <Link href={"https://leonelyimga.com"}>
               <div className="flex gap-x-2 text-sm text-neutral-500 dark:text-neutral-400/80 justify-start items-center transition-colors duration-300">
                 <div className="h-8 w-8 rounded-full bg-blue-700"></div>
                 <span>By Leonel Yimga</span>
               </div>
             </Link>
             <span className="text-sm text-neutral-500 dark:text-neutral-400/80 transition-colors duration-300">
-              Copyright © 2025 ly-ui.dev
+              Copyright © {currentYear} ly-ui.dev
             </span>
           </div>
         </div>

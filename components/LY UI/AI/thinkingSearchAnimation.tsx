@@ -13,6 +13,7 @@
  * @prop minParagraphLength - Minimum length for auto-generated paragraphs from streamingText.
  * @prop sentenceEndPattern - Pattern to split sentences for paragraph grouping in streamingText.
  */
+
 "use client";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "EditableQuestion",
+  "name": "editableQuestion",
   "type": "registry:component",
   "title": "Editable Question",
   "description": "Use it to manage space",

@@ -55,6 +55,7 @@ h1,h2,h3,h4,h5,h6{
   color: #fafafa;
 }
 
+
 /* === Headings === */
 .markdown-content h1,
 .markdown-content h2,
@@ -175,8 +176,8 @@ h1,h2,h3,h4,h5,h6{
 
 /* === Code and Preformatted Text === */
 .markdown-content code {
-  background-color: #18181b;
-  color: #d64b20;
+  background-color: #d83737;
+  color: white;
   padding: 0.18em 0.5em;
   border-radius: 0.25rem;
   font-family: "Fira Code", "Consolas", monospace;

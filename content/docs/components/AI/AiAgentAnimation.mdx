@@ -16,7 +16,57 @@ import AiAgentAnimationExample from '@/components/example/AiAgentAnimationExampl
 import AiAgentAnimation from '@/components/LY UI/AI/AiAgentAnimation'
 
 export default function AiAgentAnimationExample() {
-  return <AiAgentAnimation />
+
+  const [isRunning, setIsRunning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0);
+
+  const handleStart = () => {
+    console.log("Animation started");
+    setHasStarted(true);
+  };
+
+  const handleStop = () => {
+    console.log("Animation stopped");
+  };
+
+  const handleReset = () => {
+    setIsRunning(false);
+    setHasStarted(false);
+    setAnimationKey((prev) => prev + 1);
+    console.log("Animation reset");
+  };
+
+  const handleComplete = () => {
+    console.log("Animation completed");
+    setIsRunning(false);
+    setHasStarted(false);
+  };
+
+  const handleStartOrResume = () => {
+    setIsRunning(true);
+    if (!hasStarted) {
+      handleStart();
+    } else {
+      console.log("Animation resumed");
+    }
+  };
+
+  return <AiAgentAnimation
+        key={animationKey}
+        title="Agent Loading"
+        dotType="square"
+        className="w-1/2"
+        isRunning={isRunning}
+        onAnimationStart={handleStart}
+        onAnimationStop={handleStop}
+        onAnimationReset={handleReset}
+        onAnimationComplete={handleComplete}
+        rows={3}
+        // columns={45}
+        duration={40000}
+        pauseDuration={1000}
+      />
 }
 ```
 

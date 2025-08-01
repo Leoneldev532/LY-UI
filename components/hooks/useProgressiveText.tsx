@@ -1,65 +1,79 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+// File: components/hooks/useProgressiveText.ts
+"use client";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 export function useProgressiveText(
   text: string,
   isActive: boolean = false,
-  speed: number = 50
+  speed: number = 50 // Increased speed for visibility
 ) {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isWriting, setIsWriting] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
-  
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const indexRef = useRef(0);
-  const prevTextRef = useRef('');
-  const prevIsActiveRef = useRef(false);
+  const [displayedText, setDisplayedText] = useState<string>("");
+  const [isWriting, setIsWriting] = useState<boolean>(false);
+  const [isComplete, setIsComplete] = useState<boolean>(false);
 
-  // Stable speed value to prevent unnecessary effect re-runs
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const charIndexRef = useRef<number>(0);
+  const prevTextRef = useRef<string>("");
+  const prevIsActiveRef = useRef<boolean>(false);
+
   const stableSpeed = useMemo(() => Math.max(1, speed), [speed]);
 
-  // Reset when text or isActive changes
   useEffect(() => {
-    // Clear any existing interval first
+
+    if (typeof text !== "string") {
+      console.warn("useProgressiveText: 'text' must be a string");
+      setDisplayedText("");
+      setIsWriting(false);
+      setIsComplete(true);
+      return;
+    }
+
+    if (speed <= 0) {
+      console.warn("useProgressiveText: 'speed' must be greater than 0");
+      setDisplayedText(text);
+      setIsWriting(false);
+      setIsComplete(true);
+      return;
+    }
+
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
 
     if (!isActive) {
-      // If not active, show full text immediately
       setDisplayedText(text);
       setIsWriting(false);
       setIsComplete(true);
-      indexRef.current = text.length;
+      charIndexRef.current = text.length;
       prevTextRef.current = text;
       prevIsActiveRef.current = isActive;
       return;
     }
 
-    // Check if we need to restart the animation
-    const shouldRestart = 
-      prevTextRef.current !== text || 
+    const shouldRestart =
+      prevTextRef.current !== text ||
       prevIsActiveRef.current !== isActive ||
       isComplete;
 
     if (shouldRestart) {
-      // Reset for new progressive display
-      setDisplayedText('');
+      setDisplayedText("");
       setIsWriting(true);
       setIsComplete(false);
-      indexRef.current = 0;
-
+      charIndexRef.current = 0;
       prevTextRef.current = text;
       prevIsActiveRef.current = isActive;
 
-      // Start progressive text display
       if (text.length > 0) {
+        const characters = text.split("");
         intervalRef.current = setInterval(() => {
-          const currentIndex = indexRef.current;
-          const nextIndex = currentIndex + 1;
-          
-          if (nextIndex >= text.length) {
-            // Animation complete
+          const currentIndex = charIndexRef.current;
+        
+          if (currentIndex < characters.length) {
+            const currentText = characters.slice(0, currentIndex + 1).join("");
+            setDisplayedText(currentText);
+            charIndexRef.current = currentIndex + 1;
+          } else {
             if (intervalRef.current) {
               clearInterval(intervalRef.current);
               intervalRef.current = null;
@@ -67,32 +81,28 @@ export function useProgressiveText(
             setDisplayedText(text);
             setIsWriting(false);
             setIsComplete(true);
-            indexRef.current = text.length;
-          } else {
-            indexRef.current = nextIndex;
-            setDisplayedText(text.slice(0, nextIndex));
           }
         }, stableSpeed);
       } else {
-        // Empty text case
+        setDisplayedText("");
         setIsWriting(false);
         setIsComplete(true);
       }
     }
-  }, [text, isActive, stableSpeed, isComplete]);
 
-  // Cleanup on unmount
-  useEffect(() => {
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [text, isActive, stableSpeed, isComplete]);
 
-  return useMemo(() => ({
-    displayedText,
-    isWriting,
-    isComplete
-  }), [displayedText, isWriting, isComplete]);
+  return useMemo(
+    () => ({
+      displayedText,
+      isWriting,
+      isComplete,
+    }),
+    [displayedText, isWriting, isComplete]
+  );
 }
