@@ -8,45 +8,29 @@ import StepProgressTimeline from '@/components/LY UI/AI/stepProgressTimeline'
 <Preview link="stepProgressTimeline">
   <StepProgressTimeline
   externalStart={true}
-  initialTabListPage={[
-    {
-      step: 1,
-      namePage: "Question analysis",
-      numberOfTime: 2000,
-      status: "waiting...",
-    },
-    {
-      step: 2,
-      namePage: "Searching for reliable sources",
-      numberOfTime: 2500,
-      status: "waiting...",
-    },
-    {
-      step: 3,
-      namePage: "Generating the answer",
-      numberOfTime: 3000,
-      status: "waiting...",
-    },
-    {
-      step: 4,
-      namePage: "Validation & display",
-      numberOfTime: 2000,
-      status: "waiting...",
-    },
-  ]}/>
+  steps={[
+      { step: 1, stepName: "Initializing system", duration: 2000, status: "waiting..."  },
+      { step: 2, stepName: "Loading dependencies", duration: 3000, status: "waiting..."  },
+      { step: 3, stepName: "Processing request", duration: 2500, status: "waiting..." },
+      { step: 4, stepName: "Generating content", duration: 4000, status: "waiting..."  },
+      { step: 5, stepName: "Optimizing output", duration: 2000, status: "waiting..."  },
+      { step: 6, stepName: "Finalizing results", duration: 1500, status: "waiting..."  },
+    ]}
+  />
 </Preview>
 
 ## Example
 
 ```tsx
 export default function StepProgressTimelineExample() {
-  const steps = [
-    { step: 1, stepName: "Initializing system", duration: 2000, status: "waiting..."  },
-    { step: 2, stepName: "Loading dependencies", duration: 3000, status: "waiting..."  },
-    { step: 3, stepName: "Processing request", duration: 2500, status: "waiting..."  },
-    { step: 4, stepName: "Generating content", duration: 4000, status: "waiting..."  },
-    { step: 5, stepName: "Optimizing output", duration: 2000, status: "waiting..."   },
-    { step: 6, stepName: "Finalizing results", duration: 1500, status: "waiting..."   },
+
+const steps = [
+    { step: 1, stepName: "Initializing system", duration: 2000, status: "waiting..." as const },
+    { step: 2, stepName: "Loading dependencies", duration: 3000, status: "waiting..." as const },
+    { step: 3, stepName: "Processing request", duration: 2500, status: "waiting..." as const },
+    { step: 4, stepName: "Generating content", duration: 4000, status: "waiting..." as const },
+    { step: 5, stepName: "Optimizing output", duration: 2000, status: "waiting..." as const },
+    { step: 6, stepName: "Finalizing results", duration: 1500, status: "waiting..." as const },
   ]
 
   const handleGenerationStart = () => {
