@@ -1,9 +1,8 @@
 "use client";
 
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-
 
 export interface ToggleProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -57,22 +56,54 @@ const toggleThumbVariants = cva(
   }
 );
 
+// Hook pour la gestion du thème
+function useThemeToggle() {
+  const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
 
-function useThemeToggle(checked: boolean) {
   useEffect(() => {
     if (typeof window === "undefined") return;
-    
+
     // Appliquer le thème
-    if (checked) {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-    }
-  }, [checked]);
+    const applyTheme = (newTheme: 'light' | 'dark') => {
+      document.documentElement.classList.toggle("dark", newTheme === 'dark');
+      document.documentElement.classList.toggle("light", newTheme === 'light');
+      localStorage.setItem("theme", newTheme);
+      setTheme(newTheme);
+    };
+
+    // Détecter le thème système
+    const detectSystemTheme = () =>
+      window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light';
+
+    // Initialiser le thème
+    const savedTheme = localStorage.getItem("theme") as 'light' | 'dark' | null;
+    const initialTheme = savedTheme || detectSystemTheme();
+    applyTheme(initialTheme);
+
+    // Écouter les changements du thème système
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      const newSystemTheme = e.matches ? 'dark' : 'light';
+      // Appliquer le thème système seulement si aucun thème n'est explicitement sauvegardé
+      if (!localStorage.getItem("theme")) {
+        applyTheme(newSystemTheme);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+    return () => mediaQuery.removeEventListener("change", handleSystemThemeChange);
+  }, []);
+
+  // Fonction pour basculer le thème
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.classList.toggle("dark", newTheme === 'dark');
+    document.documentElement.classList.toggle("light", newTheme === 'light');
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
+  };
+
+  return { theme, toggleTheme };
 }
 
 const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
@@ -81,7 +112,7 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
       className,
       variant = "default",
       size = "md",
-      checked = false,
+      checked: controlledChecked,
       onCheckedChange,
       showLabel = false,
       label,
@@ -93,11 +124,30 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     },
     ref
   ) => {
-    useThemeToggle(themeToggle ? checked : false);
+    const { theme, toggleTheme } = useThemeToggle();
+    const [internalChecked, setInternalChecked] = useState(theme === 'dark');
+
+    // Synchroniser l'état interne avec le thème ou la prop checked
+    useEffect(() => {
+      if (themeToggle) {
+        setInternalChecked(theme === 'dark');
+      } else if (controlledChecked !== undefined) {
+        setInternalChecked(controlledChecked);
+      }
+    }, [theme, controlledChecked, themeToggle]);
 
     const handleClick = () => {
-      if (!disabled && !loading && onCheckedChange) {
-        onCheckedChange(!checked);
+      if (disabled || loading) return;
+
+      const newChecked = !internalChecked;
+      setInternalChecked(newChecked);
+
+      if (themeToggle) {
+        toggleTheme();
+      }
+
+      if (onCheckedChange) {
+        onCheckedChange(newChecked);
       }
     };
 
@@ -107,11 +157,11 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           ref={ref}
           type="button"
           role="switch"
-          aria-checked={checked}
+          aria-checked={internalChecked}
           disabled={disabled || loading}
           className={cn(
             toggleVariants({ variant, size }),
-            checked && "bg-neutral-900 dark:bg-neutral-100",
+            internalChecked && "bg-neutral-900 dark:bg-neutral-100",
             className
           )}
           onClick={handleClick}
@@ -121,12 +171,12 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           <span
             className={cn(
               toggleThumbVariants({ size }),
-              checked && "translate-x-full",
+              internalChecked && "translate-x-full",
               loading && "animate-pulse"
             )}
           >
             {icon && (
-              <div className="flex bg-black items-center justify-center w-full h-full">
+              <div className="flex items-center justify-center w-full h-full">
                 {icon}
               </div>
             )}
