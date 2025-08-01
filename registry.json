@@ -124,6 +124,10 @@
           "path": "components/LY UI/AI/generatedAnswer.tsx",
           "type": "registry:component"
         },
+           {
+          "path": "components/hooks/useProgressiveMarkdown.tsx",
+          "type": "registry:hook"
+        },
         {
           "path": "lib/utils.ts",
           "type": "registry:lib"
@@ -223,10 +227,7 @@
           "path": "components/LY UI/AI/GeneratedImageCard.tsx",
           "type": "registry:component"
         },
-         {
-          "path": "components/hooks/useProgressiveMarkdown.tsx",
-          "type": "registry:hook"
-        },
+      
         {
           "path": "lib/utils.ts",
           "type": "registry:lib"
