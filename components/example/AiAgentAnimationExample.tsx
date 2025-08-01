@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import AiAgentAnimation from "../LY UI/AI/AiAgentAnimation";
+import AiAgentAnimation from "../LY UI/AI/aiAgentAnimation";
 import { Button } from "../ui/button";
 
 export default function AiAgentAnimationExample() {

@@ -4,7 +4,7 @@ import { useMemoizedHistory } from "./hooks/useMemoizedHistory";
 import EditableQuestion from "../AI/editableQuestion";
 import AiSearchBar from "../AI/ai-searchbar";
 import { renderContentSequentially } from "./components/renderContentSequentially";
-import AiAgentAnimation from "../AI/AiAgentAnimation";
+import AiAgentAnimation from "../AI/aiAgentAnimation";
 import { QA } from "./utils";
 
 const ChatbotIA = () => {
