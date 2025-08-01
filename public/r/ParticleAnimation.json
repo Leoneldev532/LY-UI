@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "ParticleAnimation",
+  "name": "particleAnimation",
   "type": "registry:component",
   "title": "Particle Animation animation ",
   "description": "Particle Animation animation ",

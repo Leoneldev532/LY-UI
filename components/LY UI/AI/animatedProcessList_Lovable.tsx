@@ -38,7 +38,7 @@ const defaultStepIcons = [
 
 const LineListItem: React.FC<ProcessLine> = ({ icon, content }) => {
   return (
-    <div className="flex items-center justify-start gap-2 py-4 h-12 px-2 w-full rounded-lg">
+    <div className="flex items-center text-left justify-start gap-2 py-4 h-12 px-2 w-full rounded-lg">
       <span className="min-w-[2rem] flex items-center justify-center">{icon}</span>
       <p className="text-sm line-clamp-1 overflow-hidden text-ellipsis text-neutral-800 dark:text-gray-200">
         {content}

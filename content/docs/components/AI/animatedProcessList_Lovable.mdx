@@ -7,7 +7,18 @@ import AnimatedProcessList_Lovable from '@/components/LY UI/AI/animatedProcessLi
 import { CheckCircle, Settings, FileText, Paintbrush, Sparkles, Moon, Gauge } from 'lucide-react'
 
 <Preview link="animatedProcessListLovable">
-  <AnimatedProcessList_Lovable className=""
+  <AnimatedProcessList_Lovable
+    title="Spinning up preview..."
+    lines={[
+      { icon: <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />, content: "Analyzing the question and determining the most relevant approach for a comprehensive solution based on user intent and context." },
+      { icon: <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />, content: "Researching sources across multiple trusted databases and aggregating the most up-to-date information for accuracy." },
+      { icon: <FileText className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />, content: "Synthesizing information from various references to create a clear, concise, and actionable response tailored to your needs." },
+      { icon: <Paintbrush className="w-5 h-5 text-pink-600 dark:text-pink-400" />, content: "Verifying the answer for consistency, factual correctness, and alignment with best practices in the relevant domain." },
+      { icon: <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />, content: "Displaying the answer in a user-friendly format, ensuring readability and accessibility for all users." },
+      { icon: <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />, content: "Providing helpful suggestions and additional resources to further enhance your understanding and support your next steps." },
+      { icon: <Gauge className="w-5 h-5 text-orange-600 dark:text-orange-400" />, content: "Collecting feedback to continuously improve the quality and relevance of future responses for all users." },
+    ]}
+    className="w-full max-w-md"
   />
 </Preview>
 

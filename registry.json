@@ -75,7 +75,7 @@
     },
     
     {
-      "name": "ParticleAnimation",
+      "name": "particleAnimation",
       "type": "registry:component",
       "title": "Particle Animation animation ",
       "dependencies": [
