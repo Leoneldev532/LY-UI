@@ -3,7 +3,7 @@
   "name": "animatedProcessListLovable",
   "type": "registry:component",
   "title": "animated Process List Lovable",
-  "description": " Displays an AI-generated image in a styled card",
+  "description": "Displays an AI-generated image in a styled card",
   "dependencies": [
     "react",
     "lucide-react"

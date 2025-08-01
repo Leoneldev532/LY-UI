@@ -2,8 +2,8 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "particleAnimation",
   "type": "registry:component",
-  "title": "Particle Animation animation ",
-  "description": "Particle Animation animation ",
+  "title": "Particle Animation animation",
+  "description": "Particle Animation animation",
   "dependencies": [
     "react"
   ],

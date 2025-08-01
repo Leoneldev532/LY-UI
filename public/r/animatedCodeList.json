@@ -2,8 +2,8 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "animatedCodeList",
   "type": "registry:component",
-  "title": "animated Process List Lovable",
-  "description": " Displays an AI-generated image in a styled card",
+  "title": "animated Code List",
+  "description": "Displays an animated code list",
   "dependencies": [
     "react",
     "lucide-react"

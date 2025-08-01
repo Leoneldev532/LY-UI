@@ -2,13 +2,12 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "thinkingSearchAnimation",
   "type": "registry:component",
-  "title": " Thinking animation for intelligent search",
+  "title": "Thinking animation for intelligent search",
   "description": "Displays an AI-generated answer with animation",
   "dependencies": [
     "react",
     "lucide-react",
-    "class-variance-authority",
-    "@radix-ui/react-slot"
+    "class-variance-authority"
   ],
   "registryDependencies": [
     "button",
@@ -24,11 +23,6 @@
       "path": "components/hooks/useScrollYAnimation.ts",
       "content": "import { useEffect, useRef } from \"react\";\r\n\r\nconst useScrollYAnimation = (\r\n  content: string[],\r\n  scrollDirection: \"up\" | \"down\" = \"up\",\r\n  animationSpeed: \"slow\" | \"normal\" | \"fast\" = \"normal\",\r\n  callBackAnimationEnd?: () => void\r\n) => {\r\n  const contentRef = useRef<HTMLDivElement>(null);\r\n  const hasAnimated = useRef(false); // Track if animation has run\r\n\r\n  const handleAnimationEnd = () => {\r\n    if (contentRef.current) {\r\n      // Clear animation and reset transform to show all content\r\n      contentRef.current.style.animation = \"none\";\r\n      contentRef.current.style.transform = \"translateY(0)\";\r\n    }\r\n    callBackAnimationEnd?.();\r\n    hasAnimated.current = true; // Mark animation as complete\r\n  };\r\n\r\n  // Scroll speed in pixels per second\r\n  const speedConfig = {\r\n    slow: 50, // Slower\r\n    normal: 100, // Normal speed\r\n    fast: 200, // Faster\r\n  };\r\n\r\n  useEffect(() => {\r\n    const contentElement = contentRef.current;\r\n    if (contentElement && content.length > 0 && !hasAnimated.current) {\r\n      const containerHeight = contentElement.parentElement?.offsetHeight || 200; // Use parent container height\r\n      const contentHeight = contentElement.scrollHeight;\r\n      const scrollDistance = Math.max(0, contentHeight - containerHeight);\r\n\r\n      if (scrollDistance > 0) {\r\n        const speed = speedConfig[animationSpeed];\r\n        const duration = scrollDistance / speed;\r\n\r\n        // Apply animation based on scroll direction\r\n        if (scrollDirection === \"up\") {\r\n          contentElement.style.animation = `scrollUp ${duration}s linear forwards`;\r\n        } else {\r\n          contentElement.style.animation = `scrollDown ${duration}s linear forwards`;\r\n        }\r\n\r\n        // Add animationend event listener\r\n        contentElement.addEventListener(\"animationend\", handleAnimationEnd);\r\n\r\n        // Cleanup event listener on unmount\r\n        return () => {\r\n          contentElement.removeEventListener(\"animationend\", handleAnimationEnd);\r\n        };\r\n      } else {\r\n        // If content fits, reset styles and call callback\r\n        contentElement.style.animation = \"none\";\r\n        contentElement.style.transform = \"translateY(0)\";\r\n        callBackAnimationEnd?.();\r\n        hasAnimated.current = true;\r\n      }\r\n    }\r\n  }, [content, scrollDirection, animationSpeed, callBackAnimationEnd]);\r\n\r\n  return { contentRef, handleAnimationEnd };\r\n};\r\n\r\nexport default useScrollYAnimation;",
       "type": "registry:hook"
-    },
-    {
-      "path": "components/ui/button.tsx",
-      "content": "import * as React from \"react\";\r\nimport { Slot } from \"@radix-ui/react-slot\";\r\nimport { cva, type VariantProps } from \"class-variance-authority\";\r\n\r\nimport { cn, globalVariants } from \"@/lib/utils\";\r\n\r\nconst buttonVariants = cva(\r\n  \"inline-flex items-center justify-center  gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-white transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300 cursor-pointer\",\r\n  {\r\n    variants: {\r\n      variant: {\r\n        link: \"text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50\",\r\n        ...globalVariants.variant,\r\n      },\r\n      size: {\r\n        default: \"h-9 px-2.5 rounded-lg  py-0.5\",\r\n        sm: \"h-9 rounded-lg px-3\",\r\n        lg: \"h-11 rounded-lg px-8\",\r\n        icon: \"h-10 w-10\",\r\n      },\r\n    },\r\n    defaultVariants: {\r\n      variant: \"default\",\r\n      size: \"default\",\r\n    },\r\n  }\r\n);\r\n\r\nexport interface ButtonProps\r\n  extends React.ButtonHTMLAttributes<HTMLButtonElement>,\r\n    VariantProps<typeof buttonVariants> {\r\n  asChild?: boolean;\r\n}\r\n\r\nconst Button = React.forwardRef<HTMLButtonElement, ButtonProps>(\r\n  ({ className, variant, size, asChild = false, ...props }, ref) => {\r\n    const Comp = asChild ? Slot : \"button\";\r\n    return (\r\n      <Comp\r\n        className={cn(buttonVariants({ variant, size }), className)}\r\n        ref={ref}\r\n        {...props}\r\n      />\r\n    );\r\n  }\r\n);\r\nButton.displayName = \"Button\";\r\n\r\nexport { Button, buttonVariants };",
-      "type": "registry:ui"
     },
     {
       "path": "lib/utils.ts",
