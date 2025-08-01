@@ -564,7 +564,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant="none"
+                    variant="ghost"
                     className="flex items-center gap-1 h-8 pl-3 pr-2 text-xs
                      rounded-md dark:text-white hover:bg-neutral-200
                      dark:hover:bg-white/10
