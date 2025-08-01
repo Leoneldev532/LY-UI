@@ -1,6 +1,3 @@
-
-
-
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "ly-ui",
@@ -68,8 +65,7 @@
       "type": "registry:component",
       "title": "audio Interaction",
       "dependencies": [
-        "react",
-        "@radix-ui/react-slot"
+        "react"
       ],
       "registryDependencies": [
         "button"
@@ -134,8 +130,7 @@
       "dependencies": [
         "react",
         "lucide-react",
-        "class-variance-authority",
-        "@radix-ui/react-slot"
+        "class-variance-authority"
       ],
       "description": "Use it to manage space",
       "files": [
@@ -163,8 +158,7 @@
       ],
       "dependencies": [
         "react",
-        "lucide-react",
-        "@radix-ui/react-slot"
+        "lucide-react"
       ],
       "description": "Displays an AI-generated image in a styled card",
       "files": [
@@ -188,8 +182,7 @@
       "title": "AI Agent Animation",
       "dependencies": [
         "react",
-        "class-variance-authority",
-        "@radix-ui/react-slot"
+        "class-variance-authority"
       ],
       "registryDependencies": [
         "button",

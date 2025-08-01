@@ -5,8 +5,7 @@
   "title": "audio Interaction",
   "description": "audio interaction",
   "dependencies": [
-    "react",
-    "@radix-ui/react-slot"
+    "react"
   ],
   "registryDependencies": [
     "button"
