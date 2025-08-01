@@ -8,7 +8,8 @@
       "type": "registry:component",
       "title": "AI Search Bar",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority",
+        "@radix-ui/react-slot"
       ],
       "registryDependencies": [
         "button",
@@ -40,7 +41,8 @@
       "dependencies": [
         "react",
         "lucide-react",
-        "motion"
+        "motion",
+        "@radix-ui/react-slot"
       ],
       "description": "A customizable tag button component with icon support, dropdown support, and forwardRef integration.",
       "files": [
@@ -95,7 +97,8 @@
       "title": "audio Interaction ",
       "dependencies": [
         "react",
-        "button"
+        "button",
+        "@radix-ui/react-slot"
       ],
       "description": "audio interaction",
       "files": [
@@ -123,7 +126,8 @@
       "title": "generated Answer ",
       "dependencies": [
         "react",
-        "lucide-react"
+        "lucide-react",
+        "@radix-ui/react-slot"
       ],
       "registryDependencies": [
         "button",
@@ -152,7 +156,8 @@
       "dependencies": [
         "react",
         "lucide-react",
-        "class-variance-authority"
+        "class-variance-authority",
+        "@radix-ui/react-slot"
       ],
       "registryDependencies": [
         "button",
@@ -205,7 +210,8 @@
       "title": "Editable Question",
       "registryDependencies": [
         "button",
-        "textarea"
+        "textarea",
+        "@radix-ui/react-slot"
       ],
       "dependencies": [
         "react",
@@ -238,7 +244,8 @@
       ],
       "dependencies": [
         "react",
-        "lucide-react"
+        "lucide-react",
+        "@radix-ui/react-slot"
       ],
       "description": " Displays an AI-generated image in a styled card",
       "files": [
@@ -340,7 +347,8 @@
       "title": "AI Agent Animation",
       "dependencies": [
         "react",
-        "class-variance-authority"
+        "class-variance-authority",
+        "@radix-ui/react-slot"
       ],
       "registryDependencies": [
         "button",

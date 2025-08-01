@@ -6,7 +6,8 @@
   "description": " Displays an AI-generated image in a styled card",
   "dependencies": [
     "react",
-    "lucide-react"
+    "lucide-react",
+    "@radix-ui/react-slot"
   ],
   "registryDependencies": [
     "button",

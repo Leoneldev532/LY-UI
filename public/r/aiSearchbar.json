@@ -5,7 +5,8 @@
   "title": "AI Search Bar",
   "description": "Smart search bar",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority",
+    "@radix-ui/react-slot"
   ],
   "registryDependencies": [
     "button",

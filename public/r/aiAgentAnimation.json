@@ -6,7 +6,8 @@
   "description": "Animated agent progress bar with customizable dots, callbacks, and control.",
   "dependencies": [
     "react",
-    "class-variance-authority"
+    "class-variance-authority",
+    "@radix-ui/react-slot"
   ],
   "registryDependencies": [
     "button",
