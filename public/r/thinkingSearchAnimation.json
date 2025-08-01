@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "ThinkingSearchAnimation",
+  "name": "thinkingSearchAnimation",
   "type": "registry:component",
   "title": " Thinking animation for intelligent search",
   "description": "Displays an AI-generated answer with animation",

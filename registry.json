@@ -4,7 +4,7 @@
   "homepage": "https://ly-ui.dev",
   "items": [
     {
-      "name": "AiSearchbar",
+      "name": "aiSearchbar",
       "type": "registry:component",
       "title": "AI Search Bar",
       "dependencies": [
@@ -34,7 +34,7 @@
       ]
     },
     {
-      "name": "TagButton",
+      "name": "tagButton",
       "type": "registry:component",
       "title": "Tag Button",
       "dependencies": [
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "name": "StepProgressTimeline",
+      "name": "stepProgressTimeline",
       "type": "registry:component",
       "title": "Step Progress Timeline V0",
       "dependencies": [
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "name": "AudioInteraction",
+      "name": "audioInteraction",
       "type": "registry:component",
       "title": "audio Interaction ",
       "dependencies": [
@@ -118,7 +118,7 @@
       ]
     },
     {
-      "name": "GeneratedAnswer",
+      "name": "generatedAnswer",
       "type": "registry:component",
       "title": "generated Answer ",
       "dependencies": [
@@ -146,7 +146,7 @@
       ]
     },
     {
-      "name": "ThinkingSearchAnimation",
+      "name": "thinkingSearchAnimation",
       "type": "registry:component",
       "title": " Thinking animation for intelligent search",
       "dependencies": [
@@ -179,7 +179,7 @@
       ]
     },
     {
-      "name": "ResizableSeparator",
+      "name": "resizableSeparator",
       "type": "registry:component",
       "title": "Resizable Separator",
       "dependencies": [
@@ -335,7 +335,7 @@
       ]
     },
     {
-      "name": "AiAgentAnimation",
+      "name": "aiAgentAnimation",
       "type": "registry:component",
       "title": "AI Agent Animation",
       "dependencies": [

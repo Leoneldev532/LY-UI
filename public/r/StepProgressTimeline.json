@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "StepProgressTimeline",
+  "name": "stepProgressTimeline",
   "type": "registry:component",
   "title": "Step Progress Timeline V0",
   "description": "Custom Step Progress Timeline inspired by @V0",

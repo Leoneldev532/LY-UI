@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "AiAgentAnimation",
+  "name": "aiAgentAnimation",
   "type": "registry:component",
   "title": "AI Agent Animation",
   "description": "Animated agent progress bar with customizable dots, callbacks, and control.",

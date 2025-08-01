@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "AudioInteraction",
+  "name": "audioInteraction",
   "type": "registry:component",
   "title": "audio Interaction ",
   "description": "audio interaction",

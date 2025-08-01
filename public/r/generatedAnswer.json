@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "GeneratedAnswer",
+  "name": "generatedAnswer",
   "type": "registry:component",
   "title": "generated Answer ",
   "description": "Displays an AI-generated answer with animation",
