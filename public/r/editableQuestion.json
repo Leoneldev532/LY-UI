@@ -11,8 +11,7 @@
   ],
   "registryDependencies": [
     "button",
-    "textarea",
-    "@radix-ui/react-slot"
+    "textarea"
   ],
   "files": [
     {

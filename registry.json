@@ -210,8 +210,8 @@
       "title": "Editable Question",
       "registryDependencies": [
         "button",
-        "textarea",
-        "@radix-ui/react-slot"
+        "textarea"
+   
       ],
       "dependencies": [
         "react",
@@ -234,6 +234,7 @@
         }
       ]
     },
+    
     {
       "name": "generatedImageCard",
       "type": "registry:component",
