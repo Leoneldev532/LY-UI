@@ -70,6 +70,9 @@ const AiAgentAnimation = forwardRef<HTMLDivElement, AiAgentAnimationProps>(({
     onComplete: onAnimationComplete
   });
 
+  // --------------------------------------
+
+
   return (
     <div
       ref={ref}
