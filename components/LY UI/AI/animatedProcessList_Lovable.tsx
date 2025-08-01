@@ -166,6 +166,7 @@ const AnimatedProcessList_Lovable = forwardRef<HTMLDivElement, AnimatedProcessLi
         }
 
         .line-reveal {
+           width: 100%;
           animation: fadeInLine 0.3s ease-out forwards;
         }
 
