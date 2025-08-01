@@ -2,12 +2,14 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "audioInteraction",
   "type": "registry:component",
-  "title": "audio Interaction ",
+  "title": "audio Interaction",
   "description": "audio interaction",
   "dependencies": [
     "react",
-    "button",
     "@radix-ui/react-slot"
+  ],
+  "registryDependencies": [
+    "button"
   ],
   "files": [
     {

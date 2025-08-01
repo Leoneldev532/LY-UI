@@ -1,3 +1,6 @@
+
+
+
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "ly-ui",
@@ -61,44 +64,15 @@
       ]
     },
     {
-      "name": "stepProgressTimeline",
-      "type": "registry:component",
-      "title": "Step Progress Timeline V0",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "description": "Custom Step Progress Timeline inspired by @V0",
-      "files": [
-        {
-          "path": "components/LY UI/AI/stepProgressTimeline.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    
-    {
-      "name": "particleAnimation",
-      "type": "registry:component",
-      "title": "Particle Animation animation ",
-      "dependencies": [
-        "react"
-      ],
-      "description": "Particle Animation animation ",
-      "files": [
-        {
-          "path": "components/LY UI/AI/particleAnimation.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
       "name": "audioInteraction",
       "type": "registry:component",
-      "title": "audio Interaction ",
+      "title": "audio Interaction",
       "dependencies": [
         "react",
-        "button",
         "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [
+        "button"
       ],
       "description": "audio interaction",
       "files": [
@@ -123,7 +97,7 @@
     {
       "name": "generatedAnswer",
       "type": "registry:component",
-      "title": "generated Answer ",
+      "title": "generated Answer",
       "dependencies": [
         "react",
         "lucide-react",
@@ -150,73 +124,18 @@
       ]
     },
     {
-      "name": "thinkingSearchAnimation",
-      "type": "registry:component",
-      "title": " Thinking animation for intelligent search",
-      "dependencies": [
-        "react",
-        "lucide-react",
-        "class-variance-authority",
-        "@radix-ui/react-slot"
-      ],
-      "registryDependencies": [
-        "button",
-        "dropdown-menu"
-      ],
-      "description": "Displays an AI-generated answer with animation",
-      "files": [
-        {
-          "path": "components/LY UI/AI/thinkingSearchAnimation.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "components/hooks/useScrollYAnimation.ts",
-          "type": "registry:hook"
-        },
-        {
-          "path": "components/ui/button.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/utils.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
-      "name": "resizableSeparator",
-      "type": "registry:component",
-      "title": "Resizable Separator",
-      "dependencies": [
-        "react",
-        "lucide-react",
-        "class-variance-authority"
-      ],
-      "description": "Use it to manage space",
-      "files": [
-        {
-          "path": "components/LY UI/AI/resizableSeparator.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "lib/utils.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
       "name": "editableQuestion",
       "type": "registry:component",
       "title": "Editable Question",
       "registryDependencies": [
         "button",
         "textarea"
-   
       ],
       "dependencies": [
         "react",
         "lucide-react",
-        "class-variance-authority"
+        "class-variance-authority",
+        "@radix-ui/react-slot"
       ],
       "description": "Use it to manage space",
       "files": [
@@ -234,7 +153,6 @@
         }
       ]
     },
-    
     {
       "name": "generatedImageCard",
       "type": "registry:component",
@@ -248,7 +166,7 @@
         "lucide-react",
         "@radix-ui/react-slot"
       ],
-      "description": " Displays an AI-generated image in a styled card",
+      "description": "Displays an AI-generated image in a styled card",
       "files": [
         {
           "path": "components/LY UI/AI/GeneratedImageCard.tsx",
@@ -261,84 +179,6 @@
         {
           "path": "lib/utils.ts",
           "type": "registry:lib"
-        }
-      ]
-    },
-    {
-      "name": "resizeExample",
-      "type": "registry:component",
-      "title": "resizable Example",
-      "dependencies": [
-        "react"
-      ],
-      "description": " Displays an AI-generated image in a styled card",
-      "files": [
-        {
-          "path": "components/example/resizeExample.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "components/LY UI/AI/resizableSeparator.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
-      "name": "animatedProcessListLovable",
-      "type": "registry:component",
-      "title": "animated Process List Lovable",
-      "dependencies": [
-        "react",
-        "lucide-react"
-      ],
-      "description": " Displays an AI-generated image in a styled card",
-      "files": [
-        {
-          "path": "components/LY UI/AI/animatedProcessList_Lovable.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "lib/utils.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
-      "name": "animatedCodeList",
-      "type": "registry:component",
-      "title": "animated Process List Lovable",
-      "dependencies": [
-        "react",
-        "lucide-react"
-      ],
-      "description": " Displays an AI-generated image in a styled card",
-      "files": [
-        {
-          "path": "components/hooks/useCodeListAnimation.ts",
-          "type": "registry:hook"
-        },
-        {
-          "path": "components/LY UI/AI/animatedCodeList.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "lib/utils.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
-      "name": "codeSection",
-      "type": "registry:component",
-      "title": "Code Section",
-      "dependencies": [
-        "react"
-      ],
-      "description": "A section for displaying code snippets with optional syntax highlighting.",
-      "files": [
-        {
-          "path": "components/LY UI/CODING/codeSection.tsx",
-          "type": "registry:component"
         }
       ]
     },

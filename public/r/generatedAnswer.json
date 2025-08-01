@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "generatedAnswer",
   "type": "registry:component",
-  "title": "generated Answer ",
+  "title": "generated Answer",
   "description": "Displays an AI-generated answer with animation",
   "dependencies": [
     "react",

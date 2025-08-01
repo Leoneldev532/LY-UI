@@ -3,7 +3,7 @@
   "name": "generatedImageCard",
   "type": "registry:component",
   "title": "Generated Image Card",
-  "description": " Displays an AI-generated image in a styled card",
+  "description": "Displays an AI-generated image in a styled card",
   "dependencies": [
     "react",
     "lucide-react",
