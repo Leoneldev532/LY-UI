@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import { Circle, Pause, Play } from 'lucide-react';
 import ParticleAnimation, { ParticleAnimationHandle } from './particleAnimation';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 /**
  * AudioInteraction component.
@@ -14,12 +15,14 @@ import { Button } from '@/components/ui/button';
  * @prop onAudioStop - Callback when audio stops.
  * @prop onAudioPause - Callback when audio pauses.
  * @prop onAudioResume - Callback when audio resumes.
+ * @prop className - for your customs styles.
  */
 type AudioInteractionProps = {
   onAudioStart?: () => void;
   onAudioStop?: () => void;
   onAudioPause?: () => void;
   onAudioResume?: () => void;
+  className?: string;
 };
 
 type Status = 'idle' | 'playing' | 'paused';
@@ -29,6 +32,7 @@ const AudioInteraction = forwardRef<HTMLDivElement, AudioInteractionProps>(({
   onAudioStop,
   onAudioPause,
   onAudioResume,
+  className,
   ...props
 }, ref) => {
   const RefParticularAnimation = useRef<ParticleAnimationHandle>(null);
@@ -100,7 +104,7 @@ const AudioInteraction = forwardRef<HTMLDivElement, AudioInteractionProps>(({
   };
 
   return (
-    <div ref={ref} className="flex flex-col justify-center items-center gap-4 p-4" {...props}>
+    <div ref={ref} className={cn("flex flex-col justify-center items-center gap-4 p-4",className)} {...props}>
       <ParticleAnimation ref={RefParticularAnimation} />
       <div className="flex gap-2 justify-center items-center gap-x-4">
         {status === 'idle' && (

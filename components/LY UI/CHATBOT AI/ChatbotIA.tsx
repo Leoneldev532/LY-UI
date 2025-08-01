@@ -6,8 +6,7 @@ import AiSearchBar from "../AI/ai-searchbar";
 import { renderContentSequentially } from "./components/renderContentSequentially";
 
 import { QA } from "./utils";
-import AiAgentAnimation from "../AI/AiAgentAnimation";
-
+import AiAgentAnimation from "../AI/aiAgentAnimation";
 const ChatbotIA = () => {
   
   const {
