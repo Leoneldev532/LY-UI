@@ -1,54 +1,100 @@
 ---
-title: CodeSection
-description: A code display and editing component with copy, download, and customization options.
-component: true
-full: true
+title: "CodeSection"
+description: "A code display and editing component with copy, download, and customization options"
 ---
-import CodeSection from "@/components/LY UI/CODING/CodeSection"
+
+import CodeSection from '@/components/LY UI/CODING/CodeSection'
 
 <Preview link="CodeSection">
-  <CodeSection defaultLanguage="javascript"  height={140} defaultValue={`console.log('Hello World!')`} />
+  <CodeSection
+    defaultLanguage="javascript"
+    defaultValue={`console.log('Hello World!')`}
+    autoHeight={true}
+  />
 </Preview>
 
-## Description
-
-`CodeSection` is a React component for displaying and editing code with a modern interface based on Monaco Editor.
-
-It provides buttons to copy the code, download it, and customize the appearance.
-
-## Props
-
-| Prop              | Type      | Default         | Description                                              |
-|-------------------|-----------|-----------------|----------------------------------------------------------|
-| `height`          | `string`  | "90vh"          | Height of the editor                                     |
-| `maxHeight`       | `string`  | "80vh"          | Maximum height of the editor                             |
-| `minHeight`       | `string`  | "200px"         | Minimum height of the editor                             |
-| `defaultLanguage` | `string`  | "javascript"    | Code language (for syntax highlighting)                  |
-| `defaultValue`    | `string`  | "// some comment" | Default displayed code                                 |
-| `className`       | `string`  | ""              | Additional CSS classes                                   |
-| `isEditable`      | `boolean` | `true`           | Allows code editing                                      |
-| `variant`         | `"default" \| "outline" \| "ghost"` | "default" | Visual style of the container                            |
-| `processLoading`  | `boolean` | `false`          | Shows a loading/progressive writing effect               |
-| `progressiveMode` | `boolean` | `false`          | Enables progressive code writing animation               |
-| `onComplete`      | `() => void` | `undefined`     | Callback when progressive writing is complete            |
-| `autoHeight`      | `boolean` | `false`          | Automatically adjusts editor height to content           |
-
-## Interactive Behaviors
-
-- **Monaco Editor**: Full-featured code editor with syntax highlighting and editing.
-- **Copy/Download Buttons**: Copy code to clipboard or download as file, with visual feedback.
-- **Progressive Writing**: Optionally animates code appearance (progressiveMode/processLoading).
-- **AutoHeight**: Editor can auto-resize to fit content if `autoHeight` is enabled.
-- **Accessibility**: Fully keyboard accessible and screen-reader friendly.
-
-## Usage Example
+## Example
 
 ```tsx
-<CodeSection
-  height="400px"
-  defaultLanguage="python"
-  defaultValue={`def hello():\n    print('Hello, World!')`}
-  variant="outline"
-  autoHeight={true}
-/>
+export default function CodeSectionExample() {
+  const [codeValue, setCodeValue] = useState(`function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(10));`)
+
+  const handleComplete = () => {
+    console.log('Progressive writing completed')
+  }
+
+  const handleEditorChange = (value: string | undefined) => {
+    if (value) {
+      setCodeValue(value)
+      console.log('Code changed:', value)
+    }
+  }
+
+  return (
+    <CodeSection
+      maxHeight="500px"
+      defaultLanguage="javascript"
+      defaultValue={codeValue}
+      variant="outline"
+      autoHeight={true}
+      progressiveMode={true}
+      processLoading={true}
+      onComplete={handleComplete}
+      isEditable={true}
+      className="w-full max-w-2xl"
+    />
+  )
+}
 ```
+
+## Documentation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `height` | `string` | `"90vh"` | Height of the editor |
+| `maxHeight` | `string` | `"80vh"` | Maximum height of the editor |
+| `minHeight` | `string` | `"200px"` | Minimum height of the editor |
+| `defaultLanguage` | `string` | `"javascript"` | Code language (for syntax highlighting) |
+| `defaultValue` | `string` | `"// some comment"` | Default displayed code |
+| `className` | `string` | `""` | Additional CSS classes |
+| `isEditable` | `boolean` | `true` | Allows code editing |
+| `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Visual style of the container |
+| `processLoading` | `boolean` | `false` | Shows a loading/progressive writing effect |
+| `progressiveMode` | `boolean` | `false` | Enables progressive code writing animation |
+| `onComplete` | `() => void` | `undefined` | Callback when progressive writing is complete |
+| `autoHeight` | `boolean` | `false` | Automatically adjusts editor height to content |
+
+### Types
+
+```tsx
+interface CodeSectionProps {
+  height?: string
+  maxHeight?: string
+  minHeight?: string
+  defaultLanguage?: string
+  defaultValue?: string
+  className?: string
+  isEditable?: boolean
+  variant?: "default" | "outline" | "ghost"
+  processLoading?: boolean
+  progressiveMode?: boolean
+  onComplete?: () => void
+  autoHeight?: boolean
+}
+```
+
+## Features
+
+- **Monaco Editor Integration**: Full-featured code editor with syntax highlighting and editing capabilities
+- **Copy & Download**: Built-in buttons to copy code to clipboard or download as file with visual feedback
+- **Progressive Writing**: Animated code appearance with `progressiveMode` and `processLoading` options
+- **Auto Height**: Dynamic height adjustment based on content with `autoHeight` prop
+- **Visual Variants**: Three styling options - default, outline, and ghost variants
+- **Responsive Design**: Adapts to different screen sizes with proper container sizing
+- **Dark Mode Support**: Full dark mode compatibility with appropriate color schemes
+- **Accessibility Focused**: Keyboard navigation and screen reader friendly interface
