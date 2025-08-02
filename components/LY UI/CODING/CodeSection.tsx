@@ -24,6 +24,8 @@ const CodeSectionVariants = cva(
   }
 );
 
+
+
 interface CodeSectionProps {
   height?: string;
   maxHeight?: string;

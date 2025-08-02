@@ -6,7 +6,8 @@
   "description": "Displays an AI-generated answer with animation",
   "dependencies": [
     "react",
-    "lucide-react"
+    "lucide-react",
+    "marked"
   ],
   "registryDependencies": [
     "button",

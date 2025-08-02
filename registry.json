@@ -114,7 +114,8 @@
       "title": "generated Answer",
       "dependencies": [
         "react",
-        "lucide-react"
+        "lucide-react",
+        "marked"
       ],
       "registryDependencies": [
         "button",
