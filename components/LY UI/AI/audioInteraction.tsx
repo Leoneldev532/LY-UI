@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/button';
 
 /**
  * AudioInteraction component.
- * Audio interaction component for AI voice interactions.
- *
+ * Audio interaction component for AI voice interactions with particle animation and timer.
+ * ++++++++++++++++
  * Props:
- * @prop onAudioStart - Callback when audio starts.
- * @prop onAudioStop - Callback when audio stops.
- * @prop onAudioPause - Callback when audio pauses.
- * @prop onAudioResume - Callback when audio resumes.
+ * @prop onAudioStart - Callback function called when audio starts.
+ * @prop onAudioStop - Callback function called when audio stops.
+ * @prop onAudioPause - Callback function called when audio pauses.
+ * @prop onAudioResume - Callback function called when audio resumes.
  */
 type AudioInteractionProps = {
   onAudioStart?: () => void;

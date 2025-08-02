@@ -86,7 +86,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, StepProgressTimelineProp
     onGenerationStop?.();
   };
 
-  // Effet pour gérer l'arrêt externe
+  // Effect to handle external stop
   useEffect(() => {
     if (externalStop && isGenerating) {
       stopGeneration();
@@ -128,7 +128,7 @@ const StepProgressTimeline = forwardRef<HTMLDivElement, StepProgressTimelineProp
           );
         });
 
-        // Animer le connecteur après la complétion
+        // Animate connector after completion
         if (currentProcessing < steps.length - 1) {
           setTimeout(() => {
             setConnectorHeights((prev) => ({

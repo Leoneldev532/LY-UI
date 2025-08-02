@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import GeneratedAnswer from "../../AI/generatedAnswer";
 import CodeSection from "../../CODING/CodeSection";
-import AudioInteraction from "@/components/audioInteraction";
 import { RenderContentItem } from "../utils";
 import GeneratedImageCard from "../../AI/generatedImageCard";
+import AudioInteraction from "../../AI/audioInteraction";
 
 export const useItemRenderer = (
   item: RenderContentItem,

@@ -1,5 +1,13 @@
 "use client";
 
+/**
+ * @author: @lyui
+ * @description: Generated Answer component for displaying AI responses with progressive markdown rendering and interactive controls
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
 import React, { useState, useEffect, forwardRef, useCallback } from "react";
 import { Copy, Check, RotateCcw, MoreHorizontal, ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -37,14 +45,13 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
   onEndAnimation,
   onComplete,
   textSpeed = 30,
-  markdownMode = false,
   hideControls = false,
   ...props
 }, ref) => {
   const [copied, setCopied] = useState(false);
   const [hasCalledComplete, setHasCalledComplete] = useState(false);
 
-  const { displayedHTML, isWriting, isComplete } = useProgressiveMarkdown(
+  const { displayedHTML, isComplete } = useProgressiveMarkdown(
     content,
     isLoading,
     textSpeed
@@ -110,10 +117,9 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
 
       {showActionsBar && (
         <div className="w-full flex justify-between items-center">
-          <div>
+         
             <span className="text-sm text-neutral-400">{timestamp}</span>
-          </div>
-
+        
           <div className="flex gap-2">
             <Button
               className={cn(
@@ -200,5 +206,5 @@ const GeneratedAnswer = forwardRef<HTMLDivElement, GeneratedAnswerProps>(({
     </div>
   );
 });
-
+GeneratedAnswer.displayName = 'GeneratedAnswer';
 export default GeneratedAnswer;

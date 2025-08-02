@@ -1,8 +1,16 @@
 "use client"
 
+/**
+ * @author: @lyui
+ * @description: Particle Animation component for creating animated particle systems with configurable circular patterns and dispersion effects
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 
-// Interface pour définir les propriétés d'une particule
+// Interface to define particle properties
 interface Particle {
   id: number;
   angle: number;
@@ -17,8 +25,8 @@ interface Particle {
   isBright: boolean;
   pulsePhase: number;
   pulseSpeed: number;
-  transitionProgress: number; // Progression de l'animation de dispersion (0 à 1)
-  isInitialAnimation: boolean; // Indique si c'est l'animation initiale (dispersion)
+  transitionProgress: number; // Progress of dispersion animation (0 to 1)
+  isInitialAnimation: boolean; // Indicates if it's the initial animation (dispersion)
 }
 
 // Interface pour les props du composant
@@ -36,7 +44,7 @@ interface ParticleAnimationProps {
   className?: string;
 }
 
-// Interface pour les fonctions exposées via ref
+// Interface for functions exposed via ref
 export interface ParticleAnimationHandle {
   startAnimation: () => void;
   pauseAnimation: () => void;
@@ -47,7 +55,7 @@ export interface ParticleAnimationHandle {
 // Fonction d'interpolation easeOutQuad pour une transition fluide
 const easeOutQuad = (t: number): number => 1 - (1 - t) * (1 - t);
 
-// Composant d'animation des particules réutilisable
+// Reusable particle animation component
 const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationProps>(
   (
     {
@@ -81,8 +89,8 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
         return {
           id: i,
           angle,
-          radius: 0, // Particules démarrent au centre
-          startRadius: 0, // Rayon initial pour l'animation
+          radius: 0, // Particles start at center
+          startRadius: 0, // Initial radius for animation
           speed: 0.008 + Math.random() * 0.015,
           radiusSpeed: 0.0008 + Math.random() * 0.0015,
           baseRadius: radiusVariation,
@@ -100,13 +108,13 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
       setRender({});
     };
 
-    // Fonction pour réinitialiser l'animation de départ sur les particules existantes
+    // Function to reset initial animation on existing particles
     const resetToInitialAnimation = () => {
       particlesRef.current.forEach((particle: Particle) => {
         particle.radius = 0; // Remettre au centre
         particle.startRadius = 0;
         particle.transitionProgress = 0;
-        particle.isInitialAnimation = true; // Réactiver l'animation de dispersion
+        particle.isInitialAnimation = true; // Reactivate dispersion animation
       });
       setRender({});
     };
@@ -130,7 +138,7 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
             const easedProgress = easeOutQuad(particle.transitionProgress);
             particle.radius = particle.startRadius + (particle.baseRadius - particle.startRadius) * easedProgress;
             if (particle.transitionProgress >= 1) {
-              particle.isInitialAnimation = false; // Désactiver la dispersion après la fin
+              particle.isInitialAnimation = false; // Disable dispersion after completion
             }
           } else {
             // Animation normale (rotation et oscillation)
@@ -158,12 +166,12 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
       };
     }, [isRunning, minRadius, maxRadius]);
 
-    // Fonctions de contrôle de l'animation
+    // Animation control functions
     const startAnimation = () => {
       if (particlesRef.current.length === 0) {
-        initializeParticles(); // Créer de nouvelles particules avec dispersion
+        initializeParticles(); // Create new particles with dispersion
       } else {
-        resetToInitialAnimation(); // Réinitialiser l'animation de départ sur les particules existantes
+        resetToInitialAnimation(); // Reset initial animation on existing particles
       }
       setIsRunning(true);
     };
@@ -186,11 +194,11 @@ const ParticleAnimation = forwardRef<ParticleAnimationHandle, ParticleAnimationP
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
       }
-      particlesRef.current = []; // Réinitialiser les particules
+      particlesRef.current = []; // Reset particles
       setRender({});
     };
 
-    // Exposer les fonctions de contrôle via ref
+    // Expose control functions via ref
     useImperativeHandle(ref, () => ({
       startAnimation,
       pauseAnimation,

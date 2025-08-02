@@ -68,5 +68,5 @@ const AnimationStatus: React.FC<AnimationStatusProps> = ({
     </div>
   );
 };
-
+AnimationStatus.displayName = 'AnimationStatus';
 export default AnimationStatus;

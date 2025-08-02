@@ -1,4 +1,13 @@
 "use client"
+
+/**
+ * @author: @lyui
+ * @description: Animated Process List component for displaying animated process steps with skeleton loading and progressive revelation
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
 import { Loader } from "lucide-react"
 import type React from "react"
 import { useState, useEffect, useRef, forwardRef } from "react"
@@ -77,7 +86,7 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
     fast: "3s",
   }
 
-  // Initialisation et gestion du skeleton/révélation
+  // Initialization and management of skeleton/revelation
   useEffect(() => {
     setRevealedLines(new Array(processSteps.length).fill(false))
     setIsSkeletonPhase(true)
@@ -86,13 +95,13 @@ const AnimatedProcessList = forwardRef<HTMLDivElement, AnimatedProcessListProps>
     const skeletonTimer = setTimeout(() => {
       setIsSkeletonPhase(false)
 
-      // Révélation progressive des lignes
+      // Progressive line revelation
       const interval = setInterval(() => {
         setRevealedLines((prev) => {
           const nextIndex = prev.findIndex((revealed) => !revealed)
           if (nextIndex === -1) {
             clearInterval(interval)
-            // Démarrer l'animation après révélation complète
+            // Start animation after complete revelation
             setTimeout(() => setStartAnimation(true), 500)
             onAnimationEnd?.()
             return prev

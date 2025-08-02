@@ -98,5 +98,5 @@ const AnswerControlsBar: React.FC<AnswerControlsBarProps> = ({
     </div>
   );
 };
-
+AnswerControlsBar.displayName = 'AnswerControlsBar';
 export default AnswerControlsBar;

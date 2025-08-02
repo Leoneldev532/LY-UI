@@ -29,6 +29,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Checkbox } from "@/components/ui/checkbox";
 
 /**
+ * @author: @lyui
+ * @description: AI Search Bar component for intelligent search with tool selection, model switching, and advanced controls
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
+/**
  * AiSearchBar component.
  * Barre de recherche intelligente avec capacités IA, sélection d'outils, changement de modèle, soumission avancée et gestion du bouton stop/thème.
  *
@@ -59,8 +67,8 @@ type AI_SearchBarProps = {
   submitLoading?: boolean;
   submitLoaderComponent?: React.ReactNode;
   onStop?: () => void;
-  isStopped?: boolean; // Ajout: signal extérieur si l'opération a été stoppée
-  onStoppedChange?: (stopped: boolean) => void; // Ajout: callback pour notifier l'extérieur
+  isStopped?: boolean; // Added: external signal if operation was stopped
+  onStoppedChange?: (stopped: boolean) => void; // Added: callback to notify external
 };
 
 const AiSearchBarVariants = cva(
@@ -108,7 +116,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
     false,
     false,
   ]);
-  // Etat local pour le stop si non contrôlé de l'extérieur
+  // Local state for stop if not controlled externally
   const [localStopped, setLocalStopped] = React.useState(false);
 
   // Si la prop isStopped est contrôlée de l'extérieur, on l'utilise, sinon on utilise l'état local

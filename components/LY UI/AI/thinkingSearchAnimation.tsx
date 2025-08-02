@@ -31,7 +31,7 @@ type ThinkingSearchAnimationProps = {
   streamingText?: string;
   messages?: string[];
   onAnimationEnd?: () => void;
-  onComplete?: () => void; // Ajouté pour le onComplete de l'animation
+  onComplete?: () => void; // Added for animation onComplete
   className?: string;
   scrollDirection?: "up" | "down";
   animationSpeed?: "slow" | "normal" | "fast";
@@ -44,7 +44,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
   streamingText,
   messages,
   onAnimationEnd,
-  onComplete, // Ajouté ici
+  onComplete, // Added here
   className,
   scrollDirection = "up",
   animationSpeed = "normal",

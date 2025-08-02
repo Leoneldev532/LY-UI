@@ -1,7 +1,7 @@
 export const parseMarkdown = (text:string) => {
     let html = text;
 
-    // Titres (H1-H6)
+    // Headers (H1-H6)
     html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
     html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
     html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
@@ -9,41 +9,41 @@ export const parseMarkdown = (text:string) => {
     html = html.replace(/^##### (.*$)/gm, '<h5>$1</h5>');
     html = html.replace(/^###### (.*$)/gm, '<h6>$1</h6>');
 
-    // Séparateurs horizontaux
+    // Horizontal separators
     html = html.replace(/^---$/gm, '<hr>');
 
-    // Citations
+    // Blockquotes
     html = html.replace(/^> (.*)$/gm, '<blockquote>$1</blockquote>');
     
-    // Blocs de code avec langage
+    // Code blocks with language
     html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
       return `<pre class="language-${lang || 'text'}"><code>${code.trim()}</code></pre>`;
     });
 
-    // Code inline
+    // Inline code
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-    // Texte en gras
+    // Bold text
     html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // Texte en italique
+    // Italic text
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-    // Liens
+    // Links
     html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 
-    // Listes à puces
+    // Bullet lists
     html = html.replace(/^\- (.*)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
 
-    // Listes numérotées
+    // Numbered lists
     html = html.replace(/^\d+\. (.*)$/gm, '<li class="numbered">$1</li>');
 
-    // Cases à cocher
+    // Checkboxes
     html = html.replace(/- \[x\] (.*)$/gm, '<li class="task completed">✅ $1</li>');
     html = html.replace(/- \[ \] (.*)$/gm, '<li class="task">☐ $1</li>');
 
-    // Paragraphes
+    // Paragraphs
     html = html.split('\n\n').map(paragraph => {
       paragraph = paragraph.trim();
       if (paragraph && 

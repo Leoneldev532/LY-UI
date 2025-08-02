@@ -1,4 +1,13 @@
 "use client";
+
+/**
+ * @author: @lyui
+ * @description: Generated Image Card component for displaying AI-generated images with interactive controls and download functionality
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import Image from "next/image";
 import {

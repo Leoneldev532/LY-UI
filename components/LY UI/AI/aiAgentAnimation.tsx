@@ -6,6 +6,9 @@ import React, { forwardRef } from "react";
 import DotGrid from "./dotsGrid";
 import AnimationStatus from "./animationStatus";
 
+
+
+
 /**
  * AiAgentAnimation component.
  * Displays an agent's progress percentage with an animated dotted bar and exposes animation state callbacks.
