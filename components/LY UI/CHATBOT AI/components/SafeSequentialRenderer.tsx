@@ -6,7 +6,7 @@ import { useAnswerControls } from "../hooks/useAnswerControls";
 import { useTimeUtils } from "../hooks/useTimeUtils";
 import ItemWrapper from "./ItemWrapper";
 import { SafeSequentialRendererProps } from "../utils";
-import AnswerControlsBar from "../../AI/AnswerControlsBar";
+import AnswerControlsBar from "../../AI/answerControlsBar";
 
 const SafeSequentialRenderer: React.FC<SafeSequentialRendererProps> = ({
   items,
