@@ -1,6 +1,5 @@
-// File: components/CodeSection.tsx
 "use client";
-import Editor from "@monaco-editor/react";
+import Editor, { OnMount } from "@monaco-editor/react";
 import React, { forwardRef, useRef, useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils"; // Assuming you have this utility
 import { cva } from "class-variance-authority";
@@ -68,7 +67,7 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
     const [currentValue, setCurrentValue] = useState(defaultValue);
     const [containerHeight, setContainerHeight] = useState(minHeight);
     const codeValueRef = useRef<string>(defaultValue);
-    const editorRef = useRef<any>(null);
+    const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const parseHeightValue = useCallback((value: string): number => {
@@ -111,11 +110,13 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
         console.log("Scrolling to bottom"); // Debug
         requestAnimationFrame(() => {
           const editor = editorRef.current;
-          const model = editor.getModel();
-          if (model) {
-            const lineCount = model.getLineCount();
-            editor.revealLine(lineCount, 1);
-            editor.setPosition({ lineNumber: lineCount, column: 1 });
+          if (editor) {
+            const model = editor.getModel();
+            if (model) {
+              const lineCount = model.getLineCount();
+              editor.revealLine(lineCount, 1);
+              editor.setPosition({ lineNumber: lineCount, column: 1 });
+            }
           }
         });
       }
@@ -159,7 +160,7 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
       codeValueRef.current = newValue;
     };
 
-    const handleEditorDidMount = (editor: any) => {
+    const handleEditorDidMount: OnMount = (editor) => {
       editorRef.current = editor;
       if (progressiveMode) {
         editor.updateOptions({

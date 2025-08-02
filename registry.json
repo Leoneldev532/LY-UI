@@ -274,6 +274,32 @@
       ]
     },
     {
+      "name": "answerControlsBar",
+      "type": "registry:component",
+      "title": "animated Process List Lovable",
+      "dependencies": [
+        "react",
+        "lucide-react"
+        
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu"
+      ],
+      "description": "Displays an AI-generated image in a styled card",
+      "files": [
+        {
+          "path": "components/LY UI/AI/answerControlsBar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+
+    {
       "name": "animatedCodeList",
       "type": "registry:component",
       "title": "animated Code List",
