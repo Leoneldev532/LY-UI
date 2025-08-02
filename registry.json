@@ -307,6 +307,10 @@
         {
           "path": "components/LY UI/CODING/codeSection.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "components/hooks/useProgressiveText.ts",
+          "type": "registry:hook"
         }
       ]
     },
