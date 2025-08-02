@@ -221,10 +221,6 @@ export default function AnimatedCodeListExample() {
     "console.log(result); // ['processed', 'processed']",
   ];
 
-  const handleComplete = () => {
-    console.log('Code reveal completed');
-  };
-
   return (
     <AnimatedCodeList
       title="Generating code for your application..."
@@ -237,6 +233,7 @@ export default function AnimatedCodeListExample() {
       skeletonDuration={2000}
       lineRevealDelay={150}
       containerHeight={288}
+      startLineNumber={1}
       className="w-full max-w-lg"
     />
   );

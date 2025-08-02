@@ -224,10 +224,9 @@
       "description": "Displays an AI-generated image in a styled card",
       "files": [
         {
-          "path": "components/LY UI/AI/GeneratedImageCard.tsx",
+          "path": "components/LY UI/AI/generatedImageCard.tsx",
           "type": "registry:component"
         },
-      
         {
           "path": "lib/utils.ts",
           "type": "registry:lib"
@@ -287,7 +286,7 @@
           "type": "registry:hook"
         },
         {
-          "path": "components/LY UI/AI/animatedCodeList.tsx",
+          "path": "components/LY UI/AI/AnimatedCodeList.tsx",
           "type": "registry:component"
         },
         {
@@ -327,7 +326,7 @@
       "description": "Animated agent progress bar with customizable dots, callbacks, and control.",
       "files": [
         {
-          "path": "components/LY UI/AI/AiAgentAnimation.tsx",
+          "path": "components/LY UI/AI/aiAgentAnimation.tsx",
           "type": "registry:component"
         },
         {
