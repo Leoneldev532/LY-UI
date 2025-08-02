@@ -5,7 +5,9 @@
   "title": "Code Section",
   "description": "A section for displaying code snippets with optional syntax highlighting.",
   "dependencies": [
-    "react"
+    "react",
+    "@monaco-editor/react",
+    "lucide-react"
   ],
   "files": [
     {

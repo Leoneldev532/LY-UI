@@ -5,7 +5,8 @@
   "title": "audio Interaction",
   "description": "audio interaction",
   "dependencies": [
-    "react"
+    "react",
+    "lucide-react"
   ],
   "registryDependencies": [
     "button",

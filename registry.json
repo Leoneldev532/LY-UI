@@ -8,7 +8,8 @@
       "type": "registry:component",
       "title": "AI Search Bar",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority",
+        "lucide-react"
       ],
       "registryDependencies": [
         "button",
@@ -88,7 +89,8 @@
       "type": "registry:component",
       "title": "audio Interaction",
       "dependencies": [
-        "react"
+        "react",
+         "lucide-react"
       ],
       "registryDependencies": [
         "button",
@@ -300,7 +302,9 @@
       "type": "registry:component",
       "title": "Code Section",
       "dependencies": [
-        "react"
+        "react",
+        "@monaco-editor/react",
+        "lucide-react"
       ],
       "description": "A section for displaying code snippets with optional syntax highlighting.",
       "files": [
