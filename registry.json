@@ -286,7 +286,7 @@
           "type": "registry:hook"
         },
         {
-          "path": "components/LY UI/AI/AnimatedCodeList.tsx",
+          "path": "components/LY UI/AI/animatedCodeList.tsx",
           "type": "registry:component"
         },
         {
@@ -326,8 +326,12 @@
       "description": "Animated agent progress bar with customizable dots, callbacks, and control.",
       "files": [
         {
-          "path": "components/LY UI/AI/aiAgentAnimation.tsx",
+          "path": "components/LY UI/AI/AiAgentAnimation.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
         },
         {
           "path": "lib/utils.ts",
@@ -342,7 +346,7 @@
           "type": "registry:hook"
         },
         {
-          "path": "components/LY UI/AI/AnimationStatus.tsx",
+          "path": "components/LY UI/AI/animationStatus.tsx",
           "type": "registry:component"
         },
         {

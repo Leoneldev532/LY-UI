@@ -3,8 +3,8 @@ import { useAnimationState } from "@/components/hooks/useAnimationState";
 import { useResponsiveColumns } from "@/components/hooks/useResponsiveColumns";
 import { cn } from "@/lib/utils";
 import React, { forwardRef } from "react";
-import AnimationStatus from "./AnimationStatus";
 import DotGrid from "./dotsGrid";
+import AnimationStatus from "./AnimationStatus";
 
 /**
  * AiAgentAnimation component.
