@@ -4,12 +4,12 @@ import { useResponsiveColumns } from "@/components/hooks/useResponsiveColumns";
 import { cn } from "@/lib/utils";
 import React, { forwardRef } from "react";
 import DotGrid from "./dotsGrid";
-import AnimationStatus from "./AnimationStatus";
+import AnimationStatus from "./animationStatus";
 
 /**
  * AiAgentAnimation component.
  * Displays an agent's progress percentage with an animated dotted bar and exposes animation state callbacks.
- *
+ * ++++++++++++++++
  * Props:
  * @prop title - The title displayed before the percentage.
  * @prop duration - Animation duration in milliseconds.

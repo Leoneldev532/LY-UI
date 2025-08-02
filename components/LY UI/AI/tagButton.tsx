@@ -7,7 +7,7 @@ import { X, ChevronRight } from "lucide-react";
 interface TagButtonProps {
     icon?: ReactNode;
     title: string;
-    variant: "default" | "outline" | "ghost";
+    variant?: "default" | "outline" | "ghost";
     onClick?: () => void;
     items?: string[];
     onItemClick?: (item: string) => void;

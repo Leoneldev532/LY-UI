@@ -13,10 +13,63 @@ import ResizableSeparatorExample from '@/components/example/resizeExample'
 ## Example
 
 ```tsx
-import ResizableSeparatorExample from '@/components/example/resizeExample'
+import { useRef, useState } from 'react'
+import ResizableSeparator from '@/components/LY UI/AI/resizableSeparator'
 
 export default function ResizableSeparatorExample() {
-  return <ResizableSeparatorExample />
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [leftWidth, setLeftWidth] = useState(300)
+  const [rightWidth, setRightWidth] = useState(400)
+
+  const handleResize = (newSize: number) => {
+    setLeftWidth(newSize)
+    setRightWidth(containerRef.current ? containerRef.current.offsetWidth - newSize - 8 : 400)
+  }
+
+  return (
+    <div 
+      ref={containerRef}
+      className="flex h-96 w-full border rounded-lg overflow-hidden"
+    >
+      {/* Left Panel */}
+      <div 
+        className="bg-neutral-50 dark:bg-neutral-800 p-4"
+        style={{ width: leftWidth }}
+      >
+        <h3 className="font-semibold mb-2">Left Panel</h3>
+        <p className="text-sm text-neutral-600 dark:text-neutral-300">
+          This panel can be resized by dragging the separator. 
+          The content adjusts automatically to the new size.
+        </p>
+      </div>
+
+      {/* Resizable Separator */}
+      <ResizableSeparator
+        direction="vertical"
+        variant="outline"
+        size="medium"
+        onResize={handleResize}
+        minSize={150}
+        maxSize={500}
+        parentRef={containerRef}
+        showIndicator={true}
+        animated={true}
+        className="bg-neutral-200 dark:bg-neutral-600"
+      />
+
+      {/* Right Panel */}
+      <div 
+        className="bg-neutral-50 dark:bg-neutral-800 p-4 flex-1"
+        style={{ width: rightWidth }}
+      >
+        <h3 className="font-semibold mb-2">Right Panel</h3>
+        <p className="text-sm text-neutral-600 dark:text-neutral-300">
+          This panel automatically adjusts its width based on the separator position.
+          The layout remains responsive and functional.
+        </p>
+      </div>
+    </div>
+  )
 }
 ```
 

@@ -26,24 +26,30 @@ export default function ThinkingSearchAnimationExample() {
   const streamingText = "Searching through databases... Analyzing patterns... Processing information... Generating insights... Finalizing results..."
 
   const messages = [
-    { role: "user", content: "How can I improve my React performance?" },
-    { role: "assistant", content: "Let me search for the best practices..." },
-    { role: "assistant", content: "Found several optimization techniques..." },
-    { role: "assistant", content: "Here are the key strategies..." },
+    "How can I improve my React performance?",
+    "Let me search for the best practices...",
+    "Found several optimization techniques...",
+    "Here are the key strategies..."
   ]
 
-  const handleAnimationComplete = () => {
-    console.log('Thinking animation completed')
+  const handleAnimationEnd = () => {
+    console.log('Animation ended')
+  }
+
+  const handleComplete = () => {
+    console.log('Animation fully completed and collapsed')
   }
 
   return (
     <ThinkingSearchAnimation
       streamingText={streamingText}
       messages={messages}
+      variant="default"
       animationSpeed="normal"
       scrollDirection="up"
-      variant="ghost"
-      onAnimationComplete={handleAnimationComplete}
+      onAnimationEnd={handleAnimationEnd}
+      onComplete={handleComplete}
+      minParagraphLength={50}
       className="w-full"
     />
   )
@@ -54,35 +60,44 @@ export default function ThinkingSearchAnimationExample() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `streamingText` | `string` | `""` | Text to display in streaming animation |
-| `messages` | `{ role: string; content: string }[]` | `[]` | Array of conversation messages |
-| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the animation |
-| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of text scrolling |
-| `variant` | `"streamingText" \| "messages"` | `"streamingText"` | Display variant |
-| `onAnimationComplete` | `() => void` | `undefined` | Callback when animation completes |
+| `variant` | `"default" \| "ghost" \| "outline"` | `"default"` | Visual style variant of the component |
+| `streamingText` | `string` | `""` | Text to display in streaming animation (auto-split into paragraphs) |
+| `messages` | `string[]` | `[]` | Array of text messages to display (takes priority over streamingText) |
+| `onAnimationEnd` | `() => void` | `undefined` | Callback when scrolling animation ends |
+| `onComplete` | `() => void` | `undefined` | Callback when animation is fully complete (after collapse) |
 | `className` | `string` | `undefined` | Additional CSS classes for styling |
+| `scrollDirection` | `"up" \| "down"` | `"up"` | Direction of text scrolling animation |
+| `animationSpeed` | `"slow" \| "normal" \| "fast"` | `"normal"` | Speed of the scrolling animation |
+| `minParagraphLength` | `number` | `50` | Minimum length for auto-generated paragraphs from streamingText |
+| `sentenceEndPattern` | `RegExp` | `/[.!?]\s+/g` | Pattern to split sentences for paragraph grouping |
 
 ### Types
 
 ```tsx
 type ThinkingSearchAnimationProps = {
+  variant?: "default" | "ghost" | "outline"
   streamingText?: string
-  messages?: { role: string; content: string }[]
-  animationSpeed?: "slow" | "normal" | "fast"
-  scrollDirection?: "up" | "down"
-  variant?: "streamingText" | "messages"
-  onAnimationComplete?: () => void
+  messages?: string[]
+  onAnimationEnd?: () => void
+  onComplete?: () => void
   className?: string
+  scrollDirection?: "up" | "down"
+  animationSpeed?: "slow" | "normal" | "fast"
+  minParagraphLength?: number
+  sentenceEndPattern?: RegExp
 }
 ```
 
 ## Features
 
-- **Streaming Text Animation**: Progressive text reveal with customizable speed
-- **Message Display**: Support for conversation-style message display
-- **Customizable Speed**: Three animation speed options (slow, normal, fast)
-- **Scroll Direction**: Configurable upward or downward scrolling
-- **Multiple Variants**: Streaming text and messages display modes
+- **Auto Text Processing**: Automatically splits `streamingText` into paragraphs using natural breaks or sentence patterns
+- **Message Display**: Direct support for array of messages (takes priority over streamingText)
+- **Visual Variants**: Three visual styles - default, ghost, and outline
+- **Customizable Animation**: Three speed options and configurable scroll direction
+- **Smart Content Sizing**: Automatically calculates optimal content height with max limits
+- **Collapsible Interface**: Click to expand/collapse with smooth transitions
+- **Timer Display**: Shows elapsed time during animation and final completion time
+- **Loading State**: Displays placeholder content while waiting for data
 - **Responsive Design**: Adapts to different screen sizes with proper text wrapping
 - **Dark Mode Support**: Full dark mode compatibility with appropriate styling
-- **Accessibility Focused**: Screen reader friendly with proper semantic structure
+- **Accessibility Focused**: Screen reader friendly with proper ARIA attributes

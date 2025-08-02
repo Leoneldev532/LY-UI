@@ -7,6 +7,7 @@
  * @prop streamingText - Text content to animate (split into paragraphs if no messages provided).
  * @prop messages - Array of text content to display in the animation.
  * @prop onAnimationEnd - Callback called when the animation ends.
+ * @prop onComplete - Callback called when the animation is fully complete (after collapse).
  * @prop className - Additional CSS classes for styling.
  * @prop scrollDirection - Direction of the scrolling animation ("up" or "down").
  * @prop animationSpeed - Speed of the animation ("slow", "normal", or "fast").
@@ -30,6 +31,7 @@ type ThinkingSearchAnimationProps = {
   streamingText?: string;
   messages?: string[];
   onAnimationEnd?: () => void;
+  onComplete?: () => void; // Ajouté pour le onComplete de l'animation
   className?: string;
   scrollDirection?: "up" | "down";
   animationSpeed?: "slow" | "normal" | "fast";
@@ -42,6 +44,7 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
   streamingText,
   messages,
   onAnimationEnd,
+  onComplete, // Ajouté ici
   className,
   scrollDirection = "up",
   animationSpeed = "normal",
@@ -110,13 +113,21 @@ const ThinkingSearchAnimation = forwardRef<HTMLDivElement, ThinkingSearchAnimati
       });
   }, [streamingText, messages, minParagraphLength, sentenceEndPattern]);
 
+  // Ajout du onComplete de l'animation ici
   const handleAnimationEnd = () => {
     const currentTime = timerRef.current;
     console.log("Animation ended, capturing time:", currentTime);
     setFinalTime(currentTime);
     setAnimationEnded(true);
-    setTimeout(() => setCollapsed(true), 2000);
-    onAnimationEnd?.();
+    setTimeout(() => {
+      setCollapsed(true);
+      if (typeof onComplete === "function") {
+        onComplete();
+      }
+    }, 2000);
+    if (typeof onAnimationEnd === "function") {
+      onAnimationEnd();
+    }
   };
 
   useEffect(() => {
