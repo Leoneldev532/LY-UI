@@ -3,9 +3,9 @@ title: "CodeSection"
 description: "A code display and editing component with copy, download, and customization options"
 ---
 
-import CodeSection from '@/components/LY UI/CODING/CodeSection'
+import CodeSection from "@/components/LY UI/CODING/CodeSection";
 
-<Preview link="CodeSection">
+<Preview link="codeSection">
   <CodeSection
     defaultLanguage="javascript"
     defaultValue={`console.log('Hello World!')`}
@@ -22,18 +22,18 @@ export default function CodeSectionExample() {
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-console.log(fibonacci(10));`)
+console.log(fibonacci(10));`);
 
   const handleComplete = () => {
-    console.log('Progressive writing completed')
-  }
+    console.log("Progressive writing completed");
+  };
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
-      setCodeValue(value)
-      console.log('Code changed:', value)
+      setCodeValue(value);
+      console.log("Code changed:", value);
     }
-  }
+  };
 
   return (
     <CodeSection
@@ -48,43 +48,43 @@ console.log(fibonacci(10));`)
       isEditable={true}
       className="w-full max-w-2xl"
     />
-  )
+  );
 }
 ```
 
 ## Documentation
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `height` | `string` | `"90vh"` | Height of the editor |
-| `maxHeight` | `string` | `"80vh"` | Maximum height of the editor |
-| `minHeight` | `string` | `"200px"` | Minimum height of the editor |
-| `defaultLanguage` | `string` | `"javascript"` | Code language (for syntax highlighting) |
-| `defaultValue` | `string` | `"// some comment"` | Default displayed code |
-| `className` | `string` | `""` | Additional CSS classes |
-| `isEditable` | `boolean` | `true` | Allows code editing |
-| `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | Visual style of the container |
-| `processLoading` | `boolean` | `false` | Shows a loading/progressive writing effect |
-| `progressiveMode` | `boolean` | `false` | Enables progressive code writing animation |
-| `onComplete` | `() => void` | `undefined` | Callback when progressive writing is complete |
-| `autoHeight` | `boolean` | `false` | Automatically adjusts editor height to content |
+| Prop              | Type                                | Default             | Description                                    |
+| ----------------- | ----------------------------------- | ------------------- | ---------------------------------------------- |
+| `height`          | `string`                            | `"90vh"`            | Height of the editor                           |
+| `maxHeight`       | `string`                            | `"80vh"`            | Maximum height of the editor                   |
+| `minHeight`       | `string`                            | `"200px"`           | Minimum height of the editor                   |
+| `defaultLanguage` | `string`                            | `"javascript"`      | Code language (for syntax highlighting)        |
+| `defaultValue`    | `string`                            | `"// some comment"` | Default displayed code                         |
+| `className`       | `string`                            | `""`                | Additional CSS classes                         |
+| `isEditable`      | `boolean`                           | `true`              | Allows code editing                            |
+| `variant`         | `"default" \| "outline" \| "ghost"` | `"default"`         | Visual style of the container                  |
+| `processLoading`  | `boolean`                           | `false`             | Shows a loading/progressive writing effect     |
+| `progressiveMode` | `boolean`                           | `false`             | Enables progressive code writing animation     |
+| `onComplete`      | `() => void`                        | `undefined`         | Callback when progressive writing is complete  |
+| `autoHeight`      | `boolean`                           | `false`             | Automatically adjusts editor height to content |
 
 ### Types
 
 ```tsx
 interface CodeSectionProps {
-  height?: string
-  maxHeight?: string
-  minHeight?: string
-  defaultLanguage?: string
-  defaultValue?: string
-  className?: string
-  isEditable?: boolean
-  variant?: "default" | "outline" | "ghost"
-  processLoading?: boolean
-  progressiveMode?: boolean
-  onComplete?: () => void
-  autoHeight?: boolean
+  height?: string;
+  maxHeight?: string;
+  minHeight?: string;
+  defaultLanguage?: string;
+  defaultValue?: string;
+  className?: string;
+  isEditable?: boolean;
+  variant?: "default" | "outline" | "ghost";
+  processLoading?: boolean;
+  progressiveMode?: boolean;
+  onComplete?: () => void;
+  autoHeight?: boolean;
 }
 ```
 
