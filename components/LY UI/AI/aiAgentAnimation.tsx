@@ -6,9 +6,14 @@ import React, { forwardRef } from "react";
 import DotGrid from "./dotsGrid";
 import AnimationStatus from "./animationStatus";
 
-
-
-
+/**
+ * @author: @lyui
+ * @description: AI Agent Animation component for displaying animated progress with dot grid visualization
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
 /**
  * AiAgentAnimation component.
  * Displays an agent's progress percentage with an animated dotted bar and exposes animation state callbacks.

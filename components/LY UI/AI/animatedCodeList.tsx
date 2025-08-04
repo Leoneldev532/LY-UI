@@ -16,7 +16,7 @@ interface AnimatedCodeListProps {
   className?: string;
   scrollDirection?: "up" | "down";
   animationSpeed?: "slow" | "normal" | "fast";
-  scrollDuration?: number; // Durée personnalisée en ms
+  scrollDuration?: number; // Custom duration in ms
   scrollCadence?: "smooth" | "stepped";
   pauseDuration?: number;
   skeletonDuration?: number;
@@ -66,7 +66,7 @@ const AnimatedCodeList = forwardRef<HTMLDivElement, AnimatedCodeListProps>(
       pauseDuration = 200,
       skeletonDuration = 150,
       lineRevealDelay = 10,
-      containerHeight = 288, // 18rem = 288px par défaut (h-72)
+      containerHeight = 288, // 18rem = 288px default (h-72)
       startLineNumber = 1,
       ...props
     },

@@ -77,5 +77,5 @@ const DotGrid: React.FC<DotGridProps> = ({
     </div>
   );
 };
-
+DotGrid.displayName = 'DotGrid';
 export default DotGrid;

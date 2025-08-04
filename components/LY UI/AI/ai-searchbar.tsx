@@ -580,7 +580,7 @@ const AiSearchBar = forwardRef<HTMLDivElement, AI_SearchBarProps>(({
                     disabled={submitLoading || stopped}
                   >
                     <div className="flex items-center gap-1">
-                      {modelList[selectedModel].icon}
+                      <span className="md:hidden block">{modelList[selectedModel].icon}</span>
                       <span>{modelList[selectedModel].name}</span>
                       <ChevronDown className="w-3 h-3 opacity-50" />
                     </div>

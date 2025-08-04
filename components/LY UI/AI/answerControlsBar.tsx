@@ -1,4 +1,13 @@
 "use client"
+
+/**
+ * @author: @lyui
+ * @description: Answer Controls Bar component for managing AI response interactions with copy, like, and regenerate actions
+ * @version: 1.0.0
+ * @date: 2024-12-19
+ * @license: MIT
+ * @website: https://ly-ui.dev
+ */
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Copy, ThumbsUp, ThumbsDown, RotateCcw, MoreHorizontal } from "lucide-react";
