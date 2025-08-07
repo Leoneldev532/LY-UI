@@ -5,7 +5,7 @@ import Link from "next/link";
 import DefaultSearchDialog from "@/components/search";
 import PatternSVG from "./patternSvg";
 import { Toggle } from "@/components/ui/toggle";
-
+import { X } from "lucide-react";
 
 const Header = () => {
   const [searchIsOpen, setSearchIsOpen] = useState<boolean>(false);
@@ -15,8 +15,10 @@ const Header = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme");
-      const isDark = savedTheme === "dark" || 
-        (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      const isDark =
+        savedTheme === "dark" ||
+        (!savedTheme &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches);
       setIsDarkMode(isDark);
     }
   }, []);
@@ -61,14 +63,25 @@ const Header = () => {
             />
           </svg>
         </Link>
-        <div className="flex items-center gap-2">
-        <Toggle 
-            className={` ${isDarkMode ? "dark:bg-neutral-300" : "bg-neutral-700"}`}
+        <div className="flex items-center justify-center  gap-2">
+          <Link target="_blank" href="https://x.com/adrien_dorval">
+            {" "}
+            <svg
+              fill="currentColor"
+              className="w-4 h-4 text-black dark:text-white"
+              viewBox="0 0 24 24"
+            >
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
+          </Link>
+          <Toggle
+            className={` ${
+              isDarkMode ? "dark:bg-neutral-300" : "bg-neutral-700"
+            }`}
             checked={isDarkMode}
             onCheckedChange={handleThemeChange}
             themeToggle={true}
             showLabel={true}
-            
           />
           <button
             className="ml-4 px-3 py-1 gap-x-2 cursor-pointer flex bg-neutral-200/40 dark:bg-neutral-800 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
@@ -105,7 +118,6 @@ const Header = () => {
               />
             </svg>
           </button>
-          
         </div>
       </div>
       <DefaultSearchDialog
