@@ -3,7 +3,7 @@ export const siteConfig = {
     url: "https://ly-ui.dev",
     ogImage: "https://ly-ui.dev/og.jpg",
     description:
-        "Explore LY UI: a collection of sleek, intuitive React components designed for modern interfaces. Enjoy streamlined design, effortless integration, and comprehensive documentation.",
+        "LY UI now integrates specialized components for developing AI-powered chatbots. Easily create modern conversational interfaces with ready-to-use components: chat windows, message bubbles, smart input areas, and typing indicators.",
     links: {
         twitter: "https://x.com/adrien_dorval",
         github: "https://github.com/Leoneldev532/LY-UI",
