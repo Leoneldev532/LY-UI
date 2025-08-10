@@ -202,7 +202,7 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
           automaticLayout: true,
           // Optimisations pour de meilleures performances
           renderLineHighlight: 'none',
-          renderIndentGuides: false,
+          // renderIndentGuides: false,
           renderValidationDecorations: 'off',
         });
       }
@@ -349,7 +349,7 @@ const CodeSection = forwardRef<HTMLDivElement, CodeSectionProps>(
               cursorBlinking: progressiveMode && isWriting ? "solid" : "blink",
               // Optimisations pour de meilleures performances
               renderLineHighlight: progressiveMode ? 'none' : 'line',
-              renderIndentGuides: !progressiveMode,
+              // renderIndentGuides: !progressiveMode,
               renderValidationDecorations: progressiveMode ? 'off' : 'editable',
             }}
             onChange={handleEditorChange}
