@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef,useCallback, useMemo } from 'react';
 
 export function useProgressiveText(
   text: string,
