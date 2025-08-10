@@ -65,7 +65,7 @@ export const useAnswerGeneration = (
         if (errorMsg.includes("aborted") || errorMsg.includes("AbortError")) {
 
         } else {
-        s
+
           setHistory((prev: QA[]) =>
             prev.map((qa, i) =>
               i === idx
