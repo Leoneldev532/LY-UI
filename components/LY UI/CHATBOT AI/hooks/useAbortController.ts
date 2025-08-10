@@ -19,7 +19,7 @@ export const useAbortController = () => {
 
   const abortAllControllers = useCallback(() => {
     Object.entries(abortControllersRef.current).forEach(([idx, controller]) => {
-      console.log(`🛑 Aborting request for idx ${idx}`);
+
       controller.abort();
     });
     abortControllersRef.current = {};

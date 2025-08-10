@@ -8,7 +8,7 @@ export const useItemCompletion = (
 ) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  
+
   const completionCalledRef = useRef(false);
   const safetyTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -18,7 +18,6 @@ export const useItemCompletion = (
     }
 
     completionCalledRef.current = true;
-    console.log(`Item ${index} completing...`);
 
     if (safetyTimerRef.current) {
       clearTimeout(safetyTimerRef.current);

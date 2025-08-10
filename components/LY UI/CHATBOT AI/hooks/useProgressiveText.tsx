@@ -8,87 +8,100 @@ export function useProgressiveText(
   const [displayedText, setDisplayedText] = useState('');
   const [isWriting, setIsWriting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const indexRef = useRef(0);
-  const prevTextRef = useRef('');
-  const prevIsActiveRef = useRef(false);
+  const lastTextRef = useRef('');
+  const isAnimatingRef = useRef(false);
 
-  // Stable speed value to prevent unnecessary effect re-runs
-  const stableSpeed = useMemo(() => Math.max(1, speed), [speed]);
-
-  // Reset when text or isActive changes
-  useEffect(() => {
-    // Clear any existing interval first
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+  // Fonction pour nettoyer les timeouts
+  const cleanup = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
+    isAnimatingRef.current = false;
+  }, []);
 
-    if (!isActive) {
-      // If not active, show full text immediately
-      setDisplayedText(text);
+  // Fonction récursive optimisée pour l'animation
+  const animateText = useCallback((targetText: string, currentIndex: number = 0) => {
+    // Vérifier si on doit arrêter l'animation
+    if (!isAnimatingRef.current || currentIndex >= targetText.length) {
+      setDisplayedText(targetText);
       setIsWriting(false);
       setIsComplete(true);
-      indexRef.current = text.length;
-      prevTextRef.current = text;
-      prevIsActiveRef.current = isActive;
+      isAnimatingRef.current = false;
       return;
     }
 
-    // Check if we need to restart the animation
-    const shouldRestart = 
-      prevTextRef.current !== text || 
-      prevIsActiveRef.current !== isActive ||
-      isComplete;
+    // Calculer la taille du chunk basé sur la vitesse
+    const chunkSize = speed > 20 ? 1 : Math.max(1, Math.floor(20 / speed));
+    const nextIndex = Math.min(currentIndex + chunkSize, targetText.length);
 
-    if (shouldRestart) {
-      // Reset for new progressive display
-      setDisplayedText('');
-      setIsWriting(true);
-      setIsComplete(false);
-      indexRef.current = 0;
+    // Mettre à jour le texte affiché
+    setDisplayedText(targetText.slice(0, nextIndex));
+    indexRef.current = nextIndex;
 
-      prevTextRef.current = text;
-      prevIsActiveRef.current = isActive;
-
-      // Start progressive text display
-      if (text.length > 0) {
-        intervalRef.current = setInterval(() => {
-          const currentIndex = indexRef.current;
-          const nextIndex = currentIndex + 1;
-          
-          if (nextIndex >= text.length) {
-            // Animation complete
-            if (intervalRef.current) {
-              clearInterval(intervalRef.current);
-              intervalRef.current = null;
-            }
-            setDisplayedText(text);
-            setIsWriting(false);
-            setIsComplete(true);
-            indexRef.current = text.length;
-          } else {
-            indexRef.current = nextIndex;
-            setDisplayedText(text.slice(0, nextIndex));
-          }
-        }, stableSpeed);
-      } else {
-        // Empty text case
-        setIsWriting(false);
-        setIsComplete(true);
-      }
+    // Continuer l'animation si pas terminé
+    if (nextIndex < targetText.length) {
+      timeoutRef.current = setTimeout(() => {
+        animateText(targetText, nextIndex);
+      }, Math.max(1, speed)); // Minimum 1ms pour éviter les blocages
+    } else {
+      // Animation terminée
+      setIsWriting(false);
+      setIsComplete(true);
+      isAnimatingRef.current = false;
     }
-  }, [text, isActive, stableSpeed, isComplete]);
+  }, [speed]);
 
-  // Cleanup on unmount
+  // Effet principal pour gérer les changements
   useEffect(() => {
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
+    // Nettoyer les animations précédentes
+    cleanup();
+
+    if (!isActive) {
+      // Si pas actif, afficher le texte complet immédiatement
+      setDisplayedText(text);
+      setIsWriting(false);
+      setIsComplete(true);
+      lastTextRef.current = text;
+      return;
+    }
+
+    // Si le texte est vide
+    if (!text || text.length === 0) {
+      setDisplayedText('');
+      setIsWriting(false);
+      setIsComplete(true);
+      lastTextRef.current = text;
+      return;
+    }
+
+    // Si c'est le même texte, pas besoin de relancer l'animation
+    if (text === lastTextRef.current && isComplete) {
+      return;
+    }
+
+    // Démarrer une nouvelle animation
+    lastTextRef.current = text;
+    setDisplayedText('');
+    setIsWriting(true);
+    setIsComplete(false);
+    indexRef.current = 0;
+    isAnimatingRef.current = true;
+
+    // Délai court avant de commencer pour éviter les conflits visuels
+    timeoutRef.current = setTimeout(() => {
+      animateText(text, 0);
+    }, 10);
+
+  }, [text, isActive, animateText, cleanup, isComplete]);
+
+  // Nettoyage au démontage
+  useEffect(() => {
+    return cleanup;
+  }, [cleanup]);
 
   return useMemo(() => ({
     displayedText,

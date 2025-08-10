@@ -41,10 +41,8 @@ export const useApiCall = () => {
           throw new Error(`API error: ${response.status} - ${response.statusText}`);
         }
         const data = await response.json();
-        console.log(data,"////")
         const rawContent = data?.content?.choices?.[0]?.message?.content || ""?.trim()
         ;
-        console.log("Raw content received from API:", rawContent);
 
         if (!rawContent) {
           throw new Error("No content received from API");
@@ -58,7 +56,7 @@ export const useApiCall = () => {
     },
     [buildSystemInstructionForNativeJSON]
   );
-  
+
 
   return { callTogetherMistralAPI };
 };

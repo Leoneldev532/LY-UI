@@ -256,9 +256,9 @@ export const useChatbotLogic = () => {
 
   const loadingUpdater = useCallback(
     (value: number | null | ((prev: number | null) => number | null)) => {
-      setState(prev => ({ 
-        ...prev, 
-        loadingIdx: typeof value === 'function' ? value(prev.loadingIdx) : value 
+      setState(prev => ({
+        ...prev,
+        loadingIdx: typeof value === 'function' ? value(prev.loadingIdx) : value
       }));
     },
     [setState]
@@ -296,8 +296,6 @@ export const useChatbotLogic = () => {
   }, [state.listToolsId, state.isThinkingMode, executeWithAnimation]);
 
   const handleStop = useCallback(() => {
-    console.log("🛑 Arrêt en cours...");
-
     // Clean up resources
     abortAllControllers();
     animationControl.clearTimeouts();

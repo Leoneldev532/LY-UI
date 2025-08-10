@@ -8,7 +8,7 @@ import { renderContentSequentially } from "./components/renderContentSequentiall
 import { QA } from "./utils";
 import AiAgentAnimation from "../AI/aiAgentAnimation";
 const ChatbotIA = () => {
-  
+
   const {
     history,
     loadingIdx,
@@ -24,7 +24,7 @@ const ChatbotIA = () => {
 
   const getAnimationProps = (qa:QA) => {
     const isRunning = qa.status === "pending" || qa.status === "generating";
-    
+
     if (!isRunning) {
       if (qa.startTime && qa.endTime) {
         const start = new Date(`2000-01-01T${qa.startTime}`);
@@ -34,13 +34,13 @@ const ChatbotIA = () => {
           isRunning: false
         };
       }
- 
+
       return {
         duration: 3000,
         isRunning: false
       };
     }
-    
+
     return {
       duration: 30000,
       isRunning: true
@@ -147,18 +147,18 @@ const ChatbotIA = () => {
   return (
     <div className="px-4 max-w-3xl space-y-4 mt-4 w-full">
       {history.map((qa, idx) => {
-        
+
         if (isItemFinished(qa)) {
           const memoizedItem = getMemoizedItem(idx);
           if (memoizedItem) {
             return memoizedItem;
           }
         }
-      
+
         if (isItemProcessing(qa)) {
           return renderProcessingItem(qa, idx);
         }
-        
+
         return null;
       })}
 

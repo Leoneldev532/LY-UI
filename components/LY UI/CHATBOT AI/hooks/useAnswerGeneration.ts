@@ -63,13 +63,9 @@ export const useAnswerGeneration = (
         abortController(idx);
 
         if (errorMsg.includes("aborted") || errorMsg.includes("AbortError")) {
-          console.log(
-            `🔄 generateAnswer caught abort for idx ${idx} - State already handled by handleStop`
-          );
+
         } else {
-          console.log(
-            `❌ generateAnswer caught error for idx ${idx}: ${errorMsg}`
-          );
+        s
           setHistory((prev: QA[]) =>
             prev.map((qa, i) =>
               i === idx

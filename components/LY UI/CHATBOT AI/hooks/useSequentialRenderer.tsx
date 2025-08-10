@@ -24,7 +24,6 @@ export const useSequentialRenderer = (items: RenderContentItem[], onAllComplete?
   );
 
   const resetState = useCallback(() => {
-    console.log("Items changed, resetting state");
     setCurrentIndex(-1);
     setCompletedItems(new Set());
     setIsAllComplete(false);
@@ -37,17 +36,15 @@ export const useSequentialRenderer = (items: RenderContentItem[], onAllComplete?
   useEffect(() => {
     if (items.length > 0 && currentIndex === -1) {
       const timer = setTimeout(() => {
-        console.log("Starting sequence with first item");
         setCurrentIndex(0);
       }, 100);
       return () => clearTimeout(timer);
     }
   }, [items.length, currentIndex]);
 
-  
+
   useEffect(() => {
     if (items.length > 0 && completedItems.size === items.length && !isAllComplete) {
-      console.log("All items completed");
       setIsAllComplete(true);
       if (onAllCompleteRef.current) {
         onAllCompleteRef.current();
@@ -57,7 +54,6 @@ export const useSequentialRenderer = (items: RenderContentItem[], onAllComplete?
 
 
   const handleItemComplete = useCallback((index: number) => {
-    console.log(`Item ${index} completed`);
 
     setCompletedItems(prev => {
       const newCompleted = new Set(prev);
@@ -68,7 +64,6 @@ export const useSequentialRenderer = (items: RenderContentItem[], onAllComplete?
     setTimeout(() => {
       setCurrentIndex(prevIndex => {
         const nextIndex = index + 1;
-        console.log(`Moving from item ${index} to ${nextIndex}`);
         return nextIndex >= itemsRef.current.length ? itemsRef.current.length : nextIndex;
       });
     }, 150);
