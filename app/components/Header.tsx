@@ -64,7 +64,7 @@ const Header = () => {
           </svg>
         </Link>
         <div className="flex items-center justify-center  gap-2">
-          <Link target="_blank" href="https://x.com/adrien_dorval">
+          <Link target="_blank" href="https://x.com/leoy_dev">
             {" "}
             <svg
               fill="currentColor"

@@ -149,7 +149,7 @@ Contributions are welcome! Whether you want to add a new AI component, improve a
 Created by **Leonel Yimga**
 
 - GitHub: [@Leoneldev532](https://github.com/Leoneldev532)
-- X / Twitter: [@adrien_dorval](https://x.com/adrien_dorval)
+- X / Twitter: [@leoy_dev](https://x.com/leoy_dev)
 - Website: [ly-ui.leonelyimga.com](https://ly-ui.leonelyimga.com)
 
 ---

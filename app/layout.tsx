@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
   twitter: {
       card: "summary_large_image",
-      creator: "@adrien_dorval",
+      creator: "@leoy_dev",
       title: `${siteConfig.name} — Open-Source AI & Modern React UI Components`,
       description: siteConfig.description,
       images: [siteConfig.ogImage],

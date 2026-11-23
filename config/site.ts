@@ -5,7 +5,7 @@ export const siteConfig = {
     description:
         "Open-source React & Next.js UI component library for AI-powered applications. Build modern chatbots, AI agents, and coding interfaces with ready-to-use shadcn/ui, Tailwind CSS 4, and Motion components.",
     links: {
-        twitter: "https://x.com/adrien_dorval",
+        twitter: "https://x.com/leoy_dev",
         github: "https://github.com/Leoneldev532/LY-UI",
     },
 };
