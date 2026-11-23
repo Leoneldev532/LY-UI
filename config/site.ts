@@ -1,9 +1,9 @@
 export const siteConfig = {
     name: "LY UI",
-    url: "https://ly-ui.dev",
-    ogImage: "https://ly-ui.dev/og.jpg",
+    url: "https://ly-ui.leonelyimga.com",
+    ogImage: "https://ly-ui.leonelyimga.com/og.jpg",
     description:
-        "LY UI now integrates specialized components for developing AI-powered chatbots. Easily create modern conversational interfaces with ready-to-use components: chat windows generated anwsere, animated Code list , Ai agent Animation process .",
+        "Open-source React & Next.js UI component library for AI-powered applications. Build modern chatbots, AI agents, and coding interfaces with ready-to-use shadcn/ui, Tailwind CSS 4, and Motion components.",
     links: {
         twitter: "https://x.com/adrien_dorval",
         github: "https://github.com/Leoneldev532/LY-UI",

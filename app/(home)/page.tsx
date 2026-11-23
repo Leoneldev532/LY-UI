@@ -607,7 +607,7 @@ export default function HomePage() {
               </div>
             </Link>
             <span className="text-sm text-neutral-500 dark:text-neutral-400/80 transition-colors duration-300">
-              Copyright © {currentYear} ly-ui.dev
+              Copyright © {currentYear} ly-ui.leonelyimga.com
             </span>
           </div>
         </div>

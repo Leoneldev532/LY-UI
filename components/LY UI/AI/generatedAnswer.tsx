@@ -6,7 +6,7 @@
  * @version: 1.0.0
  * @date: 2024-12-19
  * @license: MIT
- * @website: https://ly-ui.dev
+ * @website: https://ly-ui.leonelyimga.com
  */
 import React, { useState, useEffect, forwardRef, useCallback } from "react";
 import { Copy, Check, RotateCcw, MoreHorizontal, ThumbsUp, ThumbsDown } from "lucide-react";

@@ -1,7 +1,37 @@
 {
-  "name": "ly-ui2",
-  "version": "0.0.0",
+  "name": "ly-ui",
+  "version": "1.0.0",
+  "description": "Open-source React & Next.js UI component library specialized for AI interfaces, chatbots, AI agents, and developer tools. Built with Tailwind CSS 4, shadcn/ui, Radix UI, and Framer Motion.",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Leonel Yimga",
+    "url": "https://github.com/Leoneldev532"
+  },
+  "homepage": "https://ly-ui.leonelyimga.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Leoneldev532/LY-UI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Leoneldev532/LY-UI/issues"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "tailwindcss",
+    "shadcn-ui",
+    "shadcn-registry",
+    "ui-components",
+    "component-library",
+    "ai-ui",
+    "chatbot-ui",
+    "ai-agents",
+    "framer-motion",
+    "radix-ui",
+    "fumadocs",
+    "typescript"
+  ],
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbo",

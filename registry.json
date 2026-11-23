@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "ly-ui",
-  "homepage": "https://ly-ui.dev",
+  "homepage": "https://ly-ui.leonelyimga.com",
   "items": [
     {
       "name": "aiSearchbar",
@@ -78,11 +78,11 @@
     {
       "name": "particleAnimation",
       "type": "registry:component",
-      "title": "Particle Animation animation",
+      "title": "Particle Animation",
       "dependencies": [
         "react"
       ],
-      "description": "Particle Animation animation",
+      "description": "Lightweight animated particle visual for voice and ambient AI states.",
       "files": [
         {
           "path": "components/LY UI/AI/particleAnimation.tsx",
@@ -93,13 +93,13 @@
     {
       "name": "audioInteraction",
       "type": "registry:component",
-      "title": "audio Interaction",
+      "title": "Audio Interaction",
       "dependencies": [
         "react",
          "lucide-react"
       ],
 
-      "description": "audio interaction",
+      "description": "Interactive voice and audio interface paired with reactive particle visuals.",
       "files": [
         {
           "path": "components/LY UI/AI/audioInteraction.tsx",
@@ -154,7 +154,7 @@
     {
       "name": "thinkingSearchAnimation",
       "type": "registry:component",
-      "title": "Thinking animation for intelligent search",
+      "title": "Thinking Search Animation",
       "dependencies": [
         "react",
         "lucide-react",
@@ -163,7 +163,7 @@
       "registryDependencies": [
         "dropdown-menu"
       ],
-      "description": "Displays an AI-generated answer with animation",
+      "description": "Animated reasoning and intelligent search indicator for AI workflows.",
       "files": [
         {
           "path": "components/LY UI/AI/thinkingSearchAnimation.tsx",
@@ -216,7 +216,7 @@
       "registryDependencies": [
         "textarea"
       ],
-      "description": "Use it to manage space",
+      "description": "Inline editable user prompt component for conversational chat threads.",
       "files": [
         {
           "path": "components/LY UI/AI/editableQuestion.tsx",
@@ -262,14 +262,14 @@
     {
       "name": "resizeExample",
       "type": "registry:component",
-      "title": "resizable Example",
+      "title": "Resizable Layout Example",
       "dependencies": [
         "react"
       ],
       "registryDependencies": [
         "resizableSeparator"
       ],
-      "description": "Displays an AI-generated image in a styled card",
+      "description": "Interactive split-pane layout example using ResizableSeparator.",
       "files": [
         {
           "path": "components/example/resizeExample.tsx",
@@ -280,12 +280,12 @@
     {
       "name": "animatedProcessListLovable",
       "type": "registry:component",
-      "title": "animated Process List Lovable",
+      "title": "Animated Process List (Lovable)",
       "dependencies": [
         "react",
         "lucide-react"
       ],
-      "description": "Displays an AI-generated image in a styled card",
+      "description": "Animated list displaying sequential AI build and process steps inspired by Lovable.",
       "files": [
         {
           "path": "components/LY UI/AI/animatedProcessList_Lovable.tsx",
@@ -300,7 +300,7 @@
     {
       "name": "answerControlsBar",
       "type": "registry:component",
-      "title": "animated Process List Lovable",
+      "title": "Answer Controls Bar",
       "dependencies": [
         "react",
         "lucide-react"
@@ -309,7 +309,7 @@
       "registryDependencies": [
         "dropdown-menu"
       ],
-      "description": "Displays an AI-generated image in a styled card",
+      "description": "Action toolbar for AI responses with copy, regenerate, feedback, and contextual menu controls.",
       "files": [
         {
           "path": "components/LY UI/AI/answerControlsBar.tsx",

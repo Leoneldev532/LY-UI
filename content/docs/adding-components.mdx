@@ -1,0 +1,28 @@
+---
+title: "Ajouter un composant"
+description: "Guide étape par étape pour ajouter un nouveau composant à la bibliothèque LY-UI."
+---
+
+# Guide d'ajout de composants
+
+Ce guide détaille le processus standard pour intégrer un nouveau composant dans LY-UI.
+
+## Étapes de création
+
+### 1. Création du fichier
+Créez votre composant dans `components/LY UI/[Catégorie]/[nom].tsx`.
+Utilisez les standards du projet : `forwardRef`, `cn`, et JSDoc.
+
+### 2. Enregistrement
+Ajoutez votre composant dans le fichier `registry.json` à la racine pour permettre son installation via CLI.
+
+### 3. Documentation
+Ajoutez une page de documentation dans `content/docs/components/[Catégorie]/[nom].mdx`.
+
+## Standards techniques
+- **Framework**: Next.js 15+ (React 19)
+- **Styling**: Tailwind CSS 4
+- **Animations**: Framer Motion ou GSAP
+- **Icons**: Lucide React
+
+Pour plus de détails, consultez le fichier [CONTRIBUTING.md](file:///CONTRIBUTING.md) à la racine du projet.

@@ -7,6 +7,8 @@
     "pages": [
         "---Get Started---",
         "index",
+        "tutorial",
+        "adding-components",
         "---Latest---",
         "components/AI/ai-searchbar",
         "components/AI/stepProgressTimeline",

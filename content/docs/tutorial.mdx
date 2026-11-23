@@ -1,0 +1,241 @@
+---
+title: "Tutorial: Getting Started with LY UI"
+description: "Step-by-step guide to installing, configuring, and building an AI-powered chat interface with LY UI components."
+---
+
+# How to Use LY UI (`ly-ui.leonelyimga.com`)
+
+This step-by-step tutorial walks you through setting up **LY UI** in a React / Next.js project and building a working **AI chat interface** in just a few minutes using components from the `ly-ui.leonelyimga.com` registry.
+
+---
+
+## Prerequisites
+
+Before installing LY UI components, make sure your project has:
+
+- **React 18/19** and **Next.js 14/15** (App Router recommended)
+- **TypeScript**
+- **Tailwind CSS** (v3 or v4)
+- **shadcn/ui** initialized in your project
+
+If you haven't initialized `shadcn/ui` yet, run:
+
+```bash
+npx shadcn@latest init
+```
+
+This sets up your `components.json`, Tailwind configuration, and the `@/lib/utils` (`cn`) helper used by all LY UI components.
+
+---
+
+## Step 1: Install Components via the Registry CLI
+
+LY UI publishes every component as a **shadcn-compatible registry JSON** hosted at `https://ly-ui.leonelyimga.com/r/<component>.json`.
+
+Install any component directly with a single command:
+
+```bash
+# npm
+npx shadcn@latest add https://ly-ui.leonelyimga.com/r/aiSearchbar.json
+
+# pnpm
+pnpm dlx shadcn@latest add https://ly-ui.leonelyimga.com/r/aiSearchbar.json
+
+# bun
+bunx --bun shadcn@latest add https://ly-ui.leonelyimga.com/r/aiSearchbar.json
+```
+
+### What happens automatically?
+
+When you run the command, the shadcn CLI:
+1. Downloads the component source file into your project (`components/`).
+2. Installs any required companion hooks (e.g., `useProgressiveMarkdown`, `useScrollYAnimation`).
+3. Installs required npm packages (`lucide-react`, `motion`, `marked`, `class-variance-authority`, etc.).
+4. Installs required base `shadcn/ui` primitives (`button`, `textarea`, `popover`, `dropdown-menu`, `checkbox`).
+
+Because the code is added directly to your repository, you have **full ownership** and can customize anything.
+
+---
+
+## Step 2: Add Recommended Global Styles
+
+For components that render progressive Markdown (like `GeneratedAnswer`) or scrollable areas, add the scrollbar and `.markdown-content` styles from the [Welcome](/docs) page to your `app/globals.css`:
+
+```css
+* {
+  scrollbar-width: thin;
+  scrollbar-color: gray transparent;
+}
+```
+
+---
+
+## Step 3: Build a Mini AI Chat Interface
+
+Let's combine three LY UI components to build a complete AI prompt-and-answer flow:
+
+1. **`aiSearchbar`** — Smart prompt input with tool selection, model switcher, and Think mode.
+2. **`thinkingSearchAnimation`** — Animated reasoning indicator while the AI processes a request.
+3. **`generatedAnswer`** — Progressive Markdown answer with copy/feedback controls.
+
+### 3.1 Install the 3 components
+
+```bash
+npx shadcn@latest add https://ly-ui.leonelyimga.com/r/aiSearchbar.json
+npx shadcn@latest add https://ly-ui.leonelyimga.com/r/thinkingSearchAnimation.json
+npx shadcn@latest add https://ly-ui.leonelyimga.com/r/generatedAnswer.json
+```
+
+### 3.2 Create your chat page
+
+Create a client component (for example `app/chat/page.tsx`):
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import AiSearchBar from "@/components/LY UI/AI/ai-searchbar";
+import GeneratedAnswer from "@/components/LY UI/AI/generatedAnswer";
+import ThinkingSearchAnimation from "@/components/LY UI/AI/thinkingSearchAnimation";
+
+type Message = {
+  id: string;
+  question: string;
+  answer: string;
+  timestamp: string;
+};
+
+export default function ChatPage() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (
+    value: string,
+    options: {
+      selectedTools: number[];
+      thinkMode: boolean;
+      selectedModel: number;
+    }
+  ) => {
+    if (!value.trim()) return;
+    setIsLoading(true);
+
+    try {
+      // Replace this with your real API route (e.g. /api/chat)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      const now = new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      const simulatedResponse = `### Answer to: "${value}"
+
+Here is a progressive **Markdown** response generated with LY UI.
+
+- **Think Mode:** ${options.thinkMode ? "Enabled" : "Disabled"}
+- **Selected Model Index:** \`${options.selectedModel}\`
+- **Active Tools:** ${options.selectedTools.length}`;
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          question: value,
+          answer: simulatedResponse,
+          timestamp: now,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="mx-auto flex min-h-screen max-w-3xl flex-col justify-between gap-6 p-6">
+      <div className="flex flex-col gap-6">
+        {messages.map((msg) => (
+          <div key={msg.id} className="space-y-3">
+            <div className="rounded-xl bg-muted px-4 py-3 text-sm font-medium">
+              {msg.question}
+            </div>
+            <GeneratedAnswer
+              content={msg.answer}
+              timestamp={msg.timestamp}
+              markdownMode={true}
+              textSpeed={25}
+            />
+          </div>
+        ))}
+
+        {isLoading && <ThinkingSearchAnimation />}
+      </div>
+
+      <div className="sticky bottom-4">
+        <AiSearchBar
+          placeholder="Ask anything about AI, code, or design..."
+          variant="default"
+          submitLoading={isLoading}
+          onSubmit={handleSubmit}
+          onStop={() => setIsLoading(false)}
+          className="w-full"
+        />
+      </div>
+    </main>
+  );
+}
+```
+
+> **Tip:** Adjust the import paths (`@/components/...`) to match the folder configured in your `components.json`.
+
+---
+
+## Step 4: Connect a Real LLM Backend
+
+To connect your interface to OpenAI, Anthropic, Mistral, or Together AI:
+
+1. Create a Next.js Route Handler at `app/api/chat/route.ts`.
+2. Store your API keys in `.env.local` (never commit `.env` files to Git).
+3. Call `fetch("/api/chat", { method: "POST", body: JSON.stringify({ prompt: value, ...options }) })` inside `handleSubmit` and pass the returned text to `GeneratedAnswer`.
+
+---
+
+## Step 5: Customize Components
+
+Every LY UI component supports standard Tailwind customization and `forwardRef`:
+
+- **Styling:** Pass `className` to override layout, spacing, or colors via `cn()`.
+- **Variants:** Components such as `AiSearchBar` expose `variant` props (`"default" | "ghost" | "outline"`).
+- **Dark Mode:** All components are dark-mode ready out of the box with Tailwind `dark:` utilities.
+- **Direct Editing:** Since the component source lives in your project, you can freely edit animations, icons, or behavior.
+
+---
+
+## Registry Quick Reference
+
+Use any of these URLs with `npx shadcn@latest add <url>`:
+
+| Component | Registry URL |
+| :--- | :--- |
+| AI Search Bar | `https://ly-ui.leonelyimga.com/r/aiSearchbar.json` |
+| AI Agent Animation | `https://ly-ui.leonelyimga.com/r/aiAgentAnimation.json` |
+| Generated Answer | `https://ly-ui.leonelyimga.com/r/generatedAnswer.json` |
+| Thinking Search Animation | `https://ly-ui.leonelyimga.com/r/thinkingSearchAnimation.json` |
+| Step Progress Timeline | `https://ly-ui.leonelyimga.com/r/stepProgressTimeline.json` |
+| Animated Process List | `https://ly-ui.leonelyimga.com/r/animatedProcessListLovable.json` |
+| Animated Code List | `https://ly-ui.leonelyimga.com/r/animatedCodeList.json` |
+| Answer Controls Bar | `https://ly-ui.leonelyimga.com/r/answerControlsBar.json` |
+| Audio Interaction | `https://ly-ui.leonelyimga.com/r/audioInteraction.json` |
+| Particle Animation | `https://ly-ui.leonelyimga.com/r/particleAnimation.json` |
+| Editable Question | `https://ly-ui.leonelyimga.com/r/editableQuestion.json` |
+| Generated Image Card | `https://ly-ui.leonelyimga.com/r/generatedImageCard.json` |
+| Resizable Separator | `https://ly-ui.leonelyimga.com/r/resizableSeparator.json` |
+| Tag Button | `https://ly-ui.leonelyimga.com/r/tagButton.json` |
+| Code Section (Monaco) | `https://ly-ui.leonelyimga.com/r/codeSection.json` |
+
+---
+
+## Next Steps
+
+- Browse all live previews in the sidebar under **Components**.
+- Want to contribute a new component to LY UI? Read the [Adding a Component](/docs/adding-components) guide.

@@ -20,7 +20,10 @@ const instrument = Crimson_Pro({
 
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} - ${siteConfig.description}`,
+  title: {
+    default: `${siteConfig.name} — Open-Source AI & Modern React UI Components`,
+    template: `%s | ${siteConfig.name}`,
+  },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   applicationName: siteConfig.name,
@@ -30,28 +33,41 @@ export const metadata: Metadata = {
     ],
   },
   keywords: [
-      "ui",
-      "components",
-      "Tailwind CSS",
-      "Next.js",
+      "LY UI",
+      "AI UI components",
+      "chatbot UI",
+      "AI agent UI",
+      "React component library",
+      "Next.js UI",
+      "Tailwind CSS 4",
       "shadcn",
+      "shadcn registry",
+      "Radix UI",
       "Framer Motion",
-      "React Library",
+      "Fumadocs",
   ],
   robots: "index, follow",
-  authors: [{ name: "Leonel Yimga", url: "https://x.com/adrien_dorval" }],
+  authors: [{ name: "Leonel Yimga", url: "https://github.com/Leoneldev532" }],
   creator: "Leonel Yimga",
   openGraph: {
-      title: siteConfig.name,
+      type: "website",
+      title: `${siteConfig.name} — Open-Source AI & Modern React UI Components`,
       description: siteConfig.description,
       url: siteConfig.url,
       siteName: siteConfig.name,
+      images: [
+        {
+          url: siteConfig.ogImage,
+          alt: siteConfig.name,
+        },
+      ],
   },
   twitter: {
       card: "summary_large_image",
-      creator: "@dorian_baffier",
-      title: siteConfig.name,
+      creator: "@adrien_dorval",
+      title: `${siteConfig.name} — Open-Source AI & Modern React UI Components`,
       description: siteConfig.description,
+      images: [siteConfig.ogImage],
   },
 };
 
